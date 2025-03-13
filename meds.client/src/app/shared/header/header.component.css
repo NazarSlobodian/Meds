@@ -1,0 +1,23 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--header-back-color);
+  padding: 10px 20px;
+  font-size: 18px;
+}
+.company-name {
+  font-weight: bold;
+  color: var(--header-text-color);
+}
+.logout-btn {
+  background-color: var(--header-back-color);
+  color: var(--header-text-color);
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+  .logout-btn:hover {
+    background-color: var(--header-hover-color);
+  }

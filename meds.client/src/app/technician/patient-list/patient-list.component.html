@@ -1,0 +1,34 @@
+<div>
+  <label>Search type:</label>
+  <select [(ngModel)]="searchType">
+    <option value="name">By Name</option>
+    <option value="phone">By Phone Number</option>
+  </select>
+</div>
+
+<div>
+  <input [(ngModel)]="searchQuery" placeholder="Enter search query" />
+  <button (click)="onSearch()">Search</button>
+  <button (click)="addModal.openModal()">Add</button>
+</div>
+
+<div *ngIf="errorMessage">{{errorMessage}}</div>
+
+<table *ngIf="patients.length > 0;">
+  <thead>
+    <tr>
+      <th *ngFor="let column of columnNames">{{column}}</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let patient of patients">
+      <td *ngFor="let column of columnNames">{{patient[column]}}</td>
+      <td><button (click)="onPatientSelect(patient.patientID)">Add Order</button></td>
+    </tr>
+  </tbody>
+</table>
+
+<app-patient-add-modal #addModal
+                       (addSuccessful)="onAddSuccess()"
+></app-patient-add-modal>

@@ -1,0 +1,22 @@
+<div *ngIf="errorMessage" class="error">
+  {{ errorMessage }}
+</div>
+
+<ul *ngIf="batches.length > 0; else noBatches">
+  <li *ngFor="let batch of batches">
+    <span *ngIf="batch.batchStatus === 'p'; else noResults">
+      <a [routerLink]="['/patient/batches', batch.testBatchId]">
+        {{ batch.dateOfCreation | date: 'medium' }}
+        {{ batch.batchStatus | statusTransform }}
+      </a>
+    </span>
+    <ng-template #noResults>
+      {{ batch.dateOfCreation | date: 'medium' }} -
+      {{ batch.batchStatus | statusTransform }} (No results)
+    </ng-template>
+  </li>
+</ul>
+
+<ng-template #noBatches>
+  <p>No test batches found.</p>
+</ng-template>

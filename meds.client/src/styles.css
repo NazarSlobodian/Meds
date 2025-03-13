@@ -1,0 +1,92 @@
+/* You can add global styles to this file, and also import other style files #afffa0 */
+:root {
+  --background-color: #f2f8ff;
+  --text-color: #212121;
+  --button-back-color: #83C2E3;
+  --danger-back-color: #ff5d5d;
+  --disabled-color: #696b85;
+  --header-back-color: #211446;
+  --header-text-color: #ffffff;
+  --header-hover-color: #352269;
+  --modal-background-color: #fafcff;
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+  --background-color: #121212;
+  --text-color: #ffffff;
+  --button-back-color: #382375;
+  --danger-back-color: #9a2f2f;
+  --disabled-color: #212121;
+  --header-back-color: #211446;
+  --header-text-color: #ffffff;
+  --header-hover-color: #170e2f;
+  --modal-background-color: #282828;
+}
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+html {
+    margin:0;
+    padding: 0;
+}
+app-root {
+    padding :0 !important;
+}
+button {
+  background-color: var(--button-back-color);
+  color: var(--text-color);
+  cursor: pointer;
+}
+  button:disabled {
+    background-color: var(--disabled-color);
+    color: var(--text-color);
+    cursor: default;
+  }
+.bad-button {
+  background-color: var(--danger-back-color);
+}
+
+.modal-back {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #00000087;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: var(--modal-background-color);
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-body {
+  margin-top: 10px;
+}
+
+.form-group {
+  display: flex;
+  gap: 10px;
+}
+
+.howToCenterDiv {
+  display: flex;
+  justify-content: center;
+}

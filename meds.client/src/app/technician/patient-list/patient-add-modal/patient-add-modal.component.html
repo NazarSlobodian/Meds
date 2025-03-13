@@ -1,0 +1,43 @@
+<div class="modal-back" *ngIf="isOpen">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Add Patient</h2>
+      <button (click)="closeModal()">X</button>
+    </div>
+    <div class="modal-body">
+      <form (ngSubmit)="submitAdd()">
+        <label>{{errorMessage}}</label>
+        <div class="form-group">
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" [(ngModel)]="newPatient.fullName" name="fullName" required>
+        </div>
+        <div class="form-group">
+          <label for="gender">Gender</label>
+          <div>
+            <label>
+              <input type="radio" [(ngModel)]="newPatient.gender" name="gender" value="m" required> Male
+            </label>
+            <label>
+              <input type="radio" [(ngModel)]="newPatient.gender" name="gender" value="f" required> Female
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="dateOfBirth">Date Of Birth</label>
+          <input type="date" id="dateOfBirth" [(ngModel)]="newPatient.dateOfBirth" name="dateOfBirth" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" [(ngModel)]="newPatient.email" name="email">
+        </div>
+        <div class="form-group">
+          <label for="contactNumber">Phone Number</label>
+          <input type="tel" id="contactNumber" [(ngModel)]="newPatient.contactNumber" name="contactNumber">
+        </div>
+        <div>
+          <button type="submit">Add</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

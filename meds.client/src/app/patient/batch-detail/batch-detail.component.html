@@ -1,0 +1,36 @@
+<div *ngIf="batchResults">
+  <button (click)="goBack()">&lt;-Back</button>
+  <h2>Batch Results</h2>
+  <p><strong>Lab Address:</strong> {{ batchResults.labAddress }}</p>
+  <p><strong>Email:</strong> {{ batchResults.email }}</p>
+  <p><strong>Phone:</strong> {{ batchResults.phone }}</p>
+  <p><strong>Batch ID:</strong> {{ batchResults.batchID }}</p>
+  <p><strong>Time of Creation:</strong> {{ batchResults.timeOfCreation | date:'medium' }}</p>
+  <p><strong>Patient Name:</strong> {{ batchResults.patientName }}</p>
+  <p><strong>Patient Sex:</strong> {{ batchResults.patientSex }}</p>
+  <p><strong>Date of Birth:</strong> {{ batchResults.dateOfBirth | date:'longDate' }}</p>
+
+  <h3>Test Results</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Test Name</th>
+        <th>Result</th>
+        <th>Units</th>
+        <th>Normal Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let test of batchResults.testResults">
+        <td>{{ test.testName }}</td>
+        <td>{{ test.result }}</td>
+        <td>{{ test.units }}</td>
+        <td>{{ test.normalValue }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="errorMessage" class="error">
+  {{ errorMessage }}
+</div>

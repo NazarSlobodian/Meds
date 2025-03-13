@@ -1,0 +1,31 @@
+<button (click)="goBack()">&lt;-Back</button>
+<div *ngIf="errorMessage">{{errorMessage}}</div>
+<table *ngIf="testNormalValues.length > 0;">
+  <thead>
+    <tr>
+      <th *ngFor="let column of columnNames">{{column}}</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let normal of testNormalValues">
+      <td *ngFor="let column of columnNames">{{normal[column]}}</td>
+      <td>
+        <button (click)="editModal.openModal(normal)">Edit</button>
+        <button class="bad-button" (click)="deleteModal.openModal(normal.testNormalValuesId)">Delete</button>
+    </tr>
+  </tbody>
+</table>
+<button (click)="addModal.openModal(testTypeId)">Add a test normal value</button>
+
+<app-test-normal-values-edit-modal #editModal
+                                   (updateSuccessful)="onUpdateSuccess()">
+</app-test-normal-values-edit-modal>
+
+<app-test-normal-values-delete-modal #deleteModal
+                                     (deleteSuccessful)="onDeleteSuccess()">
+</app-test-normal-values-delete-modal>
+
+<app-test-normal-values-add-modal #addModal
+                                  (addSuccessful)="onAddSuccess()">
+</app-test-normal-values-add-modal>

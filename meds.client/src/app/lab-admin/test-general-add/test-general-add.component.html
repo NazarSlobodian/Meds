@@ -1,0 +1,32 @@
+<div class="modal-back" *ngIf="isOpen">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Add Test Type</h2>
+      <button (click)="closeModal()">X</button>
+    </div>
+    <div class="modal-body">
+      <form (ngSubmit)="submitAdd()">
+        <label>{{errorMessage}}</label>
+        <div class="form-group">
+          <label for="testName">Test Name</label>
+          <input type="text" id="testName" [(ngModel)]="testType.testName" name="testName" required>
+        </div>
+        <div class="form-group">
+          <label for="cost">Cost</label>
+          <input type="number" id="cost" [(ngModel)]="testType.cost" name="cost" min="1" required>
+        </div>
+        <div class="form-group">
+          <label for="daysTillOverdue">Expiration time</label>
+          <input type="number" id="daysTillOverdue" [(ngModel)]="testType.daysTillOverdue" name="daysTillOverdue" min="1" required>
+        </div>
+        <div class="form-group">
+          <label for="measurementsUnit">Measurements Unit</label>
+          <input type="text" id="measurementsUnit" [(ngModel)]="testType.measurementsUnit" name="measurementsUnit" required>
+        </div>
+        <div>
+          <button type="submit" [disabled]="testType.cost<0.0 || testType.daysTillOverdue < 1 || testType.testName.length<1 ||testType.measurementsUnit.length<1">Add</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+<button (click)="goBack()">&lt;-Back</button>
+<div *ngIf="errorMessage">{{errorMessage}}</div>
+<table *ngIf="testTypes.length > 0;">
+  <thead>
+    <tr>
+      <th *ngFor="let column of columnNames">{{column}}</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let test of testTypes">
+      <td *ngFor="let column of columnNames">{{test[column]}}</td>
+      <td>
+        <button (click)="editModal.openModal(test)">Edit</button>
+        <button (click)="onTestSelectNormalValues(test.testTypeId)">Edit normal values</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<button (click)="additionModal.openModal()">Add a test type</button>
+
+<app-test-general-editor #editModal
+                         (updateSuccessful)="onUpdateSuccess()">
+</app-test-general-editor>
+<app-test-general-add #additionModal
+                      (additionSuccessful)="onAdditionSuccess()"></app-test-general-add>

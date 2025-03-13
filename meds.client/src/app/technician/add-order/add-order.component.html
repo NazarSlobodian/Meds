@@ -1,0 +1,37 @@
+<h2>Adding batch for: {{patientId}}</h2>
+<button (click)="goBack()">&lt;-Back</button>
+<div>
+  <label>Select test type:</label>
+  <select [(ngModel)]="selectedTestType">
+    <option *ngFor="let testType of testTypes" [ngValue]="testType">
+      {{testType.testName}}
+    </option>
+  </select>
+  <button (click)="addTest()" [disabled]="!selectedTestType">+</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Test Name</th>
+        <th>Cost</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let test of testsToAdd; let i = index">
+        <td>{{ test.testName }}</td>
+        <td>{{ test.cost }}</td>
+        <td><button class="bad-button" (click)="removeTest(i)">-</button></td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td>Total: </td>
+        <td>{{calculateTotalCost()}}</td>
+        <td></td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <button (click)="submitOrder()" [disabled]="testsToAdd.length === 0">Add batch</button>
+</div>

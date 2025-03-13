@@ -1,0 +1,17 @@
+<div class="modal-back" *ngIf="isOpen">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Are you sure?</h2>
+      <button (click)="closeModal()">X</button>
+    </div>
+    <div class="modal-body">
+      <form (ngSubmit)="submitDelete()">
+        <div>
+          <button class="bad-button" type="submit">
+            Delete
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<h1>Medlab</h1>
+<form (ngSubmit)="onSubmit()">
+  <div>
+    <label for="login">Login</label>
+    <input id="login" [(ngModel)]="loginModel.login" name="login" required />
+  </div>
+
+  <div>
+    <label for="password">Password</label>
+    <input id="password" [(ngModel)]="loginModel.password" name="password" type="password" required />
+  </div>
+
+  <button type="submit">Login</button>
+
+  <div *ngIf="loginError" class="error">Invalid credentials</div>
+</form>
