@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Meds.Server.Models.DBModels;
+namespace Meds.Server.Models.DbModels;
 
 public partial class TestNormalValue
 {
-    public int TestNormalValuesId { get; set; }
-
     public int TestTypeId { get; set; }
 
     public int MinAge { get; set; }
@@ -18,6 +16,8 @@ public partial class TestNormalValue
     public decimal MinResValue { get; set; }
 
     public decimal MaxResValue { get; set; }
+
+    public int TestNormalValuesId { get; set; }
 
     public virtual TestType TestType { get; set; } = null!;
 }

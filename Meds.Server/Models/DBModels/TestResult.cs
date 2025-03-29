@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Meds.Server.Models.DBModels;
+namespace Meds.Server.Models.DbModels;
 
 public partial class TestResult
 {

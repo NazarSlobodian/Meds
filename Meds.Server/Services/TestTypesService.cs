@@ -1,11 +1,11 @@
 using Meds.Server.Models;
-using Meds.Server.Models.DBModels;
+using Meds.Server.Models.DbModels;
 using Microsoft.EntityFrameworkCore;
 
 public class TestTypesService
 {
-    private readonly DatabaseforkpzContext _context;
-    public TestTypesService(DatabaseforkpzContext context)
+    private readonly Wv1Context _context;
+    public TestTypesService(Wv1Context context)
     {
         _context = context;
     }

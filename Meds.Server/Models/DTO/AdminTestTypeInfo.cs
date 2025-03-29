@@ -1,4 +1,4 @@
-using Meds.Server.Models.DBModels;
+using Meds.Server.Models.DbModels;
 
 public class AdminTestTypeInfo
 {
@@ -13,7 +13,7 @@ public class AdminTestTypeInfo
     public AdminTestTypeInfo(TestType tt)
     {
         TestTypeId = tt.TestTypeId;
-        TestName = tt.TestName;
+        TestName = tt.Name;
         Cost = tt.Cost;
         DaysTillOverdue = tt.DaysTillOverdue;
         MeasurementsUnit = tt.MeasurementsUnit;

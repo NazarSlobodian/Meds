@@ -1,7 +1,8 @@
-﻿using Meds.Server.Models.DBModels;
+﻿using Meds.Server.Models.DbModels;
 
 public partial class AdminTestNormalValueNew
 {
+    
     public int TestTypeId { get; set; }
 
     public int MinAge { get; set; }

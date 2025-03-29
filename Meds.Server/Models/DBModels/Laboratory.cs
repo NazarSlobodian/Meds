@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Meds.Server.Models.DBModels;
+namespace Meds.Server.Models.DbModels;
 
 public partial class Laboratory
 {
@@ -13,5 +13,7 @@ public partial class Laboratory
 
     public string ContactNumber { get; set; } = null!;
 
-    public virtual ICollection<Technician> Technicians { get; set; } = new List<Technician>();
+    public virtual ICollection<LabWorker> LabWorkers { get; set; } = new List<LabWorker>();
+
+    public virtual ICollection<TestOrder> TestOrders { get; set; } = new List<TestOrder>();
 }

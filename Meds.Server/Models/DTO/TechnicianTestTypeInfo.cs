@@ -1,4 +1,4 @@
-﻿using Meds.Server.Models.DBModels;
+﻿using Meds.Server.Models.DbModels;
 
 public class TechnicianTestTypeInfo
 {
@@ -10,7 +10,7 @@ public class TechnicianTestTypeInfo
     public TechnicianTestTypeInfo(TestType tt)
     {
         TestTypeId = tt.TestTypeId;
-        TestName = tt.TestName;
+        TestName = tt.Name;
         Cost = tt.Cost;
     }
     public TechnicianTestTypeInfo() { }

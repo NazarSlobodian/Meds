@@ -1,11 +1,11 @@
 using Meds.Server.Models;
-using Meds.Server.Models.DBModels;
+using Meds.Server.Models.DbModels;
 using Microsoft.EntityFrameworkCore;
 
 public class PatientsService
 {
-    private readonly DatabaseforkpzContext _context;
-    public PatientsService(DatabaseforkpzContext context)
+    private readonly Wv1Context _context;
+    public PatientsService(Wv1Context context)
     {
         _context = context;
     }
@@ -51,8 +51,8 @@ public class PatientsService
                     .ThenInclude(tt => tt.TestNormalValues)
             .Where(tb => tb.TestBatchId == batchId)
             .FirstAsync();
-        Laboratory lab = await _context.Laboratories
-            .Include(l => l.Technicians)
+        CollectionPoint lab = await _context.Laboratories
+            .Include(l => l.LabWorkers)
             .Where(t => t.Technicians.Any(t => t.TechnicianId == batch.TechnicianId))
             .FirstAsync();
 

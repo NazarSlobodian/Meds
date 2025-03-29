@@ -1,5 +1,5 @@
 ﻿
-using Meds.Server.Models.DBModels;
+using Meds.Server.Models.DbModels;
 
 public class BatchResultsDTO
 {

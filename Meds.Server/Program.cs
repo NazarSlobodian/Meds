@@ -1,5 +1,5 @@
 
-using Meds.Server.Models;
+using Meds.Server.Models.DbModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -36,7 +36,7 @@ namespace Meds.Server
             });
 
 
-            builder.Services.AddDbContext<DatabaseforkpzContext>(options =>
+            builder.Services.AddDbContext<Wv1Context>(options =>
             options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
             new MySqlServerVersion(new Version(8, 0, 26))));
 

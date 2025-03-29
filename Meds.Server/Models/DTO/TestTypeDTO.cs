@@ -1,10 +1,10 @@
-using Meds.Server.Models.DBModels;
+using Meds.Server.Models.DbModels;
 
 public partial class TestTypeDTO
 {
     public int TestTypeId { get; set; }
 
-    public string TestName { get; set; } = null!;
+    public string Name { get; set; } = null!;
 
     public decimal Cost { get; set; }
 
@@ -17,7 +17,7 @@ public partial class TestTypeDTO
     public TestTypeDTO(TestType tt)
     {
         TestTypeId = tt.TestTypeId;
-        TestName = tt.TestName;
+        Name = tt.Name;
         Cost = tt.Cost;
         DaysTillOverdue = tt.DaysTillOverdue;
         MeasurementsUnit = tt.MeasurementsUnit;

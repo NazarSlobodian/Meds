@@ -1,4 +1,4 @@
-using Meds.Server.Models.DBModels;
+using Meds.Server.Models.DbModels;
 using System.ComponentModel.DataAnnotations;
 
 public class PatientNew

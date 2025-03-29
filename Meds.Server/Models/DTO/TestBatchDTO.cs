@@ -1,5 +1,5 @@
 
-using Meds.Server.Models.DBModels;
+using Meds.Server.Models.DbModels;
 
 public partial class TestBatchDTO
 {
@@ -10,7 +10,7 @@ public partial class TestBatchDTO
 
     public int PatientId { get; set; }
 
-    public int TechnicianId { get; set; }
+    public int ReceptionistId { get; set; }
 
     public virtual ICollection<TestOrderDTO> TestOrders { get; set; } = new List<TestOrderDTO>();
 
@@ -20,7 +20,7 @@ public partial class TestBatchDTO
         BatchStatus = tb.BatchStatus;
         DateOfCreation = tb.DateOfCreation;
         PatientId = tb.PatientId;
-        TechnicianId = tb.TechnicianId;
+        ReceptionistId = tb.ReceptionistId;
         TestOrders = tb.TestOrders.Select(to=>new TestOrderDTO(to)).ToList();
     }
 }

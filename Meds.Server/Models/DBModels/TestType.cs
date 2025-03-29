@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Meds.Server.Models.DBModels;
+namespace Scaff.Server.Models.DbModels;
 
 public partial class TestType
 {
     public int TestTypeId { get; set; }
 
-    public string TestName { get; set; } = null!;
+    public string Name { get; set; } = null!;
 
     public decimal Cost { get; set; }
 
@@ -19,5 +19,5 @@ public partial class TestType
 
     public virtual ICollection<TestOrder> TestOrders { get; set; } = new List<TestOrder>();
 
-    public virtual ICollection<TestCollection> TestCollections { get; set; } = new List<TestCollection>();
+    public virtual ICollection<TestPanel> TestPanels { get; set; } = new List<TestPanel>();
 }

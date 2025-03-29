@@ -1,4 +1,4 @@
-using Meds.Server.Models.DBModels;
+using Meds.Server.Models.DbModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;

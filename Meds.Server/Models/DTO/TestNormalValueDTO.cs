@@ -1,8 +1,7 @@
-using Meds.Server.Models.DBModels;
+using Meds.Server.Models.DbModels;
 
 public partial class TestNormalValueDTO
 {
-    public int TestNormalValuesId { get; set; }
     public int TestTypeId { get; set; }
 
     public int MinAge { get; set; }
@@ -17,7 +16,6 @@ public partial class TestNormalValueDTO
 
     public TestNormalValueDTO(TestNormalValue tnv)
     {
-        TestNormalValuesId = tnv.TestNormalValuesId;
         TestTypeId = tnv.TestTypeId;
         MinAge = tnv.MinAge;
         MaxAge = tnv.MaxAge;

@@ -1,4 +1,4 @@
-using Meds.Server.Models.DBModels;
+using Meds.Server.Models.DbModels;
 using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 
 public class BatchOrderDTO
@@ -9,7 +9,7 @@ public class BatchOrderDTO
     public string NormalValue { get; set; }
     public BatchOrderDTO(TestOrder to, string sex, int age)
     {
-        TestName = to.TestType.TestName;
+        TestName = to.TestType.Name;
         Result = to.TestResult.Result;
         Units = to.TestType.MeasurementsUnit;
         TestNormalValue tnv = to.TestType.TestNormalValues.Where(tnv => tnv.Gender == sex && age >= tnv.MinAge && age <= tnv.MaxAge).First();

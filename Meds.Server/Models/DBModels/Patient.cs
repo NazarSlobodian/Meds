@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Meds.Server.Models.DBModels;
+namespace Meds.Server.Models.DbModels;
 
 public partial class Patient
 {
@@ -17,9 +17,5 @@ public partial class Patient
 
     public string? ContactNumber { get; set; }
 
-    public int? UserId { get; set; }
-
     public virtual ICollection<TestBatch> TestBatches { get; set; } = new List<TestBatch>();
-
-    public virtual User? User { get; set; }
 }

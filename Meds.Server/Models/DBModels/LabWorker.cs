@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Meds.Server.Models.DBModels;
+namespace Meds.Server.Models.DbModels;
 
-public partial class Technician
+public partial class LabWorker
 {
-    public int TechnicianId { get; set; }
+    public int LabWorkerId { get; set; }
 
     public string FullName { get; set; } = null!;
 
@@ -15,11 +15,5 @@ public partial class Technician
 
     public int LaboratoryId { get; set; }
 
-    public int UserId { get; set; }
-
     public virtual Laboratory Laboratory { get; set; } = null!;
-
-    public virtual ICollection<TestBatch> TestBatches { get; set; } = new List<TestBatch>();
-
-    public virtual User User { get; set; } = null!;
 }

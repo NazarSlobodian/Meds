@@ -1,13 +1,13 @@
 using Humanizer;
 using Meds.Server.Models;
-using Meds.Server.Models.DBModels;
+using Meds.Server.Models.DbModels;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
 
 public class AuthService
 {
-    private readonly DatabaseforkpzContext _context;
-    public AuthService(DatabaseforkpzContext context)
+    private readonly Wv1Context _context;
+    public AuthService(Wv1Context context)
     {
         _context = context;
     }
