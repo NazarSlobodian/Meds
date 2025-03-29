@@ -4,7 +4,7 @@ public class AdminTestTypeInfo
 {
     public int TestTypeId { get; set; }
 
-    public string TestName { get; set; } = null!;
+    public string Name { get; set; } = null!;
 
     public decimal Cost { get; set; }
     public int DaysTillOverdue { get; set; }
@@ -13,7 +13,7 @@ public class AdminTestTypeInfo
     public AdminTestTypeInfo(TestType tt)
     {
         TestTypeId = tt.TestTypeId;
-        TestName = tt.Name;
+        Name = tt.Name;
         Cost = tt.Cost;
         DaysTillOverdue = tt.DaysTillOverdue;
         MeasurementsUnit = tt.MeasurementsUnit;

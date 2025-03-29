@@ -12,11 +12,11 @@ public class BatchResultsDTO
     public String PatientSex { get; set; }
     public DateOnly DateOfBirth { get; set; }
     public List<BatchOrderDTO> TestResults { get; set; }
-    public BatchResultsDTO(Laboratory lab, TestBatch tb)
+    public BatchResultsDTO(CollectionPoint collectionPoint, TestBatch tb)
     {
-        LabAddress = lab.Address;
-        Email = lab.Email;
-        Phone = lab.ContactNumber;
+        LabAddress = collectionPoint.Address;
+        Email = collectionPoint.Email;
+        Phone = collectionPoint.ContactNumber;
         BatchID = tb.TestBatchId;
         TimeOfCreation = tb.DateOfCreation;
         PatientName = tb.Patient.FullName;

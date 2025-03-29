@@ -5,7 +5,7 @@ namespace Meds.Server.Models.DbModels;
 
 public partial class User
 {
-    public int UsersId { get; set; }
+    public int UserId { get; set; }
 
     public string Role { get; set; } = null!;
 

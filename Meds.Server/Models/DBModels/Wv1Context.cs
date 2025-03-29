@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql.Medsolding.Internal;
+using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
 namespace Meds.Server.Models.DbModels;
 
@@ -223,15 +223,15 @@ public partial class Wv1Context : DbContext
 
         modelBuilder.Entity<TestNormalValue>(entity =>
         {
-            entity.HasKey(e => e.TestNormalValuesId).HasName("PRIMARY");
+            entity.HasKey(e => e.TestNormalValueId).HasName("PRIMARY");
 
             entity.ToTable("test_normal_values");
 
             entity.HasIndex(e => e.TestTypeId, "normalValuesTestTypeID_idx");
 
-            entity.Property(e => e.TestNormalValuesId)
+            entity.Property(e => e.TestNormalValueId)
                 .ValueGeneratedNever()
-                .HasColumnName("testNormalValuesID");
+                .HasColumnName("TestNormalValueId");
             entity.Property(e => e.Gender)
                 .HasMaxLength(1)
                 .IsFixedLength()
@@ -400,7 +400,7 @@ public partial class Wv1Context : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.UsersId).HasName("PRIMARY");
+            entity.HasKey(e => e.UserId).HasName("PRIMARY");
 
             entity.ToTable("users");
 
@@ -408,7 +408,7 @@ public partial class Wv1Context : DbContext
 
             entity.HasIndex(e => e.ReferencedId, "referencedID_UNIQUE").IsUnique();
 
-            entity.Property(e => e.UsersId).HasColumnName("usersID");
+            entity.Property(e => e.UserId).HasColumnName("userID");
             entity.Property(e => e.Hash)
                 .HasMaxLength(64)
                 .HasColumnName("hash");

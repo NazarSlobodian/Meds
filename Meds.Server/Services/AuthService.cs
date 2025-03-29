@@ -12,41 +12,13 @@ public class AuthService
         _context = context;
     }
 
-    public async Task<RoleData> AutheticateUserAsync(string login, string password)
+    public async Task<RoleData> AutheticateUserAsync(string login, string hash)
     {
-        User? result = await _context.Users.FirstOrDefaultAsync(u => u.Login == login && u.Password == password);
+        User? result = await _context.Users.FirstOrDefaultAsync(u => u.Login == login && u.Hash == hash);
         if (result == null)
         {
             return null;
         }
-        if (result.Role == "admin")
-        {
-            return new RoleData(result.Role, result.UserId);
-        }
-        if (result.Role == "patient")
-        {
-            Patient? pat = await _context.Patients.FirstOrDefaultAsync(p => p.UserId == result.UserId);
-            if (pat == null)
-            {
-                return null;
-            }
-            else
-            {
-                result.UserId = pat.PatientId;
-            }
-        }
-        else if (result.Role == "technician")
-        {
-            Technician? tech = await _context.Technicians.FirstOrDefaultAsync(t => t.UserId == result.UserId);
-            if (tech == null)
-            {
-                return null;
-            }
-            else
-            {
-                result.UserId = tech.TechnicianId;
-            }
-        }
-        return new RoleData(result.Role, result.UserId);
+        return new RoleData(result.Role, result.ReferencedId);
     }
 }

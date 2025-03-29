@@ -51,14 +51,14 @@ public class PatientsService
                     .ThenInclude(tt => tt.TestNormalValues)
             .Where(tb => tb.TestBatchId == batchId)
             .FirstAsync();
-        CollectionPoint lab = await _context.Laboratories
-            .Include(l => l.LabWorkers)
-            .Where(t => t.Technicians.Any(t => t.TechnicianId == batch.TechnicianId))
+        CollectionPoint collectionPoint = await _context.CollectionPoints
+            .Include(l => l.Receptionists)
+            .Where(t => t.Receptionists.Any(t => t.ReceptionistId == batch.ReceptionistId))
             .FirstAsync();
 
-        return new BatchResultsDTO(lab, batch);
+        return new BatchResultsDTO(collectionPoint, batch);
     }
-    public async Task ValidateAndSubmitBatchesAsync(int patientId, int technicianId,List<TechnicianTestTypeInfo> tests)
+    public async Task ValidateAndSubmitBatchesAsync(int patientId, int receptionistId,List<TechnicianTestTypeInfo> tests)
     {
         var patient = await _context.Patients.FindAsync(patientId);
         if (patient == null)
@@ -72,16 +72,16 @@ public class PatientsService
         var availableTestTypes = await _context.TestTypes.ToListAsync();
         foreach (var testType in tests)
         {
-            var existingTestType = availableTestTypes.FirstOrDefault(tt => tt.TestName == testType.TestName && tt.TestTypeId == testType.TestTypeId && tt.Cost == testType.Cost);
+            var existingTestType = availableTestTypes.FirstOrDefault(tt => tt.Name == testType.Name && tt.TestTypeId == testType.TestTypeId && tt.Cost == testType.Cost);
             if (existingTestType == null)
             {
-                throw new ArgumentException($"Test type '{testType.TestName}' does not exist.");
+                throw new ArgumentException($"Test type '{testType.Name}' does not exist.");
             }
         }
         var batch = new TestBatch
         {
             PatientId = patientId,
-            TechnicianId = technicianId,
+            ReceptionistId = receptionistId,
             TestOrders = new List<TestOrder>()
         };
         foreach (var testType in tests)

@@ -17,7 +17,7 @@ public partial class TestNormalValue
 
     public decimal MaxResValue { get; set; }
 
-    public int TestNormalValuesId { get; set; }
+    public int TestNormalValueId { get; set; }
 
     public virtual TestType TestType { get; set; } = null!;
 }

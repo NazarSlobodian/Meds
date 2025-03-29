@@ -1,7 +1,7 @@
 public class AdminTestTypeNew
 { 
 
-    public string TestName { get; set; } = null!;
+    public string Name { get; set; } = null!;
 
     public decimal Cost { get; set; }
     public int DaysTillOverdue { get; set; }

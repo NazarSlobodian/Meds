@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Scaff.Server.Models.DbModels;
+namespace Meds.Server.Models.DbModels;
 
 public partial class TestType
 {

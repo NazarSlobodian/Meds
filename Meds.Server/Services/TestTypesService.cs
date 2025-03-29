@@ -16,7 +16,7 @@ public class TestTypesService
             .Select(tt => new TechnicianTestTypeInfo
             {
                 TestTypeId = tt.TestTypeId,
-                TestName = tt.TestName,
+                Name = tt.Name,
                 Cost = tt.Cost
             })
             .ToListAsync();
@@ -28,7 +28,7 @@ public class TestTypesService
             .Select(tt => new AdminTestTypeInfo
             {
                 TestTypeId = tt.TestTypeId,
-                TestName = tt.TestName,
+                Name = tt.Name,
                 Cost = tt.Cost,
                 DaysTillOverdue = tt.DaysTillOverdue,
                 MeasurementsUnit = tt.MeasurementsUnit
@@ -38,7 +38,7 @@ public class TestTypesService
     }
     public async Task AddTestType(AdminTestTypeNew info)
     {
-        await _context.TestTypes.AddAsync(new TestType { Cost = info.Cost, DaysTillOverdue = info.DaysTillOverdue, MeasurementsUnit = info.MeasurementsUnit, TestName = info.TestName });
+        await _context.TestTypes.AddAsync(new TestType { Cost = info.Cost, DaysTillOverdue = info.DaysTillOverdue, MeasurementsUnit = info.MeasurementsUnit, Name = info.Name });
         await _context.SaveChangesAsync();
     }
     public async Task UpdateTestType(AdminTestTypeInfo test)
@@ -50,7 +50,7 @@ public class TestTypesService
         }
         tt.MeasurementsUnit = test.MeasurementsUnit;
         tt.Cost = test.Cost;
-        tt.TestName = test.TestName;
+        tt.Name = test.Name;
         tt.DaysTillOverdue = test.DaysTillOverdue;
         await _context.SaveChangesAsync();
     }
@@ -59,7 +59,7 @@ public class TestTypesService
         List<TestNormalValueDTO> tnv = await _context.TestNormalValues
             .Select(tnv => new TestNormalValueDTO
             {
-                TestNormalValuesId = tnv.TestNormalValuesId,
+                TestNormalValueId = tnv.TestNormalValueId,
                 TestTypeId = tnv.TestTypeId,
                 Gender = tnv.Gender,
                 MinAge = tnv.MinAge,
@@ -107,7 +107,7 @@ public class TestTypesService
     }
     public async Task UpdateTestNormalValue(AdminTestNormalValue info)
     {
-        TestNormalValue? tnv = await _context.TestNormalValues.FirstOrDefaultAsync(t => t.TestNormalValuesId == info.TestNormalValuesId);
+        TestNormalValue? tnv = await _context.TestNormalValues.FirstOrDefaultAsync(t => t.TestNormalValueId == info.TestNormalValueId);
         if (tnv == null)
         {
             throw new Exception("Test type not found");
@@ -124,7 +124,7 @@ public class TestTypesService
         {
             throw new Exception("Invalid age gap");
         }
-        TestNormalValue? otherNV = await _context.TestNormalValues.Where(t=> t.Gender == info.Gender && t.TestTypeId == tnv.TestTypeId && t.TestNormalValuesId != info.TestNormalValuesId && (
+        TestNormalValue? otherNV = await _context.TestNormalValues.Where(t=> t.Gender == info.Gender && t.TestTypeId == tnv.TestTypeId && t.TestNormalValueId != info.TestNormalValueId && (
         (info.MinAge <= t.MaxAge && info.MinAge >= t.MinAge) || (info.MaxAge <= t.MaxAge && info.MaxAge >= t.MinAge) ||
         (info.MinAge <= t.MinAge && info.MaxAge >= t.MaxAge))).FirstOrDefaultAsync();
         if (otherNV != null)
@@ -140,7 +140,9 @@ public class TestTypesService
     }
     public async Task DeleteTestNormalValue(int testNormalValueID)
     {
-        TestNormalValue? tn = await _context.TestNormalValues.FirstOrDefaultAsync(tnv => tnv.TestNormalValuesId == testNormalValueID);
+        TestNormalValue? tn = await _context.TestNormalValues.FirstOrDefaultAsync(tnv => tnv.TestNormalValueId == testNormalValueID);
+        if (tn == null)
+            return;
         _context.TestNormalValues.Remove(tn);
         await _context.SaveChangesAsync();
     }

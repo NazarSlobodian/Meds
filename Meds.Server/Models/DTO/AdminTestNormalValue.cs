@@ -2,7 +2,7 @@ using Meds.Server.Models.DbModels;
 
 public partial class AdminTestNormalValue
 {
-    public int TestNormalValuesId { get; set; }
+    public int TestNormalValueId { get; set; }
 
     public int MinAge { get; set; }
 

@@ -2,6 +2,7 @@ using Meds.Server.Models.DbModels;
 
 public partial class TestNormalValueDTO
 {
+    public int TestNormalValueId { get; set; }
     public int TestTypeId { get; set; }
 
     public int MinAge { get; set; }
