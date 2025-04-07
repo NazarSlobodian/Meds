@@ -20,8 +20,8 @@ namespace Meds.Server.Controllers
             _testTypesService = testTypesService;
         }
 
-        [HttpGet("technician")]
-        [Authorize(Policy = "Technician")]
+        [HttpGet("receptionist")]
+        [Authorize(Policy = "Receptionist")]
         public async Task<IActionResult> GetTestTypes()
         {
             List<TechnicianTestTypeInfo> testTypes = await _testTypesService.GetTestTypesForTechView();

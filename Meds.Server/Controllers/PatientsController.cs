@@ -46,7 +46,7 @@ namespace Meds.Server.Controllers
             return Ok(batchRes);
         }
         [HttpGet]
-        [Authorize(Policy = "Technician")]
+        [Authorize(Policy = "Receptionist")]
         public async Task<IActionResult> GetPatients([FromQuery] string? fullName, [FromQuery] string? phoneNumber)
         {
             if (string.IsNullOrWhiteSpace(fullName) && string.IsNullOrWhiteSpace(phoneNumber))
@@ -75,7 +75,7 @@ namespace Meds.Server.Controllers
             return Ok(patients);
         }
         [HttpPost]
-        [Authorize(Policy = "Technician")]
+        [Authorize(Policy = "Receptionist")]
         public async Task<IActionResult> AddPatient([FromBody] PatientNew patient)
         {
             try
@@ -89,7 +89,7 @@ namespace Meds.Server.Controllers
         }
 
         [HttpPost("submit-batch/{patientId}")]
-        [Authorize(Policy = "Technician")]
+        [Authorize(Policy = "Receptionist")]
         public async Task<IActionResult> SubmitBatchAsync(int patientId, List<TechnicianTestTypeInfo> testTypeInfos)
         {
             try

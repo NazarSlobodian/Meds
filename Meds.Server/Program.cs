@@ -52,7 +52,8 @@ namespace Meds.Server
             builder.Services.AddAuthorization(options =>
             {
                 options.AddPolicy("Patient", policy => policy.RequireRole("patient"));
-                options.AddPolicy("Technician", policy => policy.RequireRole("technician"));
+                options.AddPolicy("Receptionist", policy => policy.RequireRole("receptionist"));
+                options.AddPolicy("LabWorker", policy => policy.RequireRole("lab_worker"));
                 options.AddPolicy("Admin", policy => policy.RequireRole("admin"));
             });
             builder.Services.AddScoped<AuthService>();

@@ -54,7 +54,7 @@ export class PatientListComponent {
 
   }
   onPatientSelect(id: number) {
-    this.router.navigate([`/technician/patientView/addBatch/${id}`]);
+    this.router.navigate([`/receptionist/patientView/addBatch/${id}`]);
   }
   onAddSuccess() {
 

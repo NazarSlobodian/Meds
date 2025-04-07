@@ -34,8 +34,6 @@ public partial class Wv1Context : DbContext
 
     public virtual DbSet<TestPanel> TestPanels { get; set; }
 
-    public virtual DbSet<TestPerformer> TestPerformers { get; set; }
-
     public virtual DbSet<TestResult> TestResults { get; set; }
 
     public virtual DbSet<TestType> TestTypes { get; set; }
@@ -43,7 +41,7 @@ public partial class Wv1Context : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid Medsolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseMySql("server=localhost;database=wv1;uid=root;pwd=password", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.41-mysql"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -128,6 +126,28 @@ public partial class Wv1Context : DbContext
             entity.Property(e => e.Email)
                 .HasMaxLength(320)
                 .HasColumnName("email");
+
+            entity.HasMany(d => d.TestTypes).WithMany(p => p.Laboratories)
+                .UsingEntity<Dictionary<string, object>>(
+                    "TestPerformer",
+                    r => r.HasOne<TestType>().WithMany()
+                        .HasForeignKey("TestTypeId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("perfTestId"),
+                    l => l.HasOne<Laboratory>().WithMany()
+                        .HasForeignKey("LaboratoryId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("perfLabId"),
+                    j =>
+                    {
+                        j.HasKey("LaboratoryId", "TestTypeId")
+                            .HasName("PRIMARY")
+                            .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
+                        j.ToTable("test_performers");
+                        j.HasIndex(new[] { "TestTypeId" }, "perfTestId_idx");
+                        j.IndexerProperty<int>("LaboratoryId").HasColumnName("laboratoryID");
+                        j.IndexerProperty<int>("TestTypeId").HasColumnName("testTypeID");
+                    });
         });
 
         modelBuilder.Entity<Patient>(entity =>
@@ -163,15 +183,15 @@ public partial class Wv1Context : DbContext
 
             entity.HasIndex(e => e.CollectionPointId, "collectionPointID_idx");
 
-            entity.HasIndex(e => e.ContectNumber, "contectNumber_UNIQUE").IsUnique();
+            entity.HasIndex(e => e.ContactNumber, "contactNumber_UNIQUE").IsUnique();
 
             entity.HasIndex(e => e.Email, "email_UNIQUE").IsUnique();
 
             entity.Property(e => e.ReceptionistId).HasColumnName("receptionistID");
             entity.Property(e => e.CollectionPointId).HasColumnName("collectionPointID");
-            entity.Property(e => e.ContectNumber)
+            entity.Property(e => e.ContactNumber)
                 .HasMaxLength(15)
-                .HasColumnName("contectNumber");
+                .HasColumnName("contactNumber");
             entity.Property(e => e.Email)
                 .HasMaxLength(320)
                 .HasColumnName("email");
@@ -199,9 +219,8 @@ public partial class Wv1Context : DbContext
 
             entity.Property(e => e.TestBatchId).HasColumnName("testBatchID");
             entity.Property(e => e.BatchStatus)
-                .HasMaxLength(1)
-                .HasDefaultValueSql("'q'")
-                .IsFixedLength()
+                .HasDefaultValueSql("'queued'")
+                .HasColumnType("enum('queued','processing','done')")
                 .HasColumnName("batchStatus");
             entity.Property(e => e.DateOfCreation)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
@@ -231,7 +250,7 @@ public partial class Wv1Context : DbContext
 
             entity.Property(e => e.TestNormalValueId)
                 .ValueGeneratedNever()
-                .HasColumnName("TestNormalValueId");
+                .HasColumnName("testNormalValueID");
             entity.Property(e => e.Gender)
                 .HasMaxLength(1)
                 .IsFixedLength()
@@ -331,30 +350,6 @@ public partial class Wv1Context : DbContext
                     });
         });
 
-        modelBuilder.Entity<TestPerformer>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToTable("test_performers");
-
-            entity.HasIndex(e => e.LaboratoryId, "laboratorieID_UNIQUE").IsUnique();
-
-            entity.HasIndex(e => e.TestTypeId, "testTypeID_UNIQUE").IsUnique();
-
-            entity.Property(e => e.LaboratoryId).HasColumnName("laboratoryID");
-            entity.Property(e => e.TestTypeId).HasColumnName("testTypeID");
-
-            entity.HasOne(d => d.Laboratory).WithOne()
-                .HasForeignKey<TestPerformer>(d => d.LaboratoryId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("perfLaboratoryID");
-
-            entity.HasOne(d => d.TestType).WithOne()
-                .HasForeignKey<TestPerformer>(d => d.TestTypeId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("perfTestID");
-        });
-
         modelBuilder.Entity<TestResult>(entity =>
         {
             entity.HasKey(e => e.TestOrderId).HasName("PRIMARY");
@@ -389,7 +384,6 @@ public partial class Wv1Context : DbContext
             entity.Property(e => e.Cost)
                 .HasPrecision(7, 2)
                 .HasColumnName("cost");
-            entity.Property(e => e.DaysTillOverdue).HasColumnName("daysTillOverdue");
             entity.Property(e => e.MeasurementsUnit)
                 .HasMaxLength(15)
                 .HasColumnName("measurementsUnit");
@@ -404,13 +398,9 @@ public partial class Wv1Context : DbContext
 
             entity.ToTable("users");
 
-            entity.HasIndex(e => e.Login, "login_UNIQUE").IsUnique();
-
-            entity.HasIndex(e => e.ReferencedId, "referencedID_UNIQUE").IsUnique();
-
             entity.Property(e => e.UserId).HasColumnName("userID");
             entity.Property(e => e.Hash)
-                .HasMaxLength(64)
+                .HasMaxLength(128)
                 .HasColumnName("hash");
             entity.Property(e => e.Login)
                 .HasMaxLength(320)

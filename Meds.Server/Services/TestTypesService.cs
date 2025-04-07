@@ -30,7 +30,6 @@ public class TestTypesService
                 TestTypeId = tt.TestTypeId,
                 Name = tt.Name,
                 Cost = tt.Cost,
-                DaysTillOverdue = tt.DaysTillOverdue,
                 MeasurementsUnit = tt.MeasurementsUnit
             })
             .ToListAsync();
@@ -38,7 +37,7 @@ public class TestTypesService
     }
     public async Task AddTestType(AdminTestTypeNew info)
     {
-        await _context.TestTypes.AddAsync(new TestType { Cost = info.Cost, DaysTillOverdue = info.DaysTillOverdue, MeasurementsUnit = info.MeasurementsUnit, Name = info.Name });
+        await _context.TestTypes.AddAsync(new TestType { Cost = info.Cost, MeasurementsUnit = info.MeasurementsUnit, Name = info.Name });
         await _context.SaveChangesAsync();
     }
     public async Task UpdateTestType(AdminTestTypeInfo test)
@@ -51,7 +50,6 @@ public class TestTypesService
         tt.MeasurementsUnit = test.MeasurementsUnit;
         tt.Cost = test.Cost;
         tt.Name = test.Name;
-        tt.DaysTillOverdue = test.DaysTillOverdue;
         await _context.SaveChangesAsync();
     }
     public async Task<List<TestNormalValueDTO>> GetTestNormalValues(int testTypeID)

@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class StatusTransformPipe implements PipeTransform {
 
   transform(value: string): string {
-    if (value === 'p') {
+    if (value === 'done') {
       return "Completed";
     } else {
       return 'In progress';

@@ -15,7 +15,6 @@ public class AdminTestTypeInfo
         TestTypeId = tt.TestTypeId;
         Name = tt.Name;
         Cost = tt.Cost;
-        DaysTillOverdue = tt.DaysTillOverdue;
         MeasurementsUnit = tt.MeasurementsUnit;
     }
     public AdminTestTypeInfo() { }

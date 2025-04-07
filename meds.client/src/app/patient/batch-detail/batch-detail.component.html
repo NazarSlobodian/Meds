@@ -1,5 +1,5 @@
+<button (click)="goBack()">&lt;-Back</button>
 <div *ngIf="batchResults">
-  <button (click)="goBack()">&lt;-Back</button>
   <h2>Batch Results</h2>
   <p><strong>Lab Address:</strong> {{ batchResults.labAddress }}</p>
   <p><strong>Email:</strong> {{ batchResults.email }}</p>
@@ -22,7 +22,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let test of batchResults.testResults">
-        <td>{{ test.testName }}</td>
+        <td>{{ test.name }}</td>
         <td>{{ test.result }}</td>
         <td>{{ test.units }}</td>
         <td>{{ test.normalValue }}</td>

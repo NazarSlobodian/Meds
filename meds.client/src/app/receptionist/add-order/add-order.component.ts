@@ -55,7 +55,7 @@ export class AddOrderComponent implements OnInit {
     }
     this.techTestService.submitBatch(this.patientId, this.testsToAdd).subscribe(
       (reponse) => {
-        this.router.navigate(["/technician/patientView/"]);
+        this.router.navigate(["/receptionist/patientView/"]);
       },
       (error) => {
         alert(error.error.message);
@@ -63,6 +63,6 @@ export class AddOrderComponent implements OnInit {
     )
   }
   goBack() {
-    this.router.navigate(["/technician/patientView"]);
+    this.router.navigate(["/receptionist/patientView"]);
   }
 }

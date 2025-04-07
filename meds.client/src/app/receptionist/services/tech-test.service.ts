@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TechTestService {
-  private apiUrl1 = "https://localhost:7217/TestTypes/technician";
+  private apiUrl1 = "https://localhost:7217/TestTypes/receptionist";
   private apiUrl2 = "https://localhost:7217/Patients/submit-batch";
   constructor(private http: HttpClient) { }
   getAvailableTestTypes(): Observable<any> {

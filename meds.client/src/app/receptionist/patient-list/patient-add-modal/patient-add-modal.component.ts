@@ -34,7 +34,7 @@ export class PatientAddModalComponent {
           this.additionSuccessful.emit();
           this.closeModal();
           
-          this.router.navigate([`/technician/patientView/addBatch/${response.id}`])
+          this.router.navigate([`/receptionist/patientView/addBatch/${response.id}`])
         },
         (error) => {
           this.errorMessage = error.error.message;

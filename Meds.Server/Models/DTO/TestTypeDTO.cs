@@ -8,7 +8,6 @@ public partial class TestTypeDTO
 
     public decimal Cost { get; set; }
 
-    public int DaysTillOverdue { get; set; }
 
     public string MeasurementsUnit { get; set; } = null!;
 
@@ -19,7 +18,6 @@ public partial class TestTypeDTO
         TestTypeId = tt.TestTypeId;
         Name = tt.Name;
         Cost = tt.Cost;
-        DaysTillOverdue = tt.DaysTillOverdue;
         MeasurementsUnit = tt.MeasurementsUnit;
         TestNormalValues = tt.TestNormalValues.Select(t=> new TestNormalValueDTO(t)).ToList();
     }

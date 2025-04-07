@@ -11,7 +11,7 @@ public partial class Receptionist
 
     public string Email { get; set; } = null!;
 
-    public string ContectNumber { get; set; } = null!;
+    public string ContactNumber { get; set; } = null!;
 
     public int CollectionPointId { get; set; }
 

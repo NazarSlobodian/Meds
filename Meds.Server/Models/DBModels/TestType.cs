@@ -11,13 +11,13 @@ public partial class TestType
 
     public decimal Cost { get; set; }
 
-    public int DaysTillOverdue { get; set; }
-
     public string MeasurementsUnit { get; set; } = null!;
 
     public virtual ICollection<TestNormalValue> TestNormalValues { get; set; } = new List<TestNormalValue>();
 
     public virtual ICollection<TestOrder> TestOrders { get; set; } = new List<TestOrder>();
+
+    public virtual ICollection<Laboratory> Laboratories { get; set; } = new List<Laboratory>();
 
     public virtual ICollection<TestPanel> TestPanels { get; set; } = new List<TestPanel>();
 }

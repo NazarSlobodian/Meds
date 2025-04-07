@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PatientListComponent } from './patient-list/patient-list.component';
 import { AddOrderComponent } from './add-order/add-order.component';
-import { TechnicianRoutingModule } from './technician-routing.module';
+import { ReceptionistRoutingModule } from './receptionist-routing.module';
 import { FormsModule } from '@angular/forms';
 import { PatientAddModalComponent } from './patient-list/patient-add-modal/patient-add-modal.component';
 
@@ -17,7 +17,7 @@ import { PatientAddModalComponent } from './patient-list/patient-add-modal/patie
 
     CommonModule,
     FormsModule,
-    TechnicianRoutingModule
+    ReceptionistRoutingModule
   ]
 })
-export class TechnicianModule { }
+export class ReceptionistModule { }

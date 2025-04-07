@@ -5,6 +5,8 @@ namespace Meds.Server.Models.DbModels;
 
 public partial class TestNormalValue
 {
+    public int TestNormalValueId { get; set; }
+
     public int TestTypeId { get; set; }
 
     public int MinAge { get; set; }
@@ -16,8 +18,6 @@ public partial class TestNormalValue
     public decimal MinResValue { get; set; }
 
     public decimal MaxResValue { get; set; }
-
-    public int TestNormalValueId { get; set; }
 
     public virtual TestType TestType { get; set; } = null!;
 }

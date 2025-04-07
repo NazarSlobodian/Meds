@@ -16,4 +16,6 @@ public partial class Laboratory
     public virtual ICollection<LabWorker> LabWorkers { get; set; } = new List<LabWorker>();
 
     public virtual ICollection<TestOrder> TestOrders { get; set; } = new List<TestOrder>();
+
+    public virtual ICollection<TestType> TestTypes { get; set; } = new List<TestType>();
 }

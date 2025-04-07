@@ -12,7 +12,14 @@ public class BatchOrderDTO
         Name = to.TestType.Name;
         Result = to.TestResult.Result;
         Units = to.TestType.MeasurementsUnit;
-        TestNormalValue tnv = to.TestType.TestNormalValues.Where(tnv => tnv.Gender == sex && age >= tnv.MinAge && age <= tnv.MaxAge).First();
-        NormalValue = tnv.MinResValue + "-" + tnv.MaxResValue;
+        try
+        {
+            TestNormalValue? tnv = to.TestType.TestNormalValues.Where(tnv => tnv.Gender == sex && age >= tnv.MinAge && age <= tnv.MaxAge).First();
+            NormalValue = tnv.MinResValue + "-" + tnv.MaxResValue;
+        }
+        catch
+        {
+            NormalValue = "N/A";
+        }
     }
 }

@@ -4,7 +4,7 @@
 
 <ul *ngIf="batches.length > 0; else noBatches">
   <li *ngFor="let batch of batches">
-    <span *ngIf="batch.batchStatus === 'p'; else noResults">
+    <span *ngIf="batch.batchStatus === 'done'; else noResults">
       <a [routerLink]="['/patient/batches', batch.testBatchId]">
         {{ batch.dateOfCreation | date: 'medium' }}
         {{ batch.batchStatus | statusTransform }}
