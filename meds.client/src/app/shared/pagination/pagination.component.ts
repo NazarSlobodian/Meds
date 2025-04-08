@@ -12,7 +12,7 @@ export class PaginationComponent {
   @Output() pageChanged: EventEmitter<number> = new EventEmitter();
 
   onPageChange(page: number) {
-    if (page >= 1 && page < this.totalPages) {
+    if (page >= 1 && page <= this.totalPages) {
       this.pageChanged.emit(page);
     }
   }

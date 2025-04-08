@@ -9,7 +9,7 @@
         <label>{{errorMessage}}</label>
         <div class="form-group">
           <label for="fullName">Full Name</label>
-          <input type="text" id="fullName" [(ngModel)]="newPatient.fullName" name="fullName" required>
+          <input type="text" id="fullName" [(ngModel)]="newPatient.fullName" name="fullName" placeholder="Samuel Hayden" required>
         </div>
         <div class="form-group">
           <label for="gender">Gender</label>
@@ -24,15 +24,15 @@
         </div>
         <div class="form-group">
           <label for="dateOfBirth">Date Of Birth</label>
-          <input type="date" id="dateOfBirth" [(ngModel)]="newPatient.dateOfBirth" name="dateOfBirth" required>
+          <input type="date" id="dateOfBirth" [(ngModel)]="newPatient.dateOfBirth" name="dateOfBirth" placeholder="2000-01-05" required>
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" [(ngModel)]="newPatient.email" name="email">
+          <input type="email" id="email" [(ngModel)]="newPatient.email" name="email" placeholder="newLad@gmail.com">
         </div>
         <div class="form-group">
           <label for="contactNumber">Phone Number</label>
-          <input type="tel" id="contactNumber" [(ngModel)]="newPatient.contactNumber" name="contactNumber">
+          <input type="tel" id="contactNumber" [(ngModel)]="newPatient.contactNumber" name="contactNumber" placeholder="380680123456">
         </div>
         <div>
           <button type="submit">Add</button>

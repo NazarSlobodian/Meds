@@ -12,13 +12,20 @@ export class PatientListComponent {
   searchQueryPhone: string | null = null;
   searchQueryEmail: string | null = null;
   searchQueryDateOfBirth: string | null = null;
+
+  frozenName: string | null = null;
+  frozenPhone: string | null = null;
+  frozenEmail: string | null = null;
+  frozenDateOfBirth: string | null = null;
+
   patients: any[] = [];
   columnNames: string[] = [];
   errorMessage: string | null = null;
 
-  pageSize = 5;
-  currentPage = 2;
-  totalPages = 999;
+  pageSize = 10;
+  currentPage = 1;
+  totalPages = 1;
+  totalCount = 0;
   constructor(private patientsSevice: PatientsService, private router: Router) { }
 
   onSearch() {
@@ -30,18 +37,14 @@ export class PatientListComponent {
       this.patients = [];
       return;
     }
-    this.patientsSevice.getPatients(this.searchQueryName, this.searchQueryPhone, this.searchQueryEmail, this.searchQueryDateOfBirth)
-      .subscribe(
-        (response) => {
-          this.patients = response;
-          this.errorMessage = null;
-          this.columnNames = Object.keys(this.patients[0]);
-        },
-        (error) => {
-          this.errorMessage = error.error.message;
-          this.patients = [];
-        }
-      );
+
+    this.frozenName = this.searchQueryName;
+    this.frozenPhone = this.searchQueryPhone;
+    this.frozenEmail = this.searchQueryEmail;
+    this.frozenDateOfBirth = this.searchQueryDateOfBirth;
+
+    this.currentPage = 1;
+    this.search();
   }
   onPatientSelect(id: number) {
     this.router.navigate([`/receptionist/patientView/addBatch/${id}`]);
@@ -51,5 +54,27 @@ export class PatientListComponent {
   }
   onPageChange(page: number): void {
     this.currentPage = page;
+    this.search();
+    if (this.currentPage > this.totalPages)
+      this.currentPage = this.totalPages;
+  }
+  private search() {
+    this.patientsSevice.getPatients(this.frozenName, this.frozenPhone, this.frozenEmail, this.frozenDateOfBirth, this.currentPage, this.pageSize)
+      .subscribe(
+        (response) => {
+          this.patients = response.list;
+          this.totalPages = Math.ceil(response.totalCount / this.pageSize);
+          this.totalCount = response.totalCount;
+          this.errorMessage = null;
+          this.columnNames = Object.keys(this.patients[0]);
+        },
+        (error) => {
+          this.patients = [];
+          this.totalPages = 1;
+          this.totalCount = 0;
+          this.currentPage = 1;
+          this.errorMessage = error.error.message;
+        }
+      );
   }
 }

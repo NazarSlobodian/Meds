@@ -47,7 +47,7 @@ namespace Meds.Server.Controllers
         }
         [HttpGet]
         [Authorize(Policy = "Receptionist")]
-        public async Task<IActionResult> GetPatients([FromQuery] string? fullName, [FromQuery] string? phone, [FromQuery] string? email, [FromQuery] string? dateOfBirth)
+        public async Task<IActionResult> GetPatients([FromQuery] string? fullName, [FromQuery] string? phone, [FromQuery] string? email, [FromQuery] string? dateOfBirth, [FromQuery] int page, [FromQuery] int pageSize)
         {
             if (string.IsNullOrWhiteSpace(fullName) && string.IsNullOrWhiteSpace(phone) && string.IsNullOrWhiteSpace(email) && string.IsNullOrWhiteSpace(dateOfBirth))
             {
@@ -59,9 +59,9 @@ namespace Meds.Server.Controllers
                 return Unauthorized(new { message = "No id in claims" });
             }
             int technicianId = int.Parse(technicianIdClaim.Value);
-            List<PatientDTO> patients = await _patientsService.GetPatientListAsync(fullName, phone, email, dateOfBirth);
+            ListWithTotalCount<PatientDTO> patients = await _patientsService.GetPatientListPagedAsync(fullName, phone, email, dateOfBirth, page, pageSize);
             
-            if (patients.Count == 0)
+            if (patients.List.Count == 0)
             {
                 return NotFound(new { message = "No patients found matching the criteria." });
             }

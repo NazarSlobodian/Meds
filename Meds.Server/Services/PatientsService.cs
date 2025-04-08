@@ -10,7 +10,7 @@ public class PatientsService
         _context = context;
     }
 
-    public async Task<List<PatientDTO>> GetPatientListAsync(string? name, string? phone, string? email, string? dateOfBirth)
+    public async Task<ListWithTotalCount<PatientDTO>> GetPatientListPagedAsync(string? name, string? phone, string? email, string? dateOfBirth, int page, int pageSize)
     {
         string? trimmedName = name?.Trim();
         string? trimmedPhone = phone?.Trim();
@@ -35,10 +35,11 @@ public class PatientsService
             if (DateOnly.TryParse(trimmedDob, out DateOnly date))
                 query = query.Where(p => p.DateOfBirth == date);
             else
-                return new List<PatientDTO>();
+                return new ListWithTotalCount<PatientDTO>();
         }
-        List<Patient> tbs = await query.OrderBy(p=>p.FullName).ToListAsync();
-        return tbs.Select(tb => new PatientDTO(tb)).ToList();
+        List<Patient> tbs = await query.OrderBy(p=>p.FullName).Skip((page-1)*pageSize).Take(pageSize).ToListAsync();
+        int count = await query.CountAsync();
+        return new ListWithTotalCount<PatientDTO>(tbs.Select(tb => new PatientDTO(tb)).ToList(), count);
     }
     public async Task<List<TestBatchDTO>> GetPatientBatchesAsync(int patientId)
     {

@@ -9,11 +9,11 @@ import { Router } from '@angular/router';
 })
 export class PatientAddModalComponent {
   newPatient = {
-    fullName: "TestSubject",
+    fullName: "",
     gender: "m",
-    dateOfBirth: "2000-01-05",
-    email: "newLad@gmail.com",
-    contactNumber: "380680123456"
+    dateOfBirth: "",
+    email: "",
+    contactNumber: ""
   };
   isOpen = false;
   errorMessage: string | null = null;
