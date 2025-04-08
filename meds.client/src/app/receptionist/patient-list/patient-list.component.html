@@ -11,6 +11,11 @@
 
 <div *ngIf="errorMessage">{{errorMessage}}</div>
 
+<app-pagination [pageSize]="pageSize"
+                [currentPage]="currentPage"
+                [totalPages]="totalPages"
+                (pageChanged)="onPageChange($event)">
+</app-pagination>
 <table *ngIf="patients.length > 0;">
   <thead>
     <tr>
@@ -26,6 +31,7 @@
   </tbody>
 </table>
 
+
 <app-patient-add-modal #addModal
-                       (addSuccessful)="onAddSuccess()"
+                       (additionSuccessful)="onAddSuccess()"
 ></app-patient-add-modal>

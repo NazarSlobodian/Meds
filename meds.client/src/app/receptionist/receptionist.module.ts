@@ -5,19 +5,21 @@ import { AddOrderComponent } from './add-order/add-order.component';
 import { ReceptionistRoutingModule } from './receptionist-routing.module';
 import { FormsModule } from '@angular/forms';
 import { PatientAddModalComponent } from './patient-list/patient-add-modal/patient-add-modal.component';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
   declarations: [
     PatientListComponent,
     AddOrderComponent,
-    PatientAddModalComponent
+    PatientAddModalComponent,
   ],
   imports: [
 
     CommonModule,
     FormsModule,
-    ReceptionistRoutingModule
+    ReceptionistRoutingModule,
+    SharedModule
   ]
 })
 export class ReceptionistModule { }

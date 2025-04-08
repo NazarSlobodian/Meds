@@ -16,6 +16,9 @@ export class PatientListComponent {
   columnNames: string[] = [];
   errorMessage: string | null = null;
 
+  pageSize = 5;
+  currentPage = 2;
+  totalPages = 999;
   constructor(private patientsSevice: PatientsService, private router: Router) { }
 
   onSearch() {
@@ -43,7 +46,10 @@ export class PatientListComponent {
   onPatientSelect(id: number) {
     this.router.navigate([`/receptionist/patientView/addBatch/${id}`]);
   }
-  onAddSuccess() {
+  onAddSuccess(): void {
 
+  }
+  onPageChange(page: number): void {
+    this.currentPage = page;
   }
 }

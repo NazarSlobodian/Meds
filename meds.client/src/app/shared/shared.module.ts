@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { StatusTransformPipe } from './pipes/status-transform.pipe';
 import { HeaderComponent } from './header/header.component';
 import { ThemeTogglerComponent } from './theme-toggler/theme-toggler.component';
+import { PaginationComponent } from './pagination/pagination.component';
 
 
 
@@ -10,7 +11,8 @@ import { ThemeTogglerComponent } from './theme-toggler/theme-toggler.component';
   declarations: [
     StatusTransformPipe,
     HeaderComponent,
-    ThemeTogglerComponent
+    ThemeTogglerComponent,
+    PaginationComponent
   ],
   imports: [
     CommonModule
@@ -18,7 +20,8 @@ import { ThemeTogglerComponent } from './theme-toggler/theme-toggler.component';
   exports: [
     StatusTransformPipe,
     HeaderComponent,
-    ThemeTogglerComponent
+    ThemeTogglerComponent,
+    PaginationComponent
   ]
 })
 export class SharedModule { }
