@@ -1,13 +1,10 @@
 <div>
-  <label>Search type:</label>
-  <select [(ngModel)]="searchType">
-    <option value="name">By Name</option>
-    <option value="phone">By Phone Number</option>
-  </select>
-</div>
-
-<div>
-  <input [(ngModel)]="searchQuery" placeholder="Enter search query" />
+  <div>
+    <input [(ngModel)]="searchQueryName" placeholder="Name" />
+    <input [(ngModel)]="searchQueryPhone" placeholder="Phone" />
+    <input [(ngModel)]="searchQueryEmail" placeholder="Email" />
+    <input [(ngModel)]="searchQueryDateOfBirth" placeholder="Date Of Birth" />
+   </div>
   <button (click)="onSearch()">Search</button>
   <button (click)="addModal.openModal()">Add</button>
 </div>

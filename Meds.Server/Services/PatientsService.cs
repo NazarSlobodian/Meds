@@ -10,14 +10,34 @@ public class PatientsService
         _context = context;
     }
 
-    public async Task<List<PatientDTO>> GetPatientListWithNameAsync(string patientName)
+    public async Task<List<PatientDTO>> GetPatientListAsync(string? name, string? phone, string? email, string? dateOfBirth)
     {
-        List<Patient> tbs = await _context.Patients.Where(tb => tb.FullName.Contains(patientName)).ToListAsync();
-        return tbs.Select(tb => new PatientDTO(tb)).ToList();
-    }
-    public async Task<List<PatientDTO>> GetPatientListWithNumberAsync(string phoneNumber)
-    {
-        List<Patient> tbs = await _context.Patients.Where(tb => tb.ContactNumber.Contains(phoneNumber)).ToListAsync();
+        string? trimmedName = name?.Trim();
+        string? trimmedPhone = phone?.Trim();
+        string? trimmedEmail = email?.Trim();
+        string? trimmedDob = dateOfBirth?.Trim();
+
+        var query = _context.Patients.AsQueryable();
+        if (!string.IsNullOrWhiteSpace(trimmedName))
+        {
+            query = query.Where(p => p.FullName.Contains(trimmedName));
+        }
+        if (!string.IsNullOrWhiteSpace(trimmedPhone))
+        {
+            query = query.Where(p => p.ContactNumber != null && p.ContactNumber.Contains(trimmedPhone));
+        }
+        if (!string.IsNullOrWhiteSpace(trimmedEmail))
+        {
+            query = query.Where(p => p.Email != null && p.Email.Contains(trimmedEmail));
+        }
+        if (!string.IsNullOrWhiteSpace(trimmedDob))
+        {
+            if (DateOnly.TryParse(trimmedDob, out DateOnly date))
+                query = query.Where(p => p.DateOfBirth == date);
+            else
+                return new List<PatientDTO>();
+        }
+        List<Patient> tbs = await query.OrderBy(p=>p.FullName).ToListAsync();
         return tbs.Select(tb => new PatientDTO(tb)).ToList();
     }
     public async Task<List<TestBatchDTO>> GetPatientBatchesAsync(int patientId)

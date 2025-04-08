@@ -47,11 +47,11 @@ namespace Meds.Server.Controllers
         }
         [HttpGet]
         [Authorize(Policy = "Receptionist")]
-        public async Task<IActionResult> GetPatients([FromQuery] string? fullName, [FromQuery] string? phoneNumber)
+        public async Task<IActionResult> GetPatients([FromQuery] string? fullName, [FromQuery] string? phone, [FromQuery] string? email, [FromQuery] string? dateOfBirth)
         {
-            if (string.IsNullOrWhiteSpace(fullName) && string.IsNullOrWhiteSpace(phoneNumber))
+            if (string.IsNullOrWhiteSpace(fullName) && string.IsNullOrWhiteSpace(phone) && string.IsNullOrWhiteSpace(email) && string.IsNullOrWhiteSpace(dateOfBirth))
             {
-                return BadRequest(new { message = "Either 'name' or 'phoneNumber' must be provided." });
+                return BadRequest(new { message = "Either name, phone, email or date of birth must be provided." });
             }
             Claim? technicianIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserID");
             if (technicianIdClaim == null)
@@ -59,15 +59,8 @@ namespace Meds.Server.Controllers
                 return Unauthorized(new { message = "No id in claims" });
             }
             int technicianId = int.Parse(technicianIdClaim.Value);
-            List<PatientDTO> patients;
-            if (!string.IsNullOrWhiteSpace(fullName))
-            {
-                patients = await _patientsService.GetPatientListWithNameAsync(fullName);
-            }
-            else
-            {
-                patients = await _patientsService.GetPatientListWithNumberAsync(phoneNumber);
-            }
+            List<PatientDTO> patients = await _patientsService.GetPatientListAsync(fullName, phone, email, dateOfBirth);
+            
             if (patients.Count == 0)
             {
                 return NotFound(new { message = "No patients found matching the criteria." });
@@ -84,7 +77,7 @@ namespace Meds.Server.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(new { message = "Addition failed. Check entry data and wether it already exists" });
             }
         }
 

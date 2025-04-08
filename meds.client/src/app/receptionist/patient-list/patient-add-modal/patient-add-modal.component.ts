@@ -40,6 +40,5 @@ export class PatientAddModalComponent {
           this.errorMessage = error.error.message;
         }
       )
-    this.closeModal();
   }
 }

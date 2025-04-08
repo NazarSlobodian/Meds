@@ -8,50 +8,37 @@ import { Router } from '@angular/router';
   styleUrl: './patient-list.component.css'
 })
 export class PatientListComponent {
-  searchQuery: string | null = null;
+  searchQueryName: string | null = null;
+  searchQueryPhone: string | null = null;
+  searchQueryEmail: string | null = null;
+  searchQueryDateOfBirth: string | null = null;
   patients: any[] = [];
   columnNames: string[] = [];
-  searchType: string = 'name';
   errorMessage: string | null = null;
 
   constructor(private patientsSevice: PatientsService, private router: Router) { }
 
   onSearch() {
-    if (!this.searchQuery || this.searchQuery.trim().length === 0) {
-      this.errorMessage = "Please, enter a query";
+    if ((!this.searchQueryName || this.searchQueryName.trim().length === 0) &&
+      (!this.searchQueryPhone || this.searchQueryPhone.trim().length === 0) &&
+      (!this.searchQueryEmail || this.searchQueryEmail.trim().length === 0) &&
+      (!this.searchQueryDateOfBirth || this.searchQueryDateOfBirth.trim().length === 0)) {
+      this.errorMessage = "Please, fill in at least one query field";
       this.patients = [];
       return;
     }
-    if (this.searchType === 'name') {
-      this.patientsSevice.getPatientsByName(this.searchQuery)
-        .subscribe(
-          (response) => {
-            this.patients = response;
-            this.errorMessage = null;
-            this.columnNames = Object.keys(this.patients[0]);
-          },
-          (error) => {
-            this.errorMessage = error.error.message;
-            this.patients = [];
-          }
-        );
-    } else if (this.searchType === 'phone') {
-      this.patientsSevice.getPatientsByNumber(this.searchQuery)
-        .subscribe(
-          (response) => {
-            this.patients = response;
-            this.errorMessage = null;
-            this.columnNames = Object.keys(this.patients[0]);
-          },
-          (error) => {
-            this.errorMessage = error.message;
-            this.patients = [];
-          }
-        );
-    } else {
-      this.errorMessage = "unsupported search type";
-    }
-
+    this.patientsSevice.getPatients(this.searchQueryName, this.searchQueryPhone, this.searchQueryEmail, this.searchQueryDateOfBirth)
+      .subscribe(
+        (response) => {
+          this.patients = response;
+          this.errorMessage = null;
+          this.columnNames = Object.keys(this.patients[0]);
+        },
+        (error) => {
+          this.errorMessage = error.error.message;
+          this.patients = [];
+        }
+      );
   }
   onPatientSelect(id: number) {
     this.router.navigate([`/receptionist/patientView/addBatch/${id}`]);
