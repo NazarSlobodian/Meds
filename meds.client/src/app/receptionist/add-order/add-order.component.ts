@@ -9,7 +9,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class AddOrderComponent implements OnInit {
   testTypes: any[] = [];
+  panels: any[] = [];
   selectedTestType: any;
+  selectedPanel: any;
   errorMessage: string | null = null;
   patientId: number = -1;
   patientName: string | null = null;
@@ -29,8 +31,10 @@ export class AddOrderComponent implements OnInit {
   loadTestTypes(): void {
     this.techTestService.getAvailableTestTypes().subscribe(
       (data) => {
-        this.testTypes = data;
+        this.testTypes = data.testTypes;
+        this.panels = data.panelInfo;
         this.selectedTestType = this.testTypes[0];
+        this.selectedPanel = this.panels[0];
       },
       (error) => {
         this.errorMessage = "Failed to load test types";

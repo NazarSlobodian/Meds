@@ -22,6 +22,11 @@ public class TestTypesService
             .ToListAsync();
         return tbs;
     }
+    public async Task<List<TechnicianPanelInfo>> GetPanelsForTechView()
+    {
+        List<TechnicianPanelInfo> panels = await _context.TestPanels.Include(x => x.TestTypes).Select(xx => new TechnicianPanelInfo(xx)).ToListAsync();
+        return panels;
+    }
     public async Task<List<AdminTestTypeInfo>> GetTestTypesForAdminView()
     {
         List<AdminTestTypeInfo> tbs = await _context.TestTypes

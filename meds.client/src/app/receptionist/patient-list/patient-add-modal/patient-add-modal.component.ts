@@ -34,7 +34,8 @@ export class PatientAddModalComponent {
           this.additionSuccessful.emit();
           this.closeModal();
           
-          this.router.navigate([`/receptionist/patientView/addBatch/${response.id}`])
+          this.router.navigate([`/receptionist/patientView/addBatch/${response.id}`],
+            { queryParams: { name: this.newPatient.fullName } })
         },
         (error) => {
           this.errorMessage = error.error.message;

@@ -25,7 +25,8 @@ namespace Meds.Server.Controllers
         public async Task<IActionResult> GetTestTypes()
         {
             List<TechnicianTestTypeInfo> testTypes = await _testTypesService.GetTestTypesForTechView();
-            return Ok(testTypes);
+            List<TechnicianPanelInfo> panel = await _testTypesService.GetPanelsForTechView();
+            return Ok(new { testTypes = testTypes, panelInfo = panel });
         }
         [HttpGet("admin")]
         [Authorize(Policy = "Admin")]

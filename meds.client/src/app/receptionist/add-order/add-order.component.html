@@ -7,6 +7,12 @@
       {{testType.name}}
     </option>
   </select>
+  <label>Select panel:</label>
+  <select [(ngModel)]="selectedPanel">
+    <option *ngFor="let panel of panels" [ngValue]="selectedPanel">
+      {{panel.name}}
+    </option>
+  </select>
   <button (click)="addTest()" [disabled]="!selectedTestType">+</button>
 
   <table>
