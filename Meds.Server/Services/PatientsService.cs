@@ -71,6 +71,8 @@ public class PatientsService
             .Include(tb => tb.TestOrders)
                 .ThenInclude(to => to.TestType)
                     .ThenInclude(tt => tt.TestNormalValues)
+            .Include(tb => tb.TestOrders)
+                .ThenInclude(to => to.TestPanel)
             .Where(tb => tb.TestBatchId == batchId)
             .FirstAsync();
         CollectionPoint collectionPoint = await _context.CollectionPoints

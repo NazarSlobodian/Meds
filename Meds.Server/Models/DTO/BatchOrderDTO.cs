@@ -7,6 +7,7 @@ public class BatchOrderDTO
     public decimal Result { get; set; }
     public string Units { get; set; }
     public string NormalValue { get; set; }
+    public string? PanelName { get; set; }
     public BatchOrderDTO(TestOrder to, string sex, int age)
     {
         Name = to.TestType.Name;
@@ -20,6 +21,14 @@ public class BatchOrderDTO
         catch
         {
             NormalValue = "N/A";
+        }
+        if (to.TestPanel == null)
+        {
+            PanelName = null;
+        }
+        else
+        {
+            PanelName = to.TestPanel.Name;
         }
     }
 }
