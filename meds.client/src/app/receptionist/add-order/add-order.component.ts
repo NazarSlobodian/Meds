@@ -12,6 +12,7 @@ export class AddOrderComponent implements OnInit {
   selectedTestType: any;
   errorMessage: string | null = null;
   patientId: number = -1;
+  patientName: string | null = null;
 
   testsToAdd: any[] = [];
   constructor(private route: ActivatedRoute, private techTestService: TechTestService, private router: Router) { }
@@ -19,7 +20,10 @@ export class AddOrderComponent implements OnInit {
   ngOnInit(): void {
     this.loadTestTypes();
     this.route.params.subscribe(params => {
-      this.patientId = +params['id'];
+      this.patientId = params['id'];
+    })
+    this.route.queryParams.subscribe(params => {
+      this.patientName = params['name'];
     })
   }
   loadTestTypes(): void {

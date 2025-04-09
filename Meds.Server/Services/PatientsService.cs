@@ -1,6 +1,7 @@
 using Meds.Server.Models;
 using Meds.Server.Models.DbModels;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography.Xml;
 
 public class PatientsService
 {
@@ -105,12 +106,16 @@ public class PatientsService
             ReceptionistId = receptionistId,
             TestOrders = new List<TestOrder>()
         };
+
+        Random rand = new Random();
         foreach (var testType in tests)
         {
+            List<Laboratory> labs = await _context.Laboratories.Where(x => x.TestTypes.Select(ttype => ttype.TestTypeId).Contains(testType.TestTypeId)).ToListAsync();
             var testOrder = new TestOrder
             {
                 TestTypeId = testType.TestTypeId,
-                TestBatchId = batch.TestBatchId 
+                TestBatchId = batch.TestBatchId,
+                LaboratoryId = labs[rand.Next(0, labs.Count)].LaboratoryId
             };
 
             batch.TestOrders.Add(testOrder);
@@ -122,7 +127,7 @@ public class PatientsService
         }
         catch (Exception ex)
         {
-            throw new ApplicationException($"Couldn't add to db {ex.Message}");
+            throw new ApplicationException($"Couldn't add order. Code 432");
         }
     }
 }

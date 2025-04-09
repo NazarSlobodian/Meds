@@ -10,7 +10,6 @@ import { TestGeneralAddComponent } from './test-general-add/test-general-add.com
 import { TestNormalValuesEditModalComponent } from './test-normal-values-editor/test-normal-values-edit-modal/test-normal-values-edit-modal.component';
 import { TestNormalValuesDeleteModalComponent } from './test-normal-values-editor/test-normal-values-delete-modal/test-normal-values-delete-modal.component';
 import { TestNormalValuesAddModalComponent } from './test-normal-values-editor/test-normal-values-add-modal/test-normal-values-add-modal.component';
-import { RainbowFlashDirective } from './rainbow-flash.directive';
 
 
 
@@ -24,7 +23,6 @@ import { RainbowFlashDirective } from './rainbow-flash.directive';
     TestNormalValuesEditModalComponent,
     TestNormalValuesDeleteModalComponent,
     TestNormalValuesAddModalComponent,
-    RainbowFlashDirective
   ],
   imports: [
     CommonModule,

@@ -46,8 +46,10 @@ export class PatientListComponent {
     this.currentPage = 1;
     this.search();
   }
-  onPatientSelect(id: number) {
-    this.router.navigate([`/receptionist/patientView/addBatch/${id}`]);
+  onPatientSelect(id: number, name: string) {
+    this.router.navigate([`/receptionist/patientView/addBatch/${id}`], {
+      queryParams: {name:name}
+    });
   }
   onAddSuccess(): void {
 

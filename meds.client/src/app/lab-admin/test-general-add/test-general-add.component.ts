@@ -8,7 +8,7 @@ import { AdminTestService } from '../services/admin-test.service';
 })
 export class TestGeneralAddComponent {
   testType = {
-    testName: "name",
+    name: "name",
     cost: 0,
     daysTillOverdue: 1,
     measurementsUnit: "kg/g"

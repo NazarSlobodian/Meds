@@ -1,10 +1,10 @@
-<h2>Adding batch for: {{patientId}}</h2>
+<h2>Adding batch for: {{patientName}}, ID: {{patientId}}</h2>
 <button (click)="goBack()">&lt;-Back</button>
 <div>
   <label>Select test type:</label>
   <select [(ngModel)]="selectedTestType">
     <option *ngFor="let testType of testTypes" [ngValue]="testType">
-      {{testType.testName}}
+      {{testType.name}}
     </option>
   </select>
   <button (click)="addTest()" [disabled]="!selectedTestType">+</button>
@@ -19,7 +19,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let test of testsToAdd; let i = index">
-        <td>{{ test.testName }}</td>
+        <td>{{ test.name }}</td>
         <td>{{ test.cost }}</td>
         <td><button class="bad-button" (click)="removeTest(i)">-</button></td>
       </tr>
