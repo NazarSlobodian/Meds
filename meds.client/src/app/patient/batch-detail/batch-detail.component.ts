@@ -10,6 +10,8 @@ export class BatchDetailComponent implements OnInit {
   batchResults: any;
   errorMessage: string | null = null;
 
+  groupedResults: { panelName: string; tests: any[] }[] = [];
+
   constructor(private batchService: BatchesService,
     private route: ActivatedRoute, private router: Router) { }
 
@@ -20,7 +22,18 @@ export class BatchDetailComponent implements OnInit {
   getBatchResults(batchId: number): void {
     this.batchService.getBatchResults(batchId).subscribe(
       (data) => {
+
         this.batchResults = data;
+
+        for (const test of this.batchResults.testResults) {
+          let group = this.groupedResults.find(g => g.panelName === test.panelName);
+          if (!group) {
+            group = { panelName: test.panelName || 'Other', tests: [] };
+            this.groupedResults.push(group);
+          }
+          group.tests.push(test);
+        }
+
       },
       (err) => {
         this.errorMessage = "Error fethcing batch results";

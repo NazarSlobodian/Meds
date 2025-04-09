@@ -11,26 +11,28 @@
   <p><strong>Date of Birth:</strong> {{ batchResults.dateOfBirth | date:'longDate' }}</p>
 
   <h3>Test Results</h3>
-  <table>
-    <thead>
-      <tr>
-        <th>Test Name</th>
-        <th>Result</th>
-        <th>Units</th>
-        <th>Normal Value</th>
-        <th>Panel Name</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let test of batchResults.testResults">
-        <td>{{ test.name }}</td>
-        <td>{{ test.result }}</td>
-        <td>{{ test.units }}</td>
-        <td>{{ test.normalValue }}</td>
-        <td>{{ test.panelName}}</td>
-      </tr>
-    </tbody>
-  </table>
+
+  <div *ngFor="let group of groupedResults">
+    <p>{{group.panelName}}</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Test Name</th>
+          <th>Result</th>
+          <th>Units</th>
+          <th>Normal Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let test of group.tests">
+          <td>{{ test.name }}</td>
+          <td>{{ test.result }}</td>
+          <td>{{ test.units }}</td>
+          <td>{{ test.normalValue }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <div *ngIf="errorMessage" class="error">
