@@ -15,6 +15,8 @@ public partial class TestBatch
 
     public int ReceptionistId { get; set; }
 
+    public decimal Cost { get; set; }
+
     public virtual Patient Patient { get; set; } = null!;
 
     public virtual Receptionist Receptionist { get; set; } = null!;

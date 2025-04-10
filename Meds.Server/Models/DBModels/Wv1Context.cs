@@ -156,6 +156,10 @@ public partial class Wv1Context : DbContext
 
             entity.ToTable("patients");
 
+            entity.HasIndex(e => e.ContactNumber, "contactNumber_UNIQUE").IsUnique();
+
+            entity.HasIndex(e => e.Email, "email_UNIQUE").IsUnique();
+
             entity.HasIndex(e => new { e.FullName, e.Gender, e.DateOfBirth, e.Email, e.ContactNumber }, "unique_patient").IsUnique();
 
             entity.Property(e => e.PatientId).HasColumnName("patientID");
@@ -222,6 +226,9 @@ public partial class Wv1Context : DbContext
                 .HasDefaultValueSql("'queued'")
                 .HasColumnType("enum('queued','processing','done')")
                 .HasColumnName("batchStatus");
+            entity.Property(e => e.Cost)
+                .HasPrecision(7, 2)
+                .HasColumnName("cost");
             entity.Property(e => e.DateOfCreation)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime")

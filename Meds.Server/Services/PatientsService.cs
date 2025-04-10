@@ -115,7 +115,8 @@ public class PatientsService
         {
             PatientId = patientId,
             ReceptionistId = receptionistId,
-            TestOrders = new List<TestOrder>()
+            TestOrders = new List<TestOrder>(),
+            Cost = 0.0m
         };
 
         Random rand = new Random();
@@ -126,6 +127,8 @@ public class PatientsService
             {
                 throw new Exception($"No labs which can perform panel ID {testTypeId}");
             }
+            decimal cost = await _context.TestTypes.Where(x => x.TestTypeId == testTypeId).Select(x => x.Cost).FirstOrDefaultAsync();
+
             var testOrder = new TestOrder
             {
                 TestTypeId = testTypeId,
@@ -133,6 +136,7 @@ public class PatientsService
                 LaboratoryId = labs[rand.Next(0, labs.Count)].LaboratoryId
             };
             batch.TestOrders.Add(testOrder);
+            batch.Cost += cost;
         }
         foreach (int panelId in tests.PanelsIds)
         {
@@ -144,8 +148,10 @@ public class PatientsService
             {
                 throw new Exception($"No labs which can perform panel ID {panelId}");
             }
+            decimal cost = await _context.TestPanels.Where(x => x.TestPanelId == panelId).Select(x => x.Cost).FirstOrDefaultAsync();
             foreach (int testTypeId in panelContents)
             {
+
                 var testOrder = new TestOrder
                 {
                     TestTypeId = testTypeId,
@@ -155,6 +161,7 @@ public class PatientsService
                 };
                 batch.TestOrders.Add(testOrder);
             }
+            batch.Cost += cost;
         }
         _context.TestBatches.Add(batch);
         try
