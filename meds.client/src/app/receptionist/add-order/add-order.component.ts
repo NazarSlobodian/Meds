@@ -77,7 +77,7 @@ export class AddOrderComponent implements OnInit {
       this.errorMessage = "No tests added";
       return;
     }
-    this.techTestService.submitBatch(this.patientId, this.testsToAdd).subscribe(
+    this.techTestService.submitBatch(this.patientId, this.testsToAdd.map(x=> x.testTypeId), this.panelsToAdd.map(x=>x.testPanelId)).subscribe(
       (reponse) => {
         this.router.navigate(["/receptionist/patientView/"]);
       },

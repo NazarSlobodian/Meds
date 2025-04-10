@@ -83,12 +83,12 @@ namespace Meds.Server.Controllers
 
         [HttpPost("submit-batch/{patientId}")]
         [Authorize(Policy = "Receptionist")]
-        public async Task<IActionResult> SubmitBatchAsync(int patientId, List<TechnicianTestTypeInfo> testTypeInfos)
+        public async Task<IActionResult> SubmitBatchAsync(int patientId, [FromBody] NewOrder batch)
         {
             try
             {
                 var technicianId = int.Parse(User.FindFirst("UserID").Value);
-                await _patientsService.ValidateAndSubmitBatchesAsync(patientId, technicianId, testTypeInfos);
+                await _patientsService.ValidateAndSubmitBatchesAsync(patientId, technicianId, batch);
             }
             catch (Exception ex)
             {

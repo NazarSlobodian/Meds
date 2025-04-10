@@ -38,7 +38,7 @@ public class PatientsService
             else
                 return new ListWithTotalCount<PatientDTO>();
         }
-        List<Patient> tbs = await query.OrderBy(p=>p.FullName).Skip((page-1)*pageSize).Take(pageSize).ToListAsync();
+        List<Patient> tbs = await query.OrderBy(p => p.FullName).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
         int count = await query.CountAsync();
         return new ListWithTotalCount<PatientDTO>(tbs.Select(tb => new PatientDTO(tb)).ToList(), count);
     }
@@ -82,24 +82,33 @@ public class PatientsService
 
         return new BatchResultsDTO(collectionPoint, batch);
     }
-    public async Task ValidateAndSubmitBatchesAsync(int patientId, int receptionistId,List<TechnicianTestTypeInfo> tests)
+    public async Task ValidateAndSubmitBatchesAsync(int patientId, int receptionistId, NewOrder tests)
     {
         var patient = await _context.Patients.FindAsync(patientId);
         if (patient == null)
         {
             throw new ArgumentException("Patient not found.");
         }
-        if (tests == null || tests.Count == 0)
+        if (tests == null || (tests.TestTypesIds.Count == 0 && tests.PanelsIds.Count == 0))
         {
-            throw new ArgumentException("Test types cannot be empty.");
+            throw new ArgumentException("Can't add an empty order.");
         }
-        var availableTestTypes = await _context.TestTypes.ToListAsync();
-        foreach (var testType in tests)
+        var availableTestTypes = await _context.TestTypes.Select(x => x.TestTypeId).ToListAsync();
+        foreach (int testTypeId in tests.TestTypesIds)
         {
-            var existingTestType = availableTestTypes.FirstOrDefault(tt => tt.Name == testType.Name && tt.TestTypeId == testType.TestTypeId && tt.Cost == testType.Cost);
-            if (existingTestType == null)
+            var existingTestType = availableTestTypes.FirstOrDefault(tt => tt == testTypeId);
+            if (existingTestType == null || existingTestType == 0)
             {
-                throw new ArgumentException($"Test type '{testType.Name}' does not exist.");
+                throw new ArgumentException($"Test type with id '{testTypeId}' does not exist.");
+            }
+        }
+        var availablePanels = await _context.TestPanels.Select(x => x.TestPanelId).ToListAsync();
+        foreach (int panelId in tests.PanelsIds)
+        {
+            var existingPanel = availablePanels.FirstOrDefault(tt => tt == panelId);
+            if (existingPanel == null || existingPanel == 0)
+            {
+                throw new ArgumentException($"Panel with id '{panelId}' does not exist.");
             }
         }
         var batch = new TestBatch
@@ -110,19 +119,44 @@ public class PatientsService
         };
 
         Random rand = new Random();
-        foreach (var testType in tests)
+        foreach (int testTypeId in tests.TestTypesIds)
         {
-            List<Laboratory> labs = await _context.Laboratories.Where(x => x.TestTypes.Select(ttype => ttype.TestTypeId).Contains(testType.TestTypeId)).ToListAsync();
+            List<Laboratory> labs = await _context.Laboratories.Where(x => x.TestTypes.Select(ttype => ttype.TestTypeId).Contains(testTypeId)).ToListAsync();
+            if (labs.Count == 0)
+            {
+                throw new Exception($"No labs which can perform panel ID {testTypeId}");
+            }
             var testOrder = new TestOrder
             {
-                TestTypeId = testType.TestTypeId,
+                TestTypeId = testTypeId,
                 TestBatchId = batch.TestBatchId,
                 LaboratoryId = labs[rand.Next(0, labs.Count)].LaboratoryId
             };
-
             batch.TestOrders.Add(testOrder);
         }
-       _context.TestBatches.Add(batch);
+        foreach (int panelId in tests.PanelsIds)
+        {
+            List<int> panelContents = await _context.TestPanels.Where(panel => panel.TestPanelId == panelId).SelectMany(x => x.TestTypes.Select(ttype => ttype.TestTypeId)).ToListAsync();
+            List<Laboratory> labs = await _context.Laboratories
+                .Include(lab => lab.TestTypes).ToListAsync();
+            List<Laboratory> suitableLabs = labs.Where(lab => panelContents.All(id => lab.TestTypes.Select(x => x.TestTypeId).Contains(id))).ToList();
+            if (labs.Count == 0)
+            {
+                throw new Exception($"No labs which can perform panel ID {panelId}");
+            }
+            foreach (int testTypeId in panelContents)
+            {
+                var testOrder = new TestOrder
+                {
+                    TestTypeId = testTypeId,
+                    TestBatchId = batch.TestBatchId,
+                    LaboratoryId = labs[rand.Next(0, labs.Count)].LaboratoryId,
+                    TestPanelId = panelId
+                };
+                batch.TestOrders.Add(testOrder);
+            }
+        }
+        _context.TestBatches.Add(batch);
         try
         {
             await _context.SaveChangesAsync();
