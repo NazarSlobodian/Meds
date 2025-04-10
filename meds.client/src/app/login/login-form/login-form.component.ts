@@ -25,6 +25,9 @@ export class LoginFormComponent {
             else if (response.role === 'receptionist') {
               this.router.navigate(['/receptionist']);
             }
+            else if (response.role === "lab_worker") {
+              this.router.navigate(['/lab-worker']);
+            }
             else if (response.role === "admin") {
               this.router.navigate(["/lab-admin"]);
             }

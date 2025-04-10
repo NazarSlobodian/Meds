@@ -12,6 +12,9 @@ export const authGuard: CanActivateFn = (route, state) => {
   if (authService.getRole() === 'receptionist' && requestedPath.startsWith('/receptionist')) {
     return true;
   }
+  if (authService.getRole() === 'lab_worker' && requestedPath.startsWith('/lab-worker')) {
+    return true;
+  }
   if (authService.getRole() === "admin" && requestedPath.startsWith("/lab-admin")) {
     return true;
   }
