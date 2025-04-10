@@ -1,43 +1,77 @@
 <h2>Adding batch for: {{patientName}}, ID: {{patientId}}</h2>
 <button (click)="goBack()">&lt;-Back</button>
 <div>
-  <label>Select test type:</label>
-  <select [(ngModel)]="selectedTestType">
-    <option *ngFor="let testType of testTypes" [ngValue]="testType">
-      {{testType.name}}
-    </option>
-  </select>
-  <label>Select panel:</label>
-  <select [(ngModel)]="selectedPanel">
-    <option *ngFor="let panel of panels" [ngValue]="selectedPanel">
-      {{panel.name}}
-    </option>
-  </select>
-  <button (click)="addTest()" [disabled]="!selectedTestType">+</button>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Test Name</th>
-        <th>Cost</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let test of testsToAdd; let i = index">
-        <td>{{ test.name }}</td>
-        <td>{{ test.cost }}</td>
-        <td><button class="bad-button" (click)="removeTest(i)">-</button></td>
-      </tr>
-    </tbody>
-    <tfoot>
-      <tr>
-        <td>Total: </td>
-        <td>{{calculateTotalCost()}}</td>
-        <td></td>
-      </tr>
-    </tfoot>
-  </table>
+  <div>
+    <div>
+      <label>Select test type:</label>
+      <select [(ngModel)]="selectedTestType">
+        <option *ngFor="let testType of testTypes" [ngValue]="testType">
+          {{testType.name}}
+        </option>
+      </select>
+      <button (click)="addTest()" [disabled]="!selectedTestType">+</button>
+    </div>
+    <div>
+      <label>Select panel:</label>
+      <select [(ngModel)]="selectedPanel">
+        <option *ngFor="let panel of panels" [ngValue]="panel">
+          {{panel.name}}
+        </option>
+      </select>
+      <button (click)="addPanel()" [disabled]="!selectedPanel">+</button>
+    </div>
+  </div>
+  <div>
+    <table>
+      <thead>
+        <tr>
+          <th>Test Name</th>
+          <th>Cost</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let test of testsToAdd; let i = index">
+          <td>{{ test.name }}</td>
+          <td>{{ test.cost }}</td>
+          <td><button class="bad-button" (click)="removeTest(i)">-</button></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>Total: </td>
+          <td>{{calculateTestsCost()}}</td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+    <table>
+      <thead>
+        <tr>
+          <th>Panel Name</th>
+          <th>Cost</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let panel of panelsToAdd; let i = index">
+          <td>{{ panel.name }}</td>
+          <td>{{ panel.cost }}</td>
+          <td><button class="bad-button" (click)="removePanel(i)">-</button></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>Total: </td>
+          <td>{{calculatePanelsCost()}}</td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+
 
   <button (click)="submitOrder()" [disabled]="testsToAdd.length === 0">Add batch</button>
 </div>

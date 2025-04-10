@@ -13,10 +13,12 @@ export class AddOrderComponent implements OnInit {
   selectedTestType: any;
   selectedPanel: any;
   errorMessage: string | null = null;
+
   patientId: number = -1;
   patientName: string | null = null;
 
   testsToAdd: any[] = [];
+  panelsToAdd: any[] = [];
   constructor(private route: ActivatedRoute, private techTestService: TechTestService, private router: Router) { }
 
   ngOnInit(): void {
@@ -50,11 +52,25 @@ export class AddOrderComponent implements OnInit {
     this.testsToAdd.push(this.selectedTestType);
     this.selectedTestType = null;
   }
-  calculateTotalCost(): number {
+  addPanel(): void {
+    if (this.selectedPanel === null) {
+      this.errorMessage = "No panel selected";
+      return;
+    }
+    this.panelsToAdd.push(this.selectedPanel);
+    this.selectedPanel = null;
+  }
+  calculateTestsCost(): number {
     return this.testsToAdd.reduce((total, test) => total + test.cost, 0);
+  }
+  calculatePanelsCost(): number {
+    return this.panelsToAdd.reduce((total, panel) => total + panel.cost, 0);
   }
   removeTest(index: number): void {
     this.testsToAdd.splice(index, 1);
+  }
+  removePanel(index: number): void {
+    this.panelsToAdd.splice(index, 1);
   }
   submitOrder() {
     if (this.testsToAdd.length === 0) {
