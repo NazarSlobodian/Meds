@@ -66,6 +66,9 @@ export class AddOrderComponent implements OnInit {
   calculatePanelsCost(): number {
     return this.panelsToAdd.reduce((total, panel) => total + panel.cost, 0);
   }
+  calculateTotalCost(): number {
+    return this.calculateTestsCost() + this.calculatePanelsCost();
+  }
   removeTest(index: number): void {
     this.testsToAdd.splice(index, 1);
   }

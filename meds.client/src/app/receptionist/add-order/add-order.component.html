@@ -38,13 +38,6 @@
           <td><button class="bad-button" (click)="removeTest(i)">-</button></td>
         </tr>
       </tbody>
-      <tfoot>
-        <tr>
-          <td>Total: </td>
-          <td>{{calculateTestsCost()}}</td>
-          <td></td>
-        </tr>
-      </tfoot>
     </table>
     <table>
       <thead>
@@ -61,14 +54,8 @@
           <td><button class="bad-button" (click)="removePanel(i)">-</button></td>
         </tr>
       </tbody>
-      <tfoot>
-        <tr>
-          <td>Total: </td>
-          <td>{{calculatePanelsCost()}}</td>
-          <td></td>
-        </tr>
-      </tfoot>
     </table>
+    <div><p> Total cost: {{calculateTotalCost()}}</p></div>
   </div>
 
 
