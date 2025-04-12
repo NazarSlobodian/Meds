@@ -6,7 +6,7 @@ public partial class TestResultDTO
 
     public decimal Result { get; set; }
 
-    public DateOnly DateOfTest { get; set; }
+    public DateTime DateOfTest { get; set; }
 
     public TestResultDTO(TestResult tr)
     {

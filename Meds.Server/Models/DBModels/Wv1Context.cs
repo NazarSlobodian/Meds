@@ -368,7 +368,10 @@ public partial class Wv1Context : DbContext
             entity.Property(e => e.TestOrderId)
                 .ValueGeneratedOnAdd()
                 .HasColumnName("testOrderID");
-            entity.Property(e => e.DateOfTest).HasColumnName("dateOfTest");
+            entity.Property(e => e.DateOfTest)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime")
+                .HasColumnName("dateOfTest");
             entity.Property(e => e.Result)
                 .HasPrecision(5, 2)
                 .HasColumnName("result");

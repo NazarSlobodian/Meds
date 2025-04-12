@@ -1,1 +1,18 @@
-<p>batches-list-lab-worker works!</p>
+<div *ngIf="errorMessage" class="error">
+  {{ errorMessage }}
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th *ngFor="let column of columnNames">{{column}}</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let batch of batches">
+      <td *ngFor="let column of columnNames">{{batch[column]}}</td>
+      <td><button (click)="onBatchClick(batch.batchId)"></button></td>
+    </tr>
+  </tbody>
+</table>

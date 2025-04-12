@@ -9,7 +9,7 @@ public partial class TestResult
 
     public decimal Result { get; set; }
 
-    public DateOnly DateOfTest { get; set; }
+    public DateTime DateOfTest { get; set; }
 
     public virtual TestOrder TestOrder { get; set; } = null!;
 }

@@ -1,6 +1,10 @@
+using Humanizer;
 using Meds.Server.Models;
 using Meds.Server.Models.DbModels;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Build.Framework;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using System.Security.Cryptography.Xml;
 
 public class PatientsService
@@ -46,6 +50,69 @@ public class PatientsService
     {
         List<TestBatch> tbs = await _context.TestBatches.Where(tb => tb.PatientId == patientId).ToListAsync();
         return tbs.Select(tb => new TestBatchDTO(tb)).ToList();
+    }
+    public async Task<List<TestBatchLabWorkerDTO>> GetLabWorkerBatchesAsync(int labWorkerId)
+    {
+        int labId = await _context.Laboratories.Where(lab => lab.LabWorkers.Any(worker => worker.LabWorkerId == labWorkerId)).Select(lab => lab.LaboratoryId).FirstOrDefaultAsync();
+        if (labId == 0)
+            throw new Exception("Worker not in lab");
+        List<TestBatch> tbs = await _context.TestBatches
+            .Include(tb => tb.TestOrders.Where(to => to.LaboratoryId == labId))
+            .Where(tb => tb.TestOrders
+                .Any(to => to.LaboratoryId == labId && to.TestResult == null)
+                && tb.BatchStatus != "done")
+            .ToListAsync();
+        return tbs.Select(tb => new TestBatchLabWorkerDTO(tb)).ToList();
+    }
+    public async Task<List<TestOrderLabWorkerDTO>> GetTestOrdersLabWorkerAsync(int testBatchId, int labWorkerId)
+    {
+        int labId = await _context.Laboratories.Where(lab => lab.LabWorkers.Any(worker => worker.LabWorkerId == labWorkerId)).Select(lab => lab.LaboratoryId).FirstOrDefaultAsync();
+        if (labId == 0)
+            throw new Exception("Worker not in lab");
+        TestBatch? tb = await _context.TestBatches
+            .Include(tb => tb.TestOrders
+                .Where(to => to.LaboratoryId == labId && to.TestResult == null))
+                .ThenInclude(to => to.TestResult)
+            .Include(tb => tb.TestOrders)
+                .ThenInclude(to=>to.TestType)
+                .ThenInclude(tt=>tt.TestNormalValues)
+            .Include(tb => tb.Patient.DateOfBirth)
+            .Include(tb => tb.Patient.Gender)
+            .Where(tb => tb.TestBatchId == testBatchId)
+            .FirstOrDefaultAsync();
+
+        if (tb == null)
+            throw new Exception("Test batch not found");
+        if (tb.TestOrders == null || tb.TestOrders.Count == 0)
+            throw new Exception("All results are already sent");
+        
+        DateOnly today = DateOnly.FromDateTime(DateTime.Today);
+        int age = today.Year - tb.Patient.DateOfBirth.Year;
+        if (tb.Patient.DateOfBirth > today.AddYears(-age))
+            age--;
+        string sex = tb.Patient.Gender;
+        List<TestOrderLabWorkerDTO> list = new List<TestOrderLabWorkerDTO>();
+        foreach (TestOrder to in tb.TestOrders)
+        {
+            string normalValue = "";
+            try
+            {
+                TestNormalValue? tnv = to.TestType.TestNormalValues.Where(tnv => tnv.Gender == sex && age >= tnv.MinAge && age <= tnv.MaxAge).First();
+                normalValue = tnv.MinResValue + " - " + tnv.MaxResValue;
+            }
+            catch {
+                normalValue = "N/A";
+            }
+            list.Add(new TestOrderLabWorkerDTO
+            {
+                TestOrderId = to.TestOrderId,
+                Name = to.TestType.Name,
+                Result = to.TestResult.Result,
+                Unit = to.TestType.MeasurementsUnit,
+                NormalValues = normalValue
+            });
+        }
+        return list;
     }
     public async Task<int> AddPatient(PatientNew patient)
     {

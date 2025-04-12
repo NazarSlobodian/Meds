@@ -16,7 +16,7 @@ public class BatchOrderDTO
         try
         {
             TestNormalValue? tnv = to.TestType.TestNormalValues.Where(tnv => tnv.Gender == sex && age >= tnv.MinAge && age <= tnv.MaxAge).First();
-            NormalValue = tnv.MinResValue + "-" + tnv.MaxResValue;
+            NormalValue = tnv.MinResValue + " - " + tnv.MaxResValue;
         }
         catch
         {
