@@ -1,25 +1,30 @@
 <button (click)="goBack()">&lt;-Back</button>
+<p>{{errorMessage}}</p>
 <p>Batch ID: {{batchId}}</p>
-<table>
-  <thead>
-    <tr>
-      <th>Order ID</th>
-      <th>Name</th>
-      <th>Normal Values</th>
-      <th>Unit</th>
-      <th>Result</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let order of orders">
-      <td>{{order.testOrderId}}</td>
-      <td>{{order.name}}</td>
-      <td>{{order.normalValues}}</td>
-      <td>{{order.unit}}</td>
-      <td>
-        <input type="number" [(ngModel)]="order.result" />
-      </td>
-      <td><button (click)="onSaveClick(order)">Save</button></td>
-    </tr>
-  </tbody>
-</table>
+
+
+<form (ngSubmit)="onSubmitClick()">
+  <table>
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Name</th>
+        <th>Normal Values</th>
+        <th>Unit</th>
+        <th>Result</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of orders">
+        <td>{{order.testOrderId}}</td>
+        <td>{{order.name}}</td>
+        <td>{{order.normalValues}}</td>
+        <td>{{order.unit}}</td>
+        <td>
+          <input name="result_{{order.testOrderId}}" type="number" [(ngModel)]="order.result" />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button type="submit">Submit</button>
+</form>

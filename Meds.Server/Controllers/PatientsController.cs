@@ -86,7 +86,7 @@ namespace Meds.Server.Controllers
             }
             int technicianId = int.Parse(technicianIdClaim.Value);
             ListWithTotalCount<PatientDTO> patients = await _patientsService.GetPatientListPagedAsync(fullName, phone, email, dateOfBirth, page, pageSize);
-            
+
             if (patients.List.Count == 0)
             {
                 return NotFound(new { message = "No patients found matching the criteria." });
@@ -115,6 +115,21 @@ namespace Meds.Server.Controllers
             {
                 var technicianId = int.Parse(User.FindFirst("UserID").Value);
                 await _patientsService.ValidateAndSubmitBatchesAsync(patientId, technicianId, batch);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            return Ok();
+        }
+        [HttpPost("batches/results")]
+        [Authorize(Policy = "LabWorker")]
+        public async Task<IActionResult> SubmitResultsAsync([FromBody] List<TestOrderLabWorkerDTO> results)
+        {
+            try
+            {
+                var technicianId = int.Parse(User.FindFirst("UserID").Value);
+                await _patientsService.ValidateAndSubmitResultsAsync(results);
             }
             catch (Exception ex)
             {

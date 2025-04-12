@@ -11,13 +11,13 @@ export class BatchResultsInputComponent {
   batchId: number = -1;
   orders: any[] = [];
   errorMessage: string | null = null;
-  constructor(private route: ActivatedRoute, private router: Router, private batchResultsSevice: BatchResultsService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private batchResultsService: BatchResultsService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.batchId = params['id'];
     })
-    this.batchResultsSevice.getResults(this.batchId).subscribe(
+    this.batchResultsService.getResults(this.batchId).subscribe(
       (data) => {
         this.orders = data;
       },
@@ -30,7 +30,11 @@ export class BatchResultsInputComponent {
   goBack(): void {
     this.router.navigate(["/lab-worker/batches"]);
   }
-  onSaveClick(order: any): void {
-
+  onSubmitClick(): void {
+    this.batchResultsService.submitResults(this.orders).subscribe({
+      next: (res) => this.errorMessage = res,
+      error: (error) => this.errorMessage = error
+    }
+    );
   }
 }

@@ -1,6 +1,7 @@
 using Humanizer;
 using Meds.Server.Models;
 using Meds.Server.Models.DbModels;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Build.Framework;
 using Microsoft.EntityFrameworkCore;
@@ -59,7 +60,7 @@ public class PatientsService
         List<TestBatch> tbs = await _context.TestBatches
             .Include(tb => tb.TestOrders.Where(to => to.LaboratoryId == labId))
             .Where(tb => tb.TestOrders
-                .Any(to => to.LaboratoryId == labId && to.TestResult == null)
+                .Any(to => to.LaboratoryId == labId)
                 && tb.BatchStatus != "done")
             .ToListAsync();
         return tbs.Select(tb => new TestBatchLabWorkerDTO(tb)).ToList();
@@ -71,11 +72,11 @@ public class PatientsService
             throw new Exception("Worker not in lab");
         TestBatch? tb = await _context.TestBatches
             .Include(tb => tb.TestOrders
-                .Where(to => to.LaboratoryId == labId && to.TestResult == null))
+                .Where(to => to.LaboratoryId == labId))
                 .ThenInclude(to => to.TestResult)
             .Include(tb => tb.TestOrders)
-                .ThenInclude(to=>to.TestType)
-                .ThenInclude(tt=>tt.TestNormalValues)
+                .ThenInclude(to => to.TestType)
+                .ThenInclude(tt => tt.TestNormalValues)
             .Include(tb => tb.Patient)
             .Where(tb => tb.TestBatchId == testBatchId)
             .FirstOrDefaultAsync();
@@ -84,7 +85,7 @@ public class PatientsService
             throw new Exception("Test batch not found");
         if (tb.TestOrders == null || tb.TestOrders.Count == 0)
             throw new Exception("All results are already sent");
-        
+
         DateOnly today = DateOnly.FromDateTime(DateTime.Today);
         int age = today.Year - tb.Patient.DateOfBirth.Year;
         if (tb.Patient.DateOfBirth > today.AddYears(-age))
@@ -239,5 +240,45 @@ public class PatientsService
         {
             throw new ApplicationException($"Couldn't add order. Code 432");
         }
+    }
+    public async Task ValidateAndSubmitResultsAsync(List<TestOrderLabWorkerDTO> results)
+    {
+        if (results == null || results.Count == 0)
+        {
+            throw new Exception("No results submitted");
+        }
+        int id = results[0].TestOrderId;
+        List<TestOrder> orders = null;
+        try
+        {
+            orders = await _context.TestBatches.Where(tb => tb.TestOrders.Any(to => to.TestOrderId == id)).Include(tb => tb.TestOrders).ThenInclude(to=>to.TestResult).SelectMany(tb => tb.TestOrders).ToListAsync();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Couldn't find batch");
+        }
+        if (orders.Count != results.Count)
+        {
+            throw new Exception("Orders/results amount mismatch");
+        }
+        foreach (TestOrder order in orders)
+        {
+            TestOrderLabWorkerDTO? result = results.Find(t => t.TestOrderId == order.TestOrderId);
+            if (result == null)
+            {
+                throw new Exception("Orders/results id mismatch");
+            }
+            if (result.Result == null)
+                continue;
+            if (order.TestResult == null)
+            {
+                _context.TestResults.Add(new TestResult() {TestOrderId=order.TestOrderId, Result = result.Result.Value });
+            }
+            else
+            {
+                order.TestResult.Result = result.Result.Value;
+            }
+        }
+        await _context.SaveChangesAsync();
     }
 }
