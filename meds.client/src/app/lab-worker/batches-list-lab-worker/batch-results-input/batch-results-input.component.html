@@ -1,1 +1,25 @@
-<p>batch-results-input works!</p>
+<button (click)="goBack()">&lt;-Back</button>
+<p>Batch ID: {{batchId}}</p>
+<table>
+  <thead>
+    <tr>
+      <th>Order ID</th>
+      <th>Name</th>
+      <th>Normal Values</th>
+      <th>Unit</th>
+      <th>Result</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let order of orders">
+      <td>{{order.testOrderId}}</td>
+      <td>{{order.name}}</td>
+      <td>{{order.normalValues}}</td>
+      <td>{{order.unit}}</td>
+      <td>
+        <input type="number" [(ngModel)]="order.result" />
+      </td>
+      <td><button (click)="onSaveClick(order)">Save</button></td>
+    </tr>
+  </tbody>
+</table>

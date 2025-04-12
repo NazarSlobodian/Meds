@@ -5,14 +5,20 @@
 <table>
   <thead>
     <tr>
-      <th *ngFor="let column of columnNames">{{column}}</th>
+      <th>Id</th>
+      <th>Date of creation</th>
       <th>Actions</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let batch of batches">
-      <td *ngFor="let column of columnNames">{{batch[column]}}</td>
-      <td><button (click)="onBatchClick(batch.batchId)"></button></td>
+      <td>
+        {{batch.testBatchId}}
+      </td>
+      <td>
+        {{batch.dateOfCreation | date: 'yyyy-MM-dd' }}
+      </td>
+      <td><button (click)="onBatchClick(batch.testBatchId)">Enter results</button></td>
     </tr>
   </tbody>
 </table>

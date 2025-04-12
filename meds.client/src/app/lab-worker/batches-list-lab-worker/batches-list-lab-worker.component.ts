@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { LabBatchesService } from '../services/lab-batches.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-batches-list-lab-worker',
@@ -8,18 +9,32 @@ import { LabBatchesService } from '../services/lab-batches.service';
 })
 export class BatchesListLabWorkerComponent {
   batches: any[] = [];
-  columnNames: string[] = []; 
 
   errorMessage: string | null = null;
-  constructor(private labBatchesService: LabBatchesService) { }
+  constructor(private labBatchesService: LabBatchesService, private router: Router) { }
 
   ngOnInit(): void {
-
+    this.labBatchesService.getBatches().subscribe(
+      (data) => {
+        this.batches = data;
+      },
+      (error) => {
+        this.errorMessage = "Failed to load batches";
+      }
+    );
   }
   loadBatches(): void {
-
+    this.errorMessage = null;
+    this.labBatchesService.getBatches().subscribe(
+      (data) => {
+        this.batches = data;
+      },
+      (error) => {
+        this.errorMessage = "Failed to load batches";
+      }
+    );
   }
   onBatchClick(batchId: number): void {
-
+    this.router.navigate([`/lab-worker/batches/${batchId}`]);
   }
 }

@@ -22,7 +22,7 @@ export class PatientListComponent {
   columnNames: string[] = [];
   errorMessage: string | null = null;
 
-  pageSize = 10;
+  pageSize = 20;
   currentPage = 1;
   totalPages = 1;
   totalCount = 0;

@@ -76,8 +76,7 @@ public class PatientsService
             .Include(tb => tb.TestOrders)
                 .ThenInclude(to=>to.TestType)
                 .ThenInclude(tt=>tt.TestNormalValues)
-            .Include(tb => tb.Patient.DateOfBirth)
-            .Include(tb => tb.Patient.Gender)
+            .Include(tb => tb.Patient)
             .Where(tb => tb.TestBatchId == testBatchId)
             .FirstOrDefaultAsync();
 
@@ -100,14 +99,15 @@ public class PatientsService
                 TestNormalValue? tnv = to.TestType.TestNormalValues.Where(tnv => tnv.Gender == sex && age >= tnv.MinAge && age <= tnv.MaxAge).First();
                 normalValue = tnv.MinResValue + " - " + tnv.MaxResValue;
             }
-            catch {
+            catch
+            {
                 normalValue = "N/A";
             }
             list.Add(new TestOrderLabWorkerDTO
             {
                 TestOrderId = to.TestOrderId,
                 Name = to.TestType.Name,
-                Result = to.TestResult.Result,
+                Result = to.TestResult?.Result,
                 Unit = to.TestType.MeasurementsUnit,
                 NormalValues = normalValue
             });

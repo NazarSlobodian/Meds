@@ -5,12 +5,12 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class LabBatchesService {
+export class BatchResultsService {
 
   private apiUrl = "https://localhost:7217/Patients/LabWorker/batches";
   constructor(private http: HttpClient) { }
 
-  getBatches(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}`, { withCredentials: true });
+  getResults(batchId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${batchId}`, { withCredentials: true });
   }
 }
