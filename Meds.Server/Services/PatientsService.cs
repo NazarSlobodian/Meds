@@ -52,18 +52,22 @@ public class PatientsService
         List<TestBatch> tbs = await _context.TestBatches.Where(tb => tb.PatientId == patientId).ToListAsync();
         return tbs.Select(tb => new TestBatchDTO(tb)).ToList();
     }
-    public async Task<List<TestBatchLabWorkerDTO>> GetLabWorkerBatchesAsync(int labWorkerId)
+    public async Task<ListWithTotalCount<TestBatchLabWorkerDTO>> GetLabWorkerBatchesAsync(int labWorkerId, int page, int pageSize)
     {
         int labId = await _context.Laboratories.Where(lab => lab.LabWorkers.Any(worker => worker.LabWorkerId == labWorkerId)).Select(lab => lab.LaboratoryId).FirstOrDefaultAsync();
         if (labId == 0)
             throw new Exception("Worker not in lab");
-        List<TestBatch> tbs = await _context.TestBatches
-            .Include(tb => tb.TestOrders.Where(to => to.LaboratoryId == labId))
+        var tbs = _context.TestBatches.AsQueryable();
+        tbs = tbs.Include(tb => tb.TestOrders.Where(to => to.LaboratoryId == labId))
             .Where(tb => tb.TestOrders
                 .Any(to => to.LaboratoryId == labId)
-                && tb.BatchStatus != "done")
+                && tb.BatchStatus != "done");
+        List<TestBatch> list = await tbs.OrderBy(x => x.DateOfCreation)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
-        return tbs.Select(tb => new TestBatchLabWorkerDTO(tb)).ToList();
+        int count = await tbs.CountAsync();
+        return new ListWithTotalCount<TestBatchLabWorkerDTO>(list.Select(tb => new TestBatchLabWorkerDTO(tb)).ToList(), count);
     }
     public async Task<List<TestOrderLabWorkerDTO>> GetTestOrdersLabWorkerAsync(int testBatchId, int labWorkerId)
     {

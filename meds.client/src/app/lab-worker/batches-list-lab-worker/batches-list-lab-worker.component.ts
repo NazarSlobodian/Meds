@@ -10,24 +10,26 @@ import { Router } from '@angular/router';
 export class BatchesListLabWorkerComponent {
   batches: any[] = [];
 
+  batchId: number | null = null;
+
   errorMessage: string | null = null;
+
+  page: number = 1;
+  pageSize: number = 20;
+  totalCount: number = 1;
+  totalPages: number = 1;
   constructor(private labBatchesService: LabBatchesService, private router: Router) { }
 
   ngOnInit(): void {
-    this.labBatchesService.getBatches().subscribe(
-      (data) => {
-        this.batches = data;
-      },
-      (error) => {
-        this.errorMessage = "Failed to load batches";
-      }
-    );
+    this.loadBatches();
   }
   loadBatches(): void {
     this.errorMessage = null;
-    this.labBatchesService.getBatches().subscribe(
+    this.labBatchesService.getBatches(this.page, this.pageSize).subscribe(
       (data) => {
-        this.batches = data;
+        this.batches = data.list;
+        this.totalPages = Math.ceil(data.totalCount / this.pageSize);
+        this.totalCount = data.totalCount;
       },
       (error) => {
         this.errorMessage = "Failed to load batches";
@@ -36,5 +38,17 @@ export class BatchesListLabWorkerComponent {
   }
   onBatchClick(batchId: number): void {
     this.router.navigate([`/lab-worker/batches/${batchId}`]);
+  }
+  onPageChange(page: number): void {
+    this.page = page;
+    this.loadBatches();
+    if (this.page > this.totalPages)
+      this.page = this.totalPages;
+  }
+  onSubmit(): void {
+    if (this.batchId === null) {
+      return;
+    }
+    this.onBatchClick(this.batchId);
   }
 }

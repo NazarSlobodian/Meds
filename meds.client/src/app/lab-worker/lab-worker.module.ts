@@ -4,6 +4,7 @@ import { LabWorkerRoutingModule } from './lab-worker-routing.module';
 import { BatchesListLabWorkerComponent } from './batches-list-lab-worker/batches-list-lab-worker.component';
 import { BatchResultsInputComponent } from './batches-list-lab-worker/batch-results-input/batch-results-input.component';
 import { FormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 
 
 
@@ -15,7 +16,8 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     LabWorkerRoutingModule,
-    FormsModule
+    FormsModule,
+    SharedModule
   ]
 })
 export class LabWorkerModule { }

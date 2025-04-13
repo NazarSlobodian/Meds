@@ -34,7 +34,7 @@ namespace Meds.Server.Controllers
         }
         [HttpGet("LabWorker/batches")]
         [Authorize(Policy = "LabWorker")]
-        public async Task<IActionResult> GetLabWorkerTestBatches()
+        public async Task<IActionResult> GetLabWorkerTestBatches([FromQuery] int page, [FromQuery] int pageSize)
         {
             Claim? labWorkerIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserID");
             if (labWorkerIdClaim == null)
@@ -42,7 +42,7 @@ namespace Meds.Server.Controllers
                 return Unauthorized(new { message = "No id in claims" });
             }
             int labWorkerId = int.Parse(labWorkerIdClaim.Value);
-            List<TestBatchLabWorkerDTO> testBatches = await _patientsService.GetLabWorkerBatchesAsync(labWorkerId);
+            ListWithTotalCount<TestBatchLabWorkerDTO> testBatches = await _patientsService.GetLabWorkerBatchesAsync(labWorkerId, page, pageSize);
             return Ok(testBatches);
         }
         [HttpGet("batches/{batchId}")]
@@ -68,7 +68,15 @@ namespace Meds.Server.Controllers
                 return Unauthorized(new { message = "No id in claims" });
             }
             int labWorkerId = int.Parse(labWorkerIdCLaim.Value);
-            List<TestOrderLabWorkerDTO> batchRes = await _patientsService.GetTestOrdersLabWorkerAsync(batchId, labWorkerId);
+            List<TestOrderLabWorkerDTO> batchRes = null;
+            try
+            {
+                batchRes = await _patientsService.GetTestOrdersLabWorkerAsync(batchId, labWorkerId);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Couldn't find the batch"});
+            }
             return Ok(batchRes);
         }
         [HttpGet]

@@ -1,6 +1,6 @@
 <button (click)="goBack()">&lt;-Back</button>
 <p>{{errorMessage}}</p>
-<p>Batch ID: {{batchId}}</p>
+<p *ngIf="errorMessage === null">Batch ID: {{batchId}}</p>
 
 
 <form (ngSubmit)="onSubmitClick()">
@@ -21,10 +21,10 @@
         <td>{{order.normalValues}}</td>
         <td>{{order.unit}}</td>
         <td>
-          <input name="result_{{order.testOrderId}}" type="number" [(ngModel)]="order.result" />
+          <input name="result_{{order.testOrderId}}" type="text" [(ngModel)]="order.result" />
         </td>
       </tr>
     </tbody>
   </table>
-  <button type="submit">Submit</button>
+  <button type="submit" [disabled]="errorMessage || hasInvalidResults()">Submit</button>
 </form>

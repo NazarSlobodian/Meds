@@ -2,6 +2,20 @@
   {{ errorMessage }}
 </div>
 
+<div>
+  <form (ngSubmit)="onSubmit()">
+    <input name="batchId" id ="batchId" type="number" [(ngModel)]="batchId" required/>
+    <button type="submit">Find</button>
+  </form>
+</div>
+<button (click)="loadBatches()">Refresh</button>
+
+<app-pagination [pageSize]="pageSize"
+                [currentPage]="page"
+                [totalPages]="totalPages"
+                (pageChanged)="onPageChange($event)">
+</app-pagination>
+
 <table>
   <thead>
     <tr>

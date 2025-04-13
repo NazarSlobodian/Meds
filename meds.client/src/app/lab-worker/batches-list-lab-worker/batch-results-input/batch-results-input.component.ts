@@ -22,7 +22,9 @@ export class BatchResultsInputComponent {
         this.orders = data;
       },
       (error) => {
-        this.errorMessage = "Failed to load batches";
+        this.errorMessage = error.error.message;
+        alert(error.error.message || "An error occurred");
+        this.router.navigate(['lab-worker/batches'])
       }
     );
 
@@ -32,9 +34,20 @@ export class BatchResultsInputComponent {
   }
   onSubmitClick(): void {
     this.batchResultsService.submitResults(this.orders).subscribe({
-      next: (res) => this.errorMessage = res,
+      next: (res) => {
+        this.goBack();
+      },
       error: (error) => this.errorMessage = error
     }
     );
   }
+  hasInvalidResults(): boolean {
+    return this.orders.some(order =>
+      order.result !== null &&
+      order.result !== undefined &&
+      (isNaN(order.result))
+    );
+  }
+
+
 }
