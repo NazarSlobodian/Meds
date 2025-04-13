@@ -76,7 +76,7 @@ export class AddOrderComponent implements OnInit {
     this.panelsToAdd.splice(index, 1);
   }
   submitOrder() {
-    if (this.testsToAdd.length === 0) {
+    if (this.testsToAdd.length === 0 && this.panelsToAdd.length === 0) {
       this.errorMessage = "No tests added";
       return;
     }

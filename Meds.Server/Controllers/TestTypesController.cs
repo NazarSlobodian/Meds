@@ -81,7 +81,7 @@ namespace Meds.Server.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(new { message = ex.InnerException?.Message ?? ex.Message });
             }
             return Ok(new { message = "added" });
         }
@@ -95,7 +95,7 @@ namespace Meds.Server.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(new { message = ex.InnerException?.Message ?? ex.Message });
             }
             return Ok(new { message = "updated"});
         }

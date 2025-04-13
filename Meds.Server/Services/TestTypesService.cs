@@ -76,25 +76,6 @@ public class TestTypesService
     }
     public async Task AddTestNormalValue(AdminTestNormalValueNew tnv)
     {
-        if (tnv.Gender != "m" && tnv.Gender != "f")
-        {
-            throw new Exception("Invalid gender");
-        }
-        if (tnv.MaxResValue < tnv.MinResValue)
-        {
-            throw new Exception("Invalid res gap");
-        }
-        if (tnv.MaxAge < tnv.MinAge)
-        {
-            throw new Exception("Invalid res gap");
-        }
-        TestNormalValue? otherNV = await _context.TestNormalValues.Where(t => t.Gender == tnv.Gender && t.TestTypeId == tnv.TestTypeId && (
-        (tnv.MinAge <= t.MaxAge && tnv.MinAge >= t.MinAge) || (tnv.MaxAge <= t.MaxAge && tnv.MaxAge >= t.MinAge) ||
-        (tnv.MinAge <= t.MinAge && tnv.MaxAge >= t.MaxAge))).FirstOrDefaultAsync();
-        if (otherNV != null)
-        {
-            throw new Exception("Overlap");
-        }
         await _context.TestNormalValues.AddAsync(
             new TestNormalValue()
             {
@@ -111,29 +92,6 @@ public class TestTypesService
     public async Task UpdateTestNormalValue(AdminTestNormalValue info)
     {
         TestNormalValue? tnv = await _context.TestNormalValues.FirstOrDefaultAsync(t => t.TestNormalValueId == info.TestNormalValueId);
-        if (tnv == null)
-        {
-            throw new Exception("Test type not found");
-        }
-        if (info.Gender != "m" && info.Gender != "f")
-        {
-            throw new Exception("Invalid gender");
-        }
-        if (info.MaxResValue < info.MinResValue)
-        {
-            throw new Exception("Invalid res gap");
-        }
-        if (info.MaxAge < info.MinAge)
-        {
-            throw new Exception("Invalid age gap");
-        }
-        TestNormalValue? otherNV = await _context.TestNormalValues.Where(t=> t.Gender == info.Gender && t.TestTypeId == tnv.TestTypeId && t.TestNormalValueId != info.TestNormalValueId && (
-        (info.MinAge <= t.MaxAge && info.MinAge >= t.MinAge) || (info.MaxAge <= t.MaxAge && info.MaxAge >= t.MinAge) ||
-        (info.MinAge <= t.MinAge && info.MaxAge >= t.MaxAge))).FirstOrDefaultAsync();
-        if (otherNV != null)
-        {
-            throw new Exception("Overlap");
-        }
         tnv.MinAge = info.MinAge;
         tnv.MaxAge = info.MaxAge;
         tnv.Gender = info.Gender;

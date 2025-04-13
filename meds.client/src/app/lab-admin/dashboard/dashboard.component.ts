@@ -12,7 +12,7 @@ export class DashboardComponent {
   goToTestEdit() {
     this.router.navigate(["/lab-admin/options/editTest"]);
   }
-  goToAnotherEdit() {
+  goToStats() {
     this.router.navigate(["/lab-admin/options/editTest"]);
   }
 

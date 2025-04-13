@@ -16,15 +16,11 @@
           <input type="number" id="cost" [(ngModel)]="testType.cost" name="cost" min="1" required>
         </div>
         <div class="form-group">
-          <label for="daysTillOverdue">Expiration time</label>
-          <input type="number" id="daysTillOverdue" [(ngModel)]="testType.daysTillOverdue" name="daysTillOverdue" min="1" required>
-        </div>
-        <div class="form-group">
           <label for="measurementsUnit">Measurements Unit</label>
           <input type="text" id="measurementsUnit" [(ngModel)]="testType.measurementsUnit" name="measurementsUnit" required>
         </div>
         <div>
-          <button type="submit" [disabled]="testType.cost<0.0 || testType.daysTillOverdue < 1 || testType.name.length<1 ||testType.measurementsUnit.length<1">Save</button>
+          <button type="submit" [disabled]="testType.cost<0.0 || testType.name.length<1 ||testType.measurementsUnit.length<1">Save</button>
         </div>
       </form>
     </div>

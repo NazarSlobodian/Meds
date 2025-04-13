@@ -12,7 +12,7 @@
       <td *ngFor="let column of columnNames">{{normal[column]}}</td>
       <td>
         <button (click)="editModal.openModal(normal)">Edit</button>
-        <button class="bad-button" (click)="deleteModal.openModal(normal.testNormalValuesId)">Delete</button>
+        <button class="bad-button" (click)="deleteModal.openModal(normal.testNormalValueId)">Delete</button>
     </tr>
   </tbody>
 </table>

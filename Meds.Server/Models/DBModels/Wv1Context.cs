@@ -255,9 +255,7 @@ public partial class Wv1Context : DbContext
 
             entity.HasIndex(e => e.TestTypeId, "normalValuesTestTypeID_idx");
 
-            entity.Property(e => e.TestNormalValueId)
-                .ValueGeneratedNever()
-                .HasColumnName("testNormalValueID");
+            entity.Property(e => e.TestNormalValueId).HasColumnName("testNormalValueID");
             entity.Property(e => e.Gender)
                 .HasMaxLength(1)
                 .IsFixedLength()
@@ -417,7 +415,7 @@ public partial class Wv1Context : DbContext
                 .HasColumnName("login");
             entity.Property(e => e.ReferencedId).HasColumnName("referencedID");
             entity.Property(e => e.Role)
-                .HasColumnType("enum('patient','receptionist','lab_worker','lab_admin')")
+                .HasColumnType("enum('patient','receptionist','lab_worker','lab_admin','admin')")
                 .HasColumnName("role");
         });
 

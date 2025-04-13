@@ -10,7 +10,6 @@ export class TestGeneralAddComponent {
   testType = {
     name: "name",
     cost: 0,
-    daysTillOverdue: 1,
     measurementsUnit: "kg/g"
   };
   isOpen = false;

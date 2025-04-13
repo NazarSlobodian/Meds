@@ -7,7 +7,6 @@ public class AdminTestTypeInfo
     public string Name { get; set; } = null!;
 
     public decimal Cost { get; set; }
-    public int DaysTillOverdue { get; set; }
     public string MeasurementsUnit { get; set; }
 
     public AdminTestTypeInfo(TestType tt)

@@ -7,15 +7,15 @@ import { AdminTestService } from '../../services/admin-test.service';
   styleUrl: './test-normal-values-delete-modal.component.css'
 })
 export class TestNormalValuesDeleteModalComponent {
-  testNormalValuesId: number = -1;
+  testNormalValueId: number = -1;
   isOpen = false;
   errorMessage: string | null = null;
   @Output() deleteSuccessful = new EventEmitter<void>();
 
   constructor(private adminTestService: AdminTestService) { }
 
-  openModal(testNormalValuesId: number) {
-    this.testNormalValuesId = testNormalValuesId;
+  openModal(testNormalValueId: number) {
+    this.testNormalValueId = testNormalValueId;
     this.isOpen = true;
   }
   closeModal() {
@@ -23,7 +23,7 @@ export class TestNormalValuesDeleteModalComponent {
     this.errorMessage = null;
   }
   submitDelete() {
-    this.adminTestService.deleteTestNormalValue(this.testNormalValuesId)
+    this.adminTestService.deleteTestNormalValue(this.testNormalValueId)
       .subscribe(
         (response) => {
           this.deleteSuccessful.emit();
