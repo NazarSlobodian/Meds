@@ -14,6 +14,7 @@ import { StatisticsComponent } from './statistics/statistics.component';
 import { TestOrdersComponent } from './statistics/test-orders/test-orders.component';
 import { RevenueComponent } from './statistics/revenue/revenue.component';
 import { ClientDistributionComponent } from './statistics/client-distribution/client-distribution.component';
+import { SharedModule } from '../shared/shared.module';
 
 
 
@@ -35,7 +36,8 @@ import { ClientDistributionComponent } from './statistics/client-distribution/cl
   imports: [
     CommonModule,
     LabAdminRoutingModule,
-    FormsModule
+    FormsModule,
+    SharedModule
   ]
 })
 export class AdminModule { }

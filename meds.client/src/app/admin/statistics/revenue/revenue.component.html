@@ -10,8 +10,8 @@
   <label>
     Month:
     <select [(ngModel)]="selectedMonth" (change)="updateChart()">
-      <option [ngValue]="null">--</option>
-      <option *ngFor="let month of availableMonths" [value]="month">{{month }}</option>
+      <option [ngValue]="null">{{null | monthTransform}}</option>
+      <option *ngFor="let month of availableMonths" [value]="month">{{month | monthTransform }}</option>
     </select>
   </label>
 </div>
