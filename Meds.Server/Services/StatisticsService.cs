@@ -14,27 +14,31 @@ public class StatisticsService
         List<YearlyCollectionPointRevenueStat> stats = await _context.TestBatches
             .Select(tb => new
             {
-                tb.Receptionist.CollectionPoint.Address,
+                Adress = tb.Receptionist.CollectionPoint.Address,
                 Year = tb.DateOfCreation.Year,
                 Month = tb.DateOfCreation.Month,
                 tb.Cost
             })
-            .GroupBy(x => new { x.Address, x.Year })
+            .GroupBy(x => x.Year)
             .Select(g => new YearlyCollectionPointRevenueStat
             {
-                LabAddress = g.Key.Address,
-                Year = g.Key.Year,
+                Year = g.Key,
                 Stats = g.GroupBy(x => x.Month)
                     .Select(mg => new MonthlyCollectionPointRevenueStat
                     {
                         Month = mg.Key,
-                        Revenue = mg.Sum(x => x.Cost)
+                        Stats = mg.GroupBy(x => x.Adress)
+                        .Select(gg => new CollectionPointRevenueStat
+                        {
+                            Address = gg.Key,
+                            Revenue = gg.Sum(x => x.Cost)
+                        })
+                        .ToList()
                     })
                     .OrderBy(m => m.Month)
                     .ToList()
             })
             .OrderBy(x => x.Year)
-            .ThenBy(x => x.LabAddress)
             .ToListAsync();
         return stats;
     }

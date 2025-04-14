@@ -1,2 +1,19 @@
 <button (click)="goBack()">&lt;-Back</button>
-<p>revenue works!</p>
+<div>
+  <label>
+    Year:
+    <select [(ngModel)]="selectedYear" (change)="updateChart()">
+      <option *ngFor="let year of availableYears" [value]="year">{{year}}</option>
+    </select>
+  </label>
+
+  <label>
+    Month:
+    <select [(ngModel)]="selectedMonth" (change)="updateChart()">
+      <option [ngValue]="null">--</option>
+      <option *ngFor="let month of availableMonths" [value]="month">{{month }}</option>
+    </select>
+  </label>
+</div>
+
+
