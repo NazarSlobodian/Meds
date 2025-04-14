@@ -37,9 +37,7 @@ export class RevenueComponent {
   selectedYear: number | null = null;
   selectedMonth: number | null = null;
 
-  colorScheme = {
-    domain: ['#5AA454']
-  };
+  myChart: Chart | null = null;
 
   constructor(private router: Router, private statisticsService: StatisticsService) { }
   goBack(): void {
@@ -47,41 +45,6 @@ export class RevenueComponent {
   }
   ngOnInit(): void {
     this.load();
-
-
-    const ctx = document.getElementById('myChart') as HTMLCanvasElement | null;
-    if (!ctx)
-      return;
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-          label: '# of Votes',
-          data: [12, 19, 3, 5, 2, 3],
-          borderWidth: 1,
-          backgroundColor: 'rgba(54, 162, 235, 0.6)',
-          borderColor: 'rgba(54, 162, 235, 1)'
-        },
-        {
-
-          label: '# of Votes',
-          data: [1, 9, 1, 2, 2, 3],
-          borderWidth: 1
-          }
-        ]
-      },
-      options: {
-        indexAxis: 'y',
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
-    });
-
-
   }
   load(): void {
     this.statisticsService.getYearlyRevenue().subscribe({
@@ -97,9 +60,10 @@ export class RevenueComponent {
     });
   }
   updateMonths(): void {
-    const yearStats = this.allStats.find(s => s.year === this.selectedYear);
+    const yearStats = this.allStats.find(s => s.year == this.selectedYear);
     this.availableMonths = yearStats?.stats.map((m: any) => m.month) || [];
     this.selectedMonth = null;
+    this.updateChart();
   }
   updateChart(): void {
     const yearData = this.allStats.find(y => y.year == this.selectedYear);
@@ -123,6 +87,42 @@ export class RevenueComponent {
     });
 
     console.log(revenueMap);
-    //this.chartData = Array.from(revenueMap.entries()).map(([name, value]) => ({ name, value }));
+    let chartData = Array.from(revenueMap.entries()).map(([name, value]) => ({ name, value }));
+
+
+
+    const ctx = document.getElementById('myChart') as HTMLCanvasElement | null;
+    if (!ctx)
+      return;
+    if (this.myChart)
+      this.myChart.destroy();
+    this.myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: chartData.map(x => x.name),
+        datasets: [{
+          label: '# of Votes',
+          data: chartData.map(x => x.value),
+          borderWidth: 1,
+          backgroundColor: 'rgba(54, 162, 235, 0.6)',
+          borderColor: 'rgba(54, 162, 235, 1)'
+        },
+        {
+
+          label: '# of Votes',
+          data: [1, 9, 1, 2, 2, 3],
+          borderWidth: 1
+        }
+        ]
+      },
+      options: {
+        indexAxis: 'y',
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
   }
 }

@@ -2,7 +2,7 @@
 <div>
   <label>
     Year:
-    <select [(ngModel)]="selectedYear" (change)="updateChart()">
+    <select [(ngModel)]="selectedYear" (change)="updateMonths()">
       <option *ngFor="let year of availableYears" [value]="year">{{year}}</option>
     </select>
   </label>
