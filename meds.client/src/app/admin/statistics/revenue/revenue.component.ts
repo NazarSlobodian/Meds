@@ -37,6 +37,10 @@ export class RevenueComponent {
   selectedYear: number | null = null;
   selectedMonth: number | null = null;
 
+  colorScheme = {
+    domain: ['#5AA454']
+  };
+
   constructor(private router: Router, private statisticsService: StatisticsService) { }
   goBack(): void {
     this.router.navigate(["/admin/options/statistics"]);
@@ -55,8 +59,17 @@ export class RevenueComponent {
         datasets: [{
           label: '# of Votes',
           data: [12, 19, 3, 5, 2, 3],
+          borderWidth: 1,
+          backgroundColor: 'rgba(54, 162, 235, 0.6)',
+          borderColor: 'rgba(54, 162, 235, 1)'
+        },
+        {
+
+          label: '# of Votes',
+          data: [1, 9, 1, 2, 2, 3],
           borderWidth: 1
-        }]
+          }
+        ]
       },
       options: {
         indexAxis: 'y',
