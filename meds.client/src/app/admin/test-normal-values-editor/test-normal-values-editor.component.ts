@@ -31,7 +31,7 @@ export class TestNormalValuesEditorComponent {
     )
   }
   goBack() {
-    this.router.navigate(["/lab-admin/options/editTest"]);
+    this.router.navigate(["admin/options/editTest"]);
   }
   onUpdateSuccess() {
     this.ngOnInit();

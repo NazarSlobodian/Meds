@@ -18,7 +18,7 @@ export class TestEditorComponent {
     this.loadTestTypes();
   }
   goBack() {
-    this.router.navigate(["/lab-admin/options"]);
+    this.router.navigate(["/admin/options"]);
   }
   onUpdateSuccess() {
     this.loadTestTypes();
@@ -39,6 +39,6 @@ export class TestEditorComponent {
       )
   }
   onTestSelectNormalValues(id: number) {
-    this.router.navigate([`/lab-admin/options/editTest/${id}/normal-values`]);
+    this.router.navigate([`/admin/options/editTest/${id}/normal-values`]);
   }
 }

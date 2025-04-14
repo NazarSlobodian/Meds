@@ -59,6 +59,7 @@ namespace Meds.Server
             builder.Services.AddScoped<AuthService>();
             builder.Services.AddScoped<PatientsService>();
             builder.Services.AddScoped<TestTypesService>();
+            builder.Services.AddScoped<StatisticsService>();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>

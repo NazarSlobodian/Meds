@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { LabAdminRoutingModule } from './lab-admin-routing.module';
+import { LabAdminRoutingModule } from './admin-routing.module';
 import { TestEditorComponent } from './test-editor/test-editor.component';
 import { TestGeneralEditorComponent } from './test-general-editor/test-general-editor.component';
 import { TestNormalValuesEditorComponent } from './test-normal-values-editor/test-normal-values-editor.component';
@@ -10,6 +10,10 @@ import { TestGeneralAddComponent } from './test-general-add/test-general-add.com
 import { TestNormalValuesEditModalComponent } from './test-normal-values-editor/test-normal-values-edit-modal/test-normal-values-edit-modal.component';
 import { TestNormalValuesDeleteModalComponent } from './test-normal-values-editor/test-normal-values-delete-modal/test-normal-values-delete-modal.component';
 import { TestNormalValuesAddModalComponent } from './test-normal-values-editor/test-normal-values-add-modal/test-normal-values-add-modal.component';
+import { StatisticsComponent } from './statistics/statistics.component';
+import { TestOrdersComponent } from './statistics/test-orders/test-orders.component';
+import { RevenueComponent } from './statistics/revenue/revenue.component';
+import { ClientDistributionComponent } from './statistics/client-distribution/client-distribution.component';
 
 
 
@@ -23,6 +27,10 @@ import { TestNormalValuesAddModalComponent } from './test-normal-values-editor/t
     TestNormalValuesEditModalComponent,
     TestNormalValuesDeleteModalComponent,
     TestNormalValuesAddModalComponent,
+    StatisticsComponent,
+    TestOrdersComponent,
+    RevenueComponent,
+    ClientDistributionComponent,
   ],
   imports: [
     CommonModule,
@@ -30,4 +38,4 @@ import { TestNormalValuesAddModalComponent } from './test-normal-values-editor/t
     FormsModule
   ]
 })
-export class LabAdminModule { }
+export class AdminModule { }

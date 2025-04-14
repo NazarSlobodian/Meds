@@ -15,7 +15,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   if (authService.getRole() === 'lab_worker' && requestedPath.startsWith('/lab-worker')) {
     return true;
   }
-  if (authService.getRole() === "admin" && requestedPath.startsWith("/lab-admin")) {
+  if (authService.getRole() === "admin" && requestedPath.startsWith("/admin")) {
     return true;
   }
   router.navigate(['/login']);

@@ -29,7 +29,7 @@ export class LoginFormComponent {
               this.router.navigate(['/lab-worker']);
             }
             else if (response.role === "admin") {
-              this.router.navigate(["/lab-admin"]);
+              this.router.navigate(["/admin"]);
             }
             else {
               console.error("Role not implemented");

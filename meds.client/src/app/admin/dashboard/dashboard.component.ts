@@ -10,10 +10,10 @@ export class DashboardComponent {
 
   constructor(private router: Router) { }
   goToTestEdit() {
-    this.router.navigate(["/lab-admin/options/editTest"]);
+    this.router.navigate(["/admin/options/editTest"]);
   }
   goToStats() {
-    this.router.navigate(["/lab-admin/options/editTest"]);
+    this.router.navigate(["/admin/options/editTest"]);
   }
 
 }
