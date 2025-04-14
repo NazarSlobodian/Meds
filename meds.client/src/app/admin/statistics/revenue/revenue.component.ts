@@ -1,6 +1,27 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { StatisticsService } from '../services/statistics.service';
+import {
+  Chart,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Title,
+  Tooltip,
+  Legend,
+  BarController
+} from 'chart.js';
+
+// Register the required components
+Chart.register(
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Title,
+  Tooltip,
+  Legend,
+  BarController
+);
 
 @Component({
   selector: 'app-revenue',
@@ -22,6 +43,32 @@ export class RevenueComponent {
   }
   ngOnInit(): void {
     this.load();
+
+
+    const ctx = document.getElementById('myChart') as HTMLCanvasElement | null;
+    if (!ctx)
+      return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+          label: '# of Votes',
+          data: [12, 19, 3, 5, 2, 3],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+
   }
   load(): void {
     this.statisticsService.getYearlyRevenue().subscribe({
