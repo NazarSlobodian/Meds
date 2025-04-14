@@ -15,14 +15,18 @@ namespace Meds.Server.Controllers
         {
             _statisticsService = statisticsService;
         }
-        [HttpGet("admin")]
+        [HttpGet("yearlyRevenue")]
         [Authorize(Policy = "Admin")]
         public async Task<IActionResult> GetYearlyRevenueStats()
         {
-            List<YearlyRevenueStat> list;
+            List<YearlyCollectionPointRevenueStat> list;
             try
             {
                 list = await _statisticsService.GetYearlyRevenueStats();
+            }
+            catch
+            {
+                return BadRequest(new { message = "Couldn't get statistics" });
             }
             return Ok(list);
         }

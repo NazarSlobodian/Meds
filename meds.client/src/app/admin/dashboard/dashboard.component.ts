@@ -13,7 +13,7 @@ export class DashboardComponent {
     this.router.navigate(["/admin/options/editTest"]);
   }
   goToStats() {
-    this.router.navigate(["/admin/options/editTest"]);
+    this.router.navigate(["/admin/options/statistics"]);
   }
 
 }
