@@ -26,13 +26,15 @@ export class BatchDetailComponent implements OnInit {
         this.batchResults = data;
 
         for (const test of this.batchResults.testResults) {
-          let group = this.groupedResults.find(g => g.panelName === test.panelName);
+          const panelName = test.panelName ?? 'Other';  // use 'Other' if null/undefined
+          let group = this.groupedResults.find(g => g.panelName === panelName);
           if (!group) {
-            group = { panelName: test.panelName || 'Other', tests: [] };
+            group = { panelName, tests: [] };
             this.groupedResults.push(group);
           }
           group.tests.push(test);
         }
+
 
       },
       (err) => {

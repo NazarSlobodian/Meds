@@ -17,7 +17,8 @@
       "applicationUrl": "http://localhost:5268",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
+        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy",
+        "API_KEY": "f2ec01d0dcab55ee03c8b12d0bdc01d8-17c877d7-6f72b202"
       }
     },
     "https": {
@@ -28,7 +29,8 @@
       "applicationUrl": "https://localhost:7217;http://localhost:5268",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
+        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy",
+        "API_KEY": "f2ec01d0dcab55ee03c8b12d0bdc01d8-17c877d7-6f72b202"
       }
     },
     "IIS Express": {
@@ -37,7 +39,8 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
+        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy",
+        "API_KEY": "f2ec01d0dcab55ee03c8b12d0bdc01d8-17c877d7-6f72b202"
       }
     }
   }

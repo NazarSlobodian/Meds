@@ -60,7 +60,7 @@ public class PatientsService
         var tbs = _context.TestBatches.AsQueryable();
         tbs = tbs.Include(tb => tb.TestOrders.Where(to => to.LaboratoryId == labId))
             .Where(tb => tb.TestOrders
-                .Any(to => to.LaboratoryId == labId)
+                .Any(to => to.LaboratoryId == labId && to.TestResult == null)
                 && tb.BatchStatus != "done");
         List<TestBatch> list = await tbs.OrderBy(x => x.DateOfCreation)
             .Skip((page - 1) * pageSize)
@@ -76,7 +76,7 @@ public class PatientsService
             throw new Exception("Worker not in lab");
         TestBatch? tb = await _context.TestBatches
             .Include(tb => tb.TestOrders
-                .Where(to => to.LaboratoryId == labId))
+                .Where(to => to.LaboratoryId == labId && to.TestResult == null))
                 .ThenInclude(to => to.TestResult)
             .Include(tb => tb.TestOrders)
                 .ThenInclude(to => to.TestType)
@@ -251,8 +251,9 @@ public class PatientsService
             throw new ApplicationException($"Couldn't add order. Code 432");
         }
     }
-    public async Task ValidateAndSubmitResultsAsync(List<TestOrderLabWorkerDTO> results)
+    public async Task ValidateAndSubmitResultsAsync(List<TestOrderLabWorkerDTO> results, int labWorkerId)
     {
+        int labId = await _context.Laboratories.Where(lab => lab.LabWorkers.Any(worker => worker.LabWorkerId == labWorkerId)).Select(lab => lab.LaboratoryId).FirstOrDefaultAsync();
         if (results == null || results.Count == 0)
         {
             throw new Exception("No results submitted");
@@ -261,7 +262,7 @@ public class PatientsService
         List<TestOrder> orders = null;
         try
         {
-            orders = await _context.TestBatches.Where(tb => tb.TestOrders.Any(to => to.TestOrderId == id)).Include(tb => tb.TestOrders).ThenInclude(to=>to.TestResult).SelectMany(tb => tb.TestOrders).ToListAsync();
+            orders = await _context.TestBatches.Where(tb => tb.TestOrders.Any(to => to.TestOrderId == id)).Include(tb => tb.TestOrders).ThenInclude(to=>to.TestResult).SelectMany(tb => tb.TestOrders).Where(to=>to.LaboratoryId == labId).ToListAsync();
         }
         catch (Exception ex)
         {

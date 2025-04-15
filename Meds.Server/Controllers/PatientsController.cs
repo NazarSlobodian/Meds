@@ -157,8 +157,8 @@ namespace Meds.Server.Controllers
         {
             try
             {
-                var technicianId = int.Parse(User.FindFirst("UserID").Value);
-                await _patientsService.ValidateAndSubmitResultsAsync(results);
+                var labWorkerId = int.Parse(User.FindFirst("UserID").Value);
+                await _patientsService.ValidateAndSubmitResultsAsync(results, labWorkerId);
             }
             catch (Exception ex)
             {
