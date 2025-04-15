@@ -68,7 +68,7 @@ export class ClientDistributionComponent {
         labels: this.allStats.filter(x => x.gender == "m").map(x => x.ageGroup),
         datasets: [{
           label: '# of male clients',
-          data: this.allStats.filter(x => x.gender == "m").map(x => x.count),
+          data: this.allStats.filter(x => x.gender == "m").map(x => -x.count),
           borderWidth: 1,
           backgroundColor: 'rgba(54, 162, 235, 0.6)',
           borderColor: 'rgba(0, 94, 141, 0.8)'
@@ -83,10 +83,28 @@ export class ClientDistributionComponent {
         ]
       },
       options: {
-        indexAxis: 'x',
+        indexAxis: 'y',
         scales: {
+          x: {
+            stacked: true,
+            ticks: {
+              callback: function (value) {
+                return Math.abs(value as number);
+              }
+            }
+          },
           y: {
-            beginAtZero: true
+            stacked: true,
+            reverse: true
+          }
+        },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function (context) {
+                return `${context.dataset.label}: ${Math.abs(context.raw as number)}`;
+              }
+            }
           }
         }
       }
