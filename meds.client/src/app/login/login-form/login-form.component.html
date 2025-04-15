@@ -11,6 +11,12 @@
   </div>
 
   <button type="submit">Login</button>
-
+  <button type="button" (click)="emailInputModal.openModal()">Register</button>
   <div *ngIf="loginError" class="error">Invalid credentials</div>
 </form>
+
+<app-email-input #emailInputModal
+                 (emailEntered)="codeInputModal.openModal($event)">
+</app-email-input>
+<app-code-input #codeInputModal>
+</app-code-input>
