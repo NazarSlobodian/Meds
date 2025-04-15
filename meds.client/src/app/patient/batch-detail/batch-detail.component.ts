@@ -35,6 +35,11 @@ export class BatchDetailComponent implements OnInit {
           group.tests.push(test);
         }
 
+        this.groupedResults.sort((a, b) => {
+          if (a.panelName === 'Other') return 1;
+          if (b.panelName === 'Other') return -1;
+          return a.panelName.localeCompare(b.panelName);
+        });
 
       },
       (err) => {

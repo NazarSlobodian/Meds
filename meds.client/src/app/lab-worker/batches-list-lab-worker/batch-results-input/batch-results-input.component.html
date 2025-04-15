@@ -1,6 +1,6 @@
 <button (click)="goBack()">&lt;-Back</button>
 <p>{{errorMessage}}</p>
-<p *ngIf="errorMessage === null">Batch ID: {{batchId}}</p>
+<p>Batch ID: {{batchId}}</p>
 
 
 <form (ngSubmit)="onSubmitClick()">
@@ -26,5 +26,5 @@
       </tr>
     </tbody>
   </table>
-  <button type="submit" [disabled]="errorMessage || hasInvalidResults()">Submit</button>
+  <button type="submit" [disabled]="hasInvalidResults()">Submit</button>
 </form>

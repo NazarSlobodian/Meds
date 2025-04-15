@@ -91,6 +91,7 @@ namespace Meds.Server
 
             app.MapFallbackToFile("/index.html");
 
+            QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 
             app.Run();
         }

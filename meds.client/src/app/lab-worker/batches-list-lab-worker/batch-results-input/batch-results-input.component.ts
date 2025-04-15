@@ -25,7 +25,7 @@ export class BatchResultsInputComponent {
           this.orders = data;
         },
         (error) => {
-          this.errorMessage = error.error.message;
+          this.errorMessage = error.message;
           alert(error.error.message || "An error occurred");
           this.router.navigate(['lab-worker/batches'])
         }
@@ -50,11 +50,16 @@ export class BatchResultsInputComponent {
     this.router.navigate(["/lab-worker/batches"]);
   }
   onSubmitClick(): void {
+    for (const res of this.orders) {
+      if (res.result === "") {
+        res.result = null;
+      }
+    }
     this.batchResultsService.submitResults(this.orders).subscribe({
       next: (res) => {
         this.goBack();
       },
-      error: (error) => this.errorMessage = error
+      error: (error) => this.errorMessage = error.message
     }
     );
   }

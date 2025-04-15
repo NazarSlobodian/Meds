@@ -10,17 +10,19 @@ using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using System.IO;
 using Microsoft.OpenApi.Validations;
+using static System.Net.Mime.MediaTypeNames;
 namespace MailGunExamples
 {
-    class MailService
+    public class MailService
     {
         private readonly Wv1Context _context;
         public MailService(Wv1Context context)
         {
             _context = context;
+           
         }
 
-        public static async Task<RestResponse> Send()
+        public static async Task Send(BatchResultsDTO dto)
         {
             var options = new RestClientOptions("https://api.mailgun.net")
             {
@@ -30,16 +32,30 @@ namespace MailGunExamples
             var client = new RestClient(options);
             var request = new RestRequest("/v3/sandbox7d22d6dfd8e24bcfb293d7cfacfccbaf.mailgun.org/messages", RestSharp.Method.Post);
             request.AlwaysMultipartFormData = true;
+
+            // Basic email info
             request.AddParameter("from", "Mailgun Sandbox <postmaster@sandbox7d22d6dfd8e24bcfb293d7cfacfccbaf.mailgun.org>");
             request.AddParameter("to", "Nazar <nazar.slobodian.pz.2022@lpnu.ua>");
-            request.AddParameter("subject", "Hello Nazar");
-            request.AddParameter("text", "Congratulations Nazar, you just sent an email with Mailgun! You are truly awesome!");
-            return await client.ExecuteAsync(request);
+            request.AddParameter("subject", "Medlab results");
+            request.AddParameter("text", "Thank you for using our services! Your report is attached as PDF.");
+
+            // Generate and attach PDF
+            var pdfBytes = MakePdfResult(dto);
+            request.AddFile("attachment", pdfBytes, $"Medlab{dto.BatchID}.pdf", "application/pdf");
+
+            await client.ExecuteAsync(request);
         }
+
         public static byte[] MakePdfResult(BatchResultsDTO dto)
         {
             var grouped = dto.TestResults
                 .GroupBy(t => t.PanelName ?? "Other")
+                .OrderBy(g => g.Key, Comparer<string>.Create((a, b) =>
+                {
+                    if (a == "Other") return 1;
+                    if (b == "Other") return -1;
+                    return string.Compare(a, b);
+                }))
                 .ToList();
 
             var document = Document.Create(container =>
@@ -53,13 +69,17 @@ namespace MailGunExamples
                     {
                         col.Item().Row(row =>
                         {
+                            row.RelativeItem(1).AlignLeft().Text("Medlab");
+                        });
+                        col.Item().Row(row =>
+                        {
                             row.RelativeItem().Column(left =>
                             {
                                 left.Item().Text($"Lab Address: {dto.LabAddress}");
                                 left.Item().Text($"Email: {dto.Email}");
                                 left.Item().Text($"Phone: {dto.Phone}");
                                 left.Item().Text($"Batch ID: {dto.BatchID}");
-                                left.Item().Text($"Date: {dto.TimeOfCreation:yyyy-MM-dd HH-mm}");
+                                left.Item().Text($"Date: {dto.TimeOfCreation:yyyy-MM-dd HH:mm}");
                             });
 
                             row.RelativeItem().Column(right =>
@@ -69,8 +89,14 @@ namespace MailGunExamples
                                 right.Item().AlignRight().Text($"Date of birth: {dto.DateOfBirth}");
                             });
                         });
-                        col.Item().LineHorizontal(1).LineColor("#211446");
-
+                        col.Item().LineHorizontal(2).LineColor("#211446");
+                        col.Item().Row(row =>
+                        {
+                            row.RelativeItem(1).AlignLeft().Text("Test name");
+                            row.RelativeItem(1).AlignCenter().Text("Result");
+                            row.RelativeItem(1).AlignCenter().Text("Normal values");
+                            row.RelativeItem(1).AlignRight().Text("Units");
+                        });
                         foreach (var group in grouped)
                         {
                             col.Item().PaddingTop(10).Text(group.Key).Bold().FontSize(14);
@@ -85,7 +111,7 @@ namespace MailGunExamples
                                 });
                             }
                         }
-                        col.Item().PaddingVertical(5).LineHorizontal(0.5f).LineColor("#211446");
+                        col.Item().PaddingVertical(5).LineHorizontal(1.0f).LineColor("#211446");
                     });
                 });
             });
@@ -96,8 +122,9 @@ namespace MailGunExamples
         public async Task SendResultsAndSave(BatchResultsDTO dto)
         {
             byte[] pdfBytes = MakePdfResult(dto);
-            string filePath = "d:\\Downloads\\";
+            string filePath = $"d:\\Downloads\\{dto.BatchID}.pdf";
             File.WriteAllBytes(filePath, pdfBytes);
+            await Send(dto);
         }
     }
 }

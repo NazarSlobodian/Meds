@@ -29,8 +29,10 @@ export class BatchesListLabWorkerComponent {
     this.labBatchesService.getBatches(this.page, this.pageSize).subscribe(
       (data) => {
         this.batches = data.list;
-        this.totalPages = Math.ceil(data.totalCount / this.pageSize);
         this.totalCount = data.totalCount;
+        if (this.totalCount == 0)
+          this.totalPages = 1;
+        else this.totalPages = Math.ceil(data.totalCount / this.pageSize);
       },
       (error) => {
         this.errorMessage = "Failed to load batches";

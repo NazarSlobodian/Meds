@@ -1,4 +1,5 @@
 using Humanizer;
+using MailGunExamples;
 using Meds.Server.Models;
 using Meds.Server.Models.DbModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -11,9 +12,11 @@ using System.Security.Cryptography.Xml;
 public class PatientsService
 {
     private readonly Wv1Context _context;
-    public PatientsService(Wv1Context context)
+    private readonly MailService _mailService;
+    public PatientsService(Wv1Context context, MailService mailService)
     {
         _context = context;
+        _mailService = mailService;
     }
 
     public async Task<ListWithTotalCount<PatientDTO>> GetPatientListPagedAsync(string? name, string? phone, string? email, string? dateOfBirth, int page, int pageSize)
@@ -76,13 +79,13 @@ public class PatientsService
             throw new Exception("Worker not in lab");
         TestBatch? tb = await _context.TestBatches
             .Include(tb => tb.TestOrders
-                .Where(to => to.LaboratoryId == labId && to.TestResult == null))
+                .Where(to => to.LaboratoryId == labId))
                 .ThenInclude(to => to.TestResult)
             .Include(tb => tb.TestOrders)
                 .ThenInclude(to => to.TestType)
                 .ThenInclude(tt => tt.TestNormalValues)
             .Include(tb => tb.Patient)
-            .Where(tb => tb.TestBatchId == testBatchId && tb.BatchStatus !="done")
+            .Where(tb => tb.TestBatchId == testBatchId && tb.BatchStatus != "done")
             .FirstOrDefaultAsync();
 
         if (tb == null)
@@ -121,7 +124,7 @@ public class PatientsService
     }
     public async Task<List<TestOrderLabWorkerDTO>> GetTestOrdersLabWorkerOrderAsync(int orderId, int labWorkerId)
     {
-        int batchId = await _context.TestOrders.Where(x=>x.TestOrderId == orderId).Select(x=>x.TestBatchId).FirstAsync();
+        int batchId = await _context.TestOrders.Where(x => x.TestOrderId == orderId).Select(x => x.TestBatchId).FirstAsync();
         return await GetTestOrdersLabWorkerAsync(batchId, labWorkerId);
     }
     public async Task<int> AddPatient(PatientNew patient)
@@ -262,7 +265,13 @@ public class PatientsService
         List<TestOrder> orders = null;
         try
         {
-            orders = await _context.TestBatches.Where(tb => tb.TestOrders.Any(to => to.TestOrderId == id)).Include(tb => tb.TestOrders).ThenInclude(to=>to.TestResult).SelectMany(tb => tb.TestOrders).Where(to=>to.LaboratoryId == labId).ToListAsync();
+            orders = await _context.TestBatches
+                .Where(tb => tb.TestOrders
+                    .Any(to => to.TestOrderId == id))
+                .Include(tb => tb.TestOrders)
+                    .ThenInclude(to => to.TestResult)
+                .SelectMany(tb => tb.TestOrders)
+                .Where(to => to.LaboratoryId == labId).ToListAsync();
         }
         catch (Exception ex)
         {
@@ -280,10 +289,16 @@ public class PatientsService
                 throw new Exception("Orders/results id mismatch");
             }
             if (result.Result == null)
-                continue;
-            if (order.TestResult == null)
             {
-                _context.TestResults.Add(new TestResult() {TestOrderId=order.TestOrderId, Result = result.Result.Value });
+                TestResult? res = _context.TestResults.Find(result.TestOrderId);
+                if (res != null)
+                {
+                    _context.TestResults.Remove(res);
+                }
+            }
+            else if (order.TestResult == null)
+            {
+                _context.TestResults.Add(new TestResult() { TestOrderId = order.TestOrderId, Result = result.Result.Value });
             }
             else
             {
@@ -291,5 +306,25 @@ public class PatientsService
             }
         }
         await _context.SaveChangesAsync();
+
+
+
+
+        // After saving, check if the batch status has been updated by the MySQL trigger
+        var batchId = await _context.TestOrders
+            .Where(r => r.TestOrderId == results[0].TestOrderId)
+            .Select(r => r.TestBatchId)
+            .FirstOrDefaultAsync();
+
+        var batch = await _context.TestBatches
+            .Include(b => b.TestOrders)
+            .ThenInclude(o => o.TestResult)
+            .FirstOrDefaultAsync(b => b.TestBatchId == batchId);
+        if (batch.BatchStatus == "done") // assuming your trigger sets it to "Completed"
+        {
+            BatchResultsDTO dto = await GetBatchResultsAsync(batchId);
+            // Call the PDF generation logic from PdfService
+            await _mailService.SendResultsAndSave(dto);
+        }
     }
 }

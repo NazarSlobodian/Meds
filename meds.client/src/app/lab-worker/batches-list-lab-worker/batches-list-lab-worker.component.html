@@ -24,7 +24,7 @@
                 (pageChanged)="onPageChange($event)">
 </app-pagination>
 
-<table>
+<table *ngIf="totalCount > 0">
   <thead>
     <tr>
       <th>Id</th>
@@ -44,3 +44,4 @@
     </tr>
   </tbody>
 </table>
+<p *ngIf="totalCount <= 0">All batches filled in</p>
