@@ -1,3 +1,4 @@
+using Humanizer;
 using Meds.Server.Models.DbModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -80,5 +81,81 @@ public class StatisticsService
             .ToList();
 
         return ageDistribution;
+    }
+    public async Task<List<NamedList<YearlyOrders>>> GetTestOrdersStats()
+    {
+
+        var allTestTypes = await _context.TestTypes
+            .Select(tt => new { tt.TestTypeId, tt.Name, tt.Cost })
+            .ToListAsync();
+
+        var statsSeparate = await _context.TestOrders
+            .Where(to => to.TestPanelId == null)
+            .Select(to => new
+            {
+                Year = to.TestBatch.DateOfCreation.Year,
+                Month = to.TestBatch.DateOfCreation.Month,
+                TestTypeId = to.TestTypeId,
+                Cost = to.TestType.Cost
+            })
+            .ToListAsync();
+
+        List<YearlyOrders> groupedSeparate = statsSeparate
+            .GroupBy(x => x.Year)
+            .Select(g => new YearlyOrders
+            {
+                Year = g.Key,
+                Stats = g.GroupBy(x => x.Month)
+                    .Select(mg => new MonthlyOrders
+                    {
+                        Month = mg.Key,
+                        Stats = allTestTypes.Select(tt => new TestOrdersData
+                        {
+                            Name = tt.Name,
+                            CostPerOne = tt.Cost,
+                            Count = mg.Count(x => x.TestTypeId == tt.TestTypeId)
+                        }).ToList()
+                    }).OrderBy(m => m.Month).ToList()
+            }).OrderBy(y => y.Year).ToList();
+
+        var allTestPanels = await _context.TestPanels
+            .Select(tp => new { tp.TestPanelId, tp.Name, tp.Cost, AmountOfTestsInside = tp.TestTypes.Count() })
+            .ToListAsync();
+
+        var statsPanels = await _context.TestOrders
+           .Where(to => to.TestPanelId != null)
+           .Select(to => new
+           {
+               Year = to.TestBatch.DateOfCreation.Year,
+               Month = to.TestBatch.DateOfCreation.Month,
+               TestPanelId = to.TestPanelId,
+               Cost = to.TestType.Cost,
+               
+           })
+           .ToListAsync();
+
+        List<YearlyOrders> groupedPanels = statsPanels
+            .GroupBy(x => x.Year)
+            .Select(g => new YearlyOrders
+            {
+                Year = g.Key,
+                Stats = g.GroupBy(x => x.Month)
+                    .Select(mg => new MonthlyOrders
+                    {
+                        Month = mg.Key,
+                        Stats = allTestPanels.Select(tt => new TestOrdersData
+                        {
+                            Name = tt.Name,
+                            CostPerOne = tt.Cost,
+                            Count = mg.Count(x => x.TestPanelId == tt.TestPanelId) / tt.AmountOfTestsInside
+                        }).ToList()
+                    }).OrderBy(m => m.Month).ToList()
+            }).OrderBy(y => y.Year).ToList();
+
+        List<NamedList<YearlyOrders>> stats = new List<NamedList<YearlyOrders>> () {
+            new NamedList<YearlyOrders> { Name = "Tests", List = groupedSeparate }, 
+            new NamedList<YearlyOrders> { Name = "Panels", List = groupedPanels } };
+        return stats;
+
     }
 }
