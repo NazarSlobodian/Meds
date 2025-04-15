@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -33,6 +34,21 @@ namespace Meds.Server.Controllers
 
             await HttpContext.SignInAsync("CookieAuth", principal);
             return Ok(new { role = role.RoleName, userId = role.AccountId });
+        }
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(RequestValue<string> email)
+        {
+            return Ok();
+        }
+        [HttpPost("submitCode")]
+        public async Task<IActionResult> SubmitCode(RequestValue<string> code)
+        {
+            return Ok();
+        }
+        [HttpPost("finishRegistration")]
+        public async Task<IActionResult> FinishRegistration(LoginModel loginModel)
+        {
+            return Ok();
         }
     }
 }

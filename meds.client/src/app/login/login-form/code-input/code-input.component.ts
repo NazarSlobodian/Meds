@@ -15,8 +15,8 @@ export class CodeInputComponent {
 
   constructor(private authService: AuthService) { }
 
-  openModal(testType: any) {
-    this.email = "";
+  openModal(email: string) {
+    this.email = email;
     this.isOpen = true;
   }
   closeModal() {
