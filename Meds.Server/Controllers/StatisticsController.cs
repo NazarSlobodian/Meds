@@ -24,7 +24,22 @@ namespace Meds.Server.Controllers
             {
                 list = await _statisticsService.GetYearlyRevenueStats();
             }
-            catch
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Couldn't get statistics" });
+            }
+            return Ok(list);
+        }
+        [HttpGet("ageDistribution")]
+        [Authorize(Policy = "Admin")]
+        public async Task<IActionResult> GetAgeDistributionsStats()
+        {
+            List<AgeCount> list;
+            try
+            {
+                list = await _statisticsService.GetAgeDistributionStats();
+            }
+            catch (Exception ex)
             {
                 return BadRequest(new { message = "Couldn't get statistics" });
             }

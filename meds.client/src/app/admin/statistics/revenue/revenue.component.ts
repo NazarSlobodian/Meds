@@ -56,6 +56,7 @@ export class RevenueComponent {
       },
       error: (error) => {
         alert(error.message);
+        this.goBack()
       }
     });
   }
@@ -105,13 +106,7 @@ export class RevenueComponent {
           data: chartData.map(x => x.value),
           borderWidth: 1,
           backgroundColor: 'rgba(54, 162, 235, 0.6)',
-          borderColor: 'rgba(54, 162, 235, 1)'
-        },
-        {
-
-          label: '# of Votes',
-          data: [1, 9, 1, 2, 2, 3],
-          borderWidth: 1
+          borderColor: 'rgba(0, 94, 141, 0.8)'
         }
         ]
       },

@@ -16,6 +16,6 @@ export class StatisticsService {
     return this.http.get(`${this.apiUrl}/testOrdersNumbers`, { withCredentials: true });
   }
   getClientDistribution(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/clientDistribution`, { withCredentials: true });
+    return this.http.get(`${this.apiUrl}/ageDistribution`, { withCredentials: true });
   }
 }
