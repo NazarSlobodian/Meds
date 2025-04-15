@@ -5,6 +5,7 @@ import { HeaderComponent } from './header/header.component';
 import { ThemeTogglerComponent } from './theme-toggler/theme-toggler.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { MonthTransformPipe } from './pipes/month-transform.pipe';
+import { SuperscriptPipe } from './pipes/superscript.pipe';
 
 
 
@@ -14,7 +15,8 @@ import { MonthTransformPipe } from './pipes/month-transform.pipe';
     HeaderComponent,
     ThemeTogglerComponent,
     PaginationComponent,
-    MonthTransformPipe
+    MonthTransformPipe,
+    SuperscriptPipe
   ],
   imports: [
     CommonModule
@@ -24,7 +26,8 @@ import { MonthTransformPipe } from './pipes/month-transform.pipe';
     HeaderComponent,
     ThemeTogglerComponent,
     PaginationComponent,
-    MonthTransformPipe
+    MonthTransformPipe,
+    SuperscriptPipe
   ]
 })
 export class SharedModule { }

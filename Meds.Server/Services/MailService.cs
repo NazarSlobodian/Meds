@@ -11,6 +11,7 @@ using QuestPDF.Infrastructure;
 using System.IO;
 using Microsoft.OpenApi.Validations;
 using static System.Net.Mime.MediaTypeNames;
+using System.Text;
 namespace MailGunExamples
 {
     public class MailService
@@ -107,7 +108,7 @@ namespace MailGunExamples
                                     row.RelativeItem(1).AlignLeft().Text(test.Name);
                                     row.RelativeItem(1).AlignCenter().Text($"{test.Result}");
                                     row.RelativeItem(1).AlignCenter().Text($"{test.NormalValue}");
-                                    row.RelativeItem(1).AlignRight().Text($"{test.Units}");
+                                    row.RelativeItem(1).AlignRight().Text($"{ToSuperscript(test.Units)}");
                                 });
                             }
                         }
@@ -125,6 +126,50 @@ namespace MailGunExamples
             string filePath = $"d:\\Downloads\\{dto.BatchID}.pdf";
             File.WriteAllBytes(filePath, pdfBytes);
             await Send(dto);
+        }
+        private static string ToSuperscript(string input)
+        {
+            var superscriptMap = new Dictionary<char, char>
+            {
+                ['0'] = '⁰',
+                ['1'] = '¹',
+                ['2'] = '²',
+                ['3'] = '³',
+                ['4'] = '⁴',
+                ['5'] = '⁵',
+                ['6'] = '⁶',
+                ['7'] = '⁷',
+                ['8'] = '⁸',
+                ['9'] = '⁹',
+                ['+'] = '⁺',
+                ['-'] = '⁻',
+                ['='] = '⁼',
+                ['('] = '⁽',
+                [')'] = '⁾'
+            };
+
+            var result = new StringBuilder();
+            bool inSuperscript = false;
+
+            foreach (char c in input)
+            {
+                if (c == '^')
+                {
+                    inSuperscript = true;
+                }
+                else if (inSuperscript && superscriptMap.ContainsKey(c))
+                {
+                    result.Append(superscriptMap[c]);
+                    inSuperscript = false;
+                }
+                else
+                {
+                    result.Append(c);
+                    inSuperscript = false;
+                }
+            }
+
+            return result.ToString();
         }
     }
 }

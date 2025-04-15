@@ -27,8 +27,8 @@
         <tr *ngFor="let test of group.tests">
           <td>{{ test.name }}</td>
           <td>{{ test.result }}</td>
-          <td>{{ test.units }}</td>
-          <td>{{ test.normalValue }}</td>
+          <td>{{ test.normalValue}}</td>
+          <td>{{ test.units | superscript}}</td>
         </tr>
       </tbody>
     </table>
