@@ -45,5 +45,20 @@ namespace Meds.Server.Controllers
             }
             return Ok(list);
         }
+        [HttpGet("testOrdersNumbers")]
+        [Authorize(Policy = "Admin")]
+        public async Task<IActionResult> GettestOrdersStats()
+        {
+            List<NamedList<YearlyOrders>> list;
+            try
+            {
+                list = await _statisticsService.GetTestOrdersStats();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Couldn't get statistics" });
+            }
+            return Ok(list);
+        }
     }
 }

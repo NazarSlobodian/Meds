@@ -102,7 +102,7 @@ export class RevenueComponent {
       data: {
         labels: chartData.map(x => x.name),
         datasets: [{
-          label: '# of Votes',
+          label: '$ of revenue',
           data: chartData.map(x => x.value),
           borderWidth: 1,
           backgroundColor: 'rgba(54, 162, 235, 0.6)',

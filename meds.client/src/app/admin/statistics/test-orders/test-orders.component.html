@@ -1,2 +1,30 @@
 <button (click)="goBack()">&lt;-Back</button>
-<p>test-orders works!</p>
+<div>
+  <label>
+    Category:
+    <select [(ngModel)]="selectedCategory" (change)="updateYears()">
+      <option *ngFor="let category of availableCategories" [value]="category">{{category}}</option>
+    </select>
+  </label>
+  <label>
+    Year:
+    <select [(ngModel)]="selectedYear" (change)="updateMonths()">
+      <option [ngValue]="null">{{null | monthTransform}}</option>
+      <option *ngFor="let year of availableYears" [value]="year">{{year}}</option>
+    </select>
+  </label>
+
+  <label>
+    Month:
+    <select [(ngModel)]="selectedMonth" (change)="updateChart()">
+      <option [ngValue]="null">{{null | monthTransform}}</option>
+      <option *ngFor="let month of availableMonths" [value]="month">{{month | monthTransform }}</option>
+    </select>
+  </label>
+</div>
+
+<div id="divChart">
+  <h2>Test orders count</h2>
+  <canvas id="myChart">
+  </canvas>
+</div>
