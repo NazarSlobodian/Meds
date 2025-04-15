@@ -4,7 +4,15 @@
 
 <div>
   <form (ngSubmit)="onSubmit()">
+    <label for="batchId">By batch Id</label>
     <input name="batchId" id ="batchId" type="number" [(ngModel)]="batchId" required/>
+    <button type="submit">Find</button>
+  </form>
+</div>
+<div>
+  <form (ngSubmit)="onSubmitByOrder()">
+    <label for="orderId">By order Id</label>
+    <input name="orderId" id="orderId" type="number" [(ngModel)]="orderId" required />
     <button type="submit">Find</button>
   </form>
 </div>

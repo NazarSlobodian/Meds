@@ -130,6 +130,27 @@ namespace Meds.Server.Controllers
             }
             return Ok();
         }
+        [HttpGet("LabWorker/batches/withOrderId/{orderId}")]
+        [Authorize(Policy = "LabWorker")]
+        public async Task<IActionResult> GetLabWorkerBatchResultsWithOrder(int orderId)
+        {
+            Claim? labWorkerIdCLaim = User.Claims.FirstOrDefault(c => c.Type == "UserID");
+            if (labWorkerIdCLaim == null)
+            {
+                return Unauthorized(new { message = "No id in claims" });
+            }
+            int labWorkerId = int.Parse(labWorkerIdCLaim.Value);
+            List<TestOrderLabWorkerDTO> batchRes = null;
+            try
+            {
+                batchRes = await _patientsService.GetTestOrdersLabWorkerOrderAsync(orderId, labWorkerId);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Couldn't find the batch" });
+            }
+            return Ok(batchRes);
+        }
         [HttpPost("batches/results")]
         [Authorize(Policy = "LabWorker")]
         public async Task<IActionResult> SubmitResultsAsync([FromBody] List<TestOrderLabWorkerDTO> results)

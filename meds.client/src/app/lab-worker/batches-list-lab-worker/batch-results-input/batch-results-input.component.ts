@@ -8,6 +8,7 @@ import { BatchResultsService } from '../../services/batch-results.service';
   styleUrl: './batch-results-input.component.css'
 })
 export class BatchResultsInputComponent {
+  searchType: string | null = null;
   batchId: number = -1;
   orders: any[] = [];
   errorMessage: string | null = null;
@@ -15,18 +16,34 @@ export class BatchResultsInputComponent {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
+      this.searchType = params['mode'];
       this.batchId = params['id'];
     })
-    this.batchResultsService.getResults(this.batchId).subscribe(
-      (data) => {
-        this.orders = data;
-      },
-      (error) => {
-        this.errorMessage = error.error.message;
-        alert(error.error.message || "An error occurred");
-        this.router.navigate(['lab-worker/batches'])
-      }
-    );
+    if (this.searchType == "batch") {
+      this.batchResultsService.getResults(this.batchId).subscribe(
+        (data) => {
+          this.orders = data;
+        },
+        (error) => {
+          this.errorMessage = error.error.message;
+          alert(error.error.message || "An error occurred");
+          this.router.navigate(['lab-worker/batches'])
+        }
+      );
+    }
+    else if (this.searchType == "order") {
+      this.batchResultsService.getResultsByOrder(this.batchId).subscribe(
+        (data) => {
+          this.orders = data;
+          this.batchId = data.id;
+        },
+        (error) => {
+          this.errorMessage = error.error.message;
+          alert(error.error.message || "An error occurred");
+          this.router.navigate(['lab-worker/batches'])
+        }
+      );
+    }
 
   }
   goBack(): void {

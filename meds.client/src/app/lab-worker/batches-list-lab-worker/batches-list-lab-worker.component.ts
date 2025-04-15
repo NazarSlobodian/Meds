@@ -11,6 +11,7 @@ export class BatchesListLabWorkerComponent {
   batches: any[] = [];
 
   batchId: number | null = null;
+  orderId: number | null = null;
 
   errorMessage: string | null = null;
 
@@ -37,7 +38,7 @@ export class BatchesListLabWorkerComponent {
     );
   }
   onBatchClick(batchId: number): void {
-    this.router.navigate([`/lab-worker/batches/${batchId}`]);
+    this.router.navigate([`/lab-worker/batches/${batchId}/${"batch"}`]);
   }
   onPageChange(page: number): void {
     this.page = page;
@@ -49,6 +50,12 @@ export class BatchesListLabWorkerComponent {
     if (this.batchId === null) {
       return;
     }
-    this.onBatchClick(this.batchId);
+    this.router.navigate([`/lab-worker/batches/${this.batchId}/${"batch"}`]);
+  }
+  onSubmitByOrder(): void {
+    if (this.orderId === null) {
+      return;
+    }
+    this.router.navigate([`/lab-worker/batches/${this.orderId}/${"order"}`]);
   }
 }

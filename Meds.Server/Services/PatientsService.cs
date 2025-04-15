@@ -82,7 +82,7 @@ public class PatientsService
                 .ThenInclude(to => to.TestType)
                 .ThenInclude(tt => tt.TestNormalValues)
             .Include(tb => tb.Patient)
-            .Where(tb => tb.TestBatchId == testBatchId)
+            .Where(tb => tb.TestBatchId == testBatchId && tb.BatchStatus !="done")
             .FirstOrDefaultAsync();
 
         if (tb == null)
@@ -119,6 +119,11 @@ public class PatientsService
         }
         return list;
     }
+    public async Task<List<TestOrderLabWorkerDTO>> GetTestOrdersLabWorkerOrderAsync(int orderId, int labWorkerId)
+    {
+        int batchId = await _context.TestOrders.Where(x=>x.TestOrderId == orderId).Select(x=>x.TestBatchId).FirstAsync();
+        return await GetTestOrdersLabWorkerAsync(batchId, labWorkerId);
+    }
     public async Task<int> AddPatient(PatientNew patient)
     {
         Patient p = new Patient()
@@ -154,6 +159,7 @@ public class PatientsService
 
         return new BatchResultsDTO(collectionPoint, batch);
     }
+
     public async Task ValidateAndSubmitBatchesAsync(int patientId, int receptionistId, NewOrder tests)
     {
         var patient = await _context.Patients.FindAsync(patientId);

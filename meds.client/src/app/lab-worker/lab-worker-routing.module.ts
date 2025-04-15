@@ -8,7 +8,7 @@ import { authGuard } from '../core/auth/auth.guard';
 
 const routes: Routes = [
   { path: 'batches', component: BatchesListLabWorkerComponent },
-  { path: "batches/:id", component: BatchResultsInputComponent, canActivate: [authGuard] },
+  { path: "batches/:id/:mode", component: BatchResultsInputComponent, canActivate: [authGuard] },
   { path: '', redirectTo: "batches", pathMatch:"full"}
 ]
 

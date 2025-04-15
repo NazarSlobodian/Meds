@@ -14,6 +14,9 @@ export class BatchResultsService {
   getResults(batchId: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${batchId}`, { withCredentials: true });
   }
+  getResultsByOrder(orderId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/withOrderId/${orderId}`, { withCredentials: true });
+  }
   submitResults(testOrders: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl2}`, testOrders, { withCredentials: true });
   }
