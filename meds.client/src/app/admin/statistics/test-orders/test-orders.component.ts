@@ -43,6 +43,8 @@ export class TestOrdersComponent {
 
   myChart: Chart | null = null;
 
+  total: number =0;
+
   constructor(private router: Router, private statisticsService: StatisticsService) { }
   goBack(): void {
     this.router.navigate(["/admin/options/statistics"]);
@@ -79,6 +81,7 @@ export class TestOrdersComponent {
     this.updateChart();
   }
   updateChart(): void {
+    this.total = 0;
     if (!this.selectedCategoryStats) {
       return;
     }
@@ -108,6 +111,9 @@ export class TestOrdersComponent {
     console.log(countMap);
     let chartData = Array.from(countMap.entries()).map(([name, value]) => ({ name, value }));
 
+    countMap.forEach(value => {
+      this.total += value ;
+    })
 
 
     const ctx = document.getElementById('myChart') as HTMLCanvasElement | null;

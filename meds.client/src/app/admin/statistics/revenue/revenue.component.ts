@@ -39,6 +39,7 @@ export class RevenueComponent {
 
   myChart: Chart | null = null;
 
+  total: number = 0;
   constructor(private router: Router, private statisticsService: StatisticsService) { }
   goBack(): void {
     this.router.navigate(["/admin/options/statistics"]);
@@ -67,18 +68,22 @@ export class RevenueComponent {
     this.updateChart();
   }
   updateChart(): void {
-    const yearData = this.allStats.find(y => y.year == this.selectedYear);
-    if (!yearData) {
-      return;
-    }
+    this.total = 0;
 
     let statsToAggregate: any[] = [];
+    let yearData: any[] = [];
+    if (this.selectedYear != null) {
+      yearData = this.allStats.find(y => y.year == this.selectedYear).stats;
+    }
+    else {
+      yearData = this.allStats.flatMap((x => x.stats));
+    }
 
     if (this.selectedMonth == null) {
       // Aggregate all months
-      statsToAggregate = yearData.stats.flatMap((monthStat: any) => monthStat.stats);
+      statsToAggregate = yearData.flatMap((monthStat: any) => monthStat.stats);
     } else {
-      const monthData = yearData.stats.find((stat: any) => stat.month == this.selectedMonth);
+      const monthData = yearData.find((stat: any) => stat.month == this.selectedMonth);
       statsToAggregate = monthData ? monthData.stats : [];
     }
 
@@ -90,6 +95,9 @@ export class RevenueComponent {
     console.log(revenueMap);
     let chartData = Array.from(revenueMap.entries()).map(([name, value]) => ({ name, value }));
 
+    revenueMap.forEach(value => {
+      this.total += value;
+    })
 
 
     const ctx = document.getElementById('myChart') as HTMLCanvasElement | null;
