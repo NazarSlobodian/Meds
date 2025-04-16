@@ -12,7 +12,7 @@ using System.IO;
 using Microsoft.OpenApi.Validations;
 using static System.Net.Mime.MediaTypeNames;
 using System.Text;
-namespace MailGunExamples
+namespace Meds.Server.Services
 {
     public class MailService
     {
@@ -20,7 +20,7 @@ namespace MailGunExamples
         public MailService(Wv1Context context)
         {
             _context = context;
-           
+
         }
 
         public static async Task Send(BatchResultsDTO dto)
@@ -126,6 +126,10 @@ namespace MailGunExamples
             string filePath = $"d:\\Downloads\\{dto.BatchID}.pdf";
             File.WriteAllBytes(filePath, pdfBytes);
             await Send(dto);
+        }
+        public async Task SendCode(string email, string code)
+        {
+
         }
         private static string ToSuperscript(string input)
         {

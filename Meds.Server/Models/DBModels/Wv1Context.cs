@@ -26,6 +26,8 @@ public partial class Wv1Context : DbContext
 
     public virtual DbSet<Receptionist> Receptionists { get; set; }
 
+    public virtual DbSet<RegistrationCode> RegistrationCodes { get; set; }
+
     public virtual DbSet<TestBatch> TestBatches { get; set; }
 
     public virtual DbSet<TestNormalValue> TestNormalValues { get; set; }
@@ -207,6 +209,20 @@ public partial class Wv1Context : DbContext
                 .HasForeignKey(d => d.CollectionPointId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("collectionPointID");
+        });
+
+        modelBuilder.Entity<RegistrationCode>(entity =>
+        {
+            entity.HasKey(e => e.Login).HasName("PRIMARY");
+
+            entity.ToTable("registration_codes");
+
+            entity.Property(e => e.Login)
+                .HasMaxLength(320)
+                .HasColumnName("login");
+            entity.Property(e => e.Code)
+                .HasMaxLength(8)
+                .HasColumnName("code");
         });
 
         modelBuilder.Entity<TestBatch>(entity =>

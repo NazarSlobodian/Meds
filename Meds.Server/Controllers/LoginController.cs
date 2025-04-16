@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using System.Security.Claims;
 
 namespace Meds.Server.Controllers
@@ -38,16 +39,40 @@ namespace Meds.Server.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RequestValue<string> email)
         {
+            try
+            {
+                await _authService.InitRegistration(email.Value);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
             return Ok();
         }
         [HttpPost("submitCode")]
-        public async Task<IActionResult> SubmitCode(RequestValue<string> code)
+        public async Task<IActionResult> SubmitCode(LoginModel emailAndCode)
         {
+            try
+            {
+                await _authService.VerifyCode(emailAndCode.Login, emailAndCode.Password);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
             return Ok();
         }
         [HttpPost("finishRegistration")]
         public async Task<IActionResult> FinishRegistration(LoginModel loginModel)
         {
+            try
+            {
+                await _authService.FinishRegistration(loginModel.Login, loginModel.Password);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
             return Ok();
         }
     }

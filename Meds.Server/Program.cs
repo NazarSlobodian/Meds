@@ -1,6 +1,5 @@
-
-using MailGunExamples;
 using Meds.Server.Models.DbModels;
+using Meds.Server.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 

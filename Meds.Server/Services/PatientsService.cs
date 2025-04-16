@@ -1,7 +1,7 @@
 using Humanizer;
-using MailGunExamples;
 using Meds.Server.Models;
 using Meds.Server.Models.DbModels;
+using Meds.Server.Services;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Build.Framework;
