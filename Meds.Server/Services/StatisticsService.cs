@@ -184,7 +184,7 @@ public class StatisticsService
         int count = await actLog.CountAsync();
         await _activityLoggerService.Log("Activity logs requested", null, null, "success");
         return new ListWithTotalCount<ActivityLogAdmin>
-            (actLog.Select(l => new ActivityLogAdmin
+            (list.Select(l => new ActivityLogAdmin
             {
                 Action = l.Action,
                 DateTime = l.DateTime,

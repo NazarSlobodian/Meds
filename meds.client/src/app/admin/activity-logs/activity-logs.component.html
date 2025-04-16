@@ -15,6 +15,7 @@
 <app-pagination [pageSize]="pageSize"
                 [currentPage]="currentPage"
                 [totalPages]="totalPages"
+                [totalCount]="totalCount"
                 (pageChanged)="onPageChange($event)">
 </app-pagination>
 <table *ngIf="logs.length > 0;">

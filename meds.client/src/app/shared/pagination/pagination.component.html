@@ -1,5 +1,8 @@
 <div class="pagination-container">
-  <button (click)="onPageChange(currentPage-1)" [disabled]="currentPage === 1">&lt;-</button>
-  <span>{{currentPage}}/{{totalPages}}</span>
-  <button (click)="onPageChange(currentPage+1)" [disabled]="currentPage >= totalPages">-&gt;</button>
+  <p>Displaying {{totalCount == 0? 0 : (currentPage-1)*(pageSize)+1}}-{{totalPages == currentPage ? totalCount : (currentPage*pageSize)}} / {{totalCount}} records</p>
+  <div>
+    <button (click)="onPageChange(currentPage-1)" [disabled]="currentPage === 1">&lt;-</button>
+    <span>{{currentPage}}/{{totalPages}}</span>
+    <button (click)="onPageChange(currentPage+1)" [disabled]="currentPage >= totalPages">-&gt;</button>
+  </div>
 </div>
