@@ -8,11 +8,13 @@ import { StatisticsComponent } from './statistics/statistics.component';
 import { RevenueComponent } from './statistics/revenue/revenue.component';
 import { TestOrdersComponent } from './statistics/test-orders/test-orders.component';
 import { ClientDistributionComponent } from './statistics/client-distribution/client-distribution.component';
+import { ActivityLogsComponent } from './activity-logs/activity-logs.component';
 
 const routes: Routes = [
   { path: 'options', component: DashboardComponent, canActivate: [authGuard] },
   { path: 'options/editTest', component: TestEditorComponent, canActivate: [authGuard] },
   { path: 'options/editTest/:id/normal-values', component: TestNormalValuesEditorComponent, canActivate: [authGuard] },
+  { path: 'options/activityLogs', component: ActivityLogsComponent, canActivate: [authGuard] },
   { path: 'options/statistics', component: StatisticsComponent, canActivate: [authGuard] },
   { path: 'options/statistics/revenue', component: RevenueComponent, canActivate: [authGuard] },
   { path: 'options/statistics/test-orders', component: TestOrdersComponent, canActivate: [authGuard] },

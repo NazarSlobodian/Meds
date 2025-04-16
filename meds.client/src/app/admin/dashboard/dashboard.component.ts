@@ -15,5 +15,7 @@ export class DashboardComponent {
   goToStats() {
     this.router.navigate(["/admin/options/statistics"]);
   }
-
+  goToActivityLogs() {
+    this.router.navigate(["/admin/options/activityLogs"]);
+  }
 }

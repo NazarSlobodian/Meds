@@ -15,6 +15,7 @@ import { TestOrdersComponent } from './statistics/test-orders/test-orders.compon
 import { RevenueComponent } from './statistics/revenue/revenue.component';
 import { ClientDistributionComponent } from './statistics/client-distribution/client-distribution.component';
 import { SharedModule } from '../shared/shared.module';
+import { ActivityLogsComponent } from './activity-logs/activity-logs.component';
 
 
 
@@ -32,6 +33,7 @@ import { SharedModule } from '../shared/shared.module';
     TestOrdersComponent,
     RevenueComponent,
     ClientDistributionComponent,
+    ActivityLogsComponent,
   ],
   imports: [
     CommonModule,

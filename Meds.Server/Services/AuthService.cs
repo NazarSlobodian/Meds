@@ -63,7 +63,7 @@ public class AuthService
         }
         await _context.SaveChangesAsync();
         await _activityLoggerService.Log("Code save", $"{email}", "guest", "success");
-        //await _mailService.SendCode(email, codeStr);
+        await _mailService.SendCode(email, codeStr);
 
     }
     public async Task<bool> VerifyCode(string email, string code)
