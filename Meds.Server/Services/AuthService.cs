@@ -45,16 +45,17 @@ public class AuthService
         Random random = new Random();
         RegistrationCode? registrationCode = await _context.RegistrationCodes.FindAsync(email);
         int code = random.Next(111111, 1000000);
+        string codeStr = code.ToString();
         if (registrationCode == null)
         {
-            await _context.RegistrationCodes.AddAsync(new RegistrationCode { Code = code.ToString(), Login = email});
+            await _context.RegistrationCodes.AddAsync(new RegistrationCode { Code = codeStr, Login = email });
         }
         else
         {
             registrationCode.Code = code.ToString();
-            await _context.SaveChangesAsync();
         }
-        _mailService.SendCode(email, code);
+        await _context.SaveChangesAsync();
+        //await _mailService.SendCode(email, codeStr);
     }
     public async Task<bool> VerifyCode(string email, string code)
     {
@@ -74,12 +75,13 @@ public class AuthService
     }
     public async Task FinishRegistration(string login, string password)
     {
-        Patient? patient = await _context.Patients.Where(x=>x.Email == login).FirstOrDefaultAsync();
+        Patient? patient = await _context.Patients.Where(x => x.Email == login).FirstOrDefaultAsync();
         if (patient == null)
         {
             throw new Exception("Email isn't associated with any client. Contact tech support or reception desk and provide your email");
         }
         string hash = PasswordHasher.HashPassword(password);
-        await _context.Users.AddAsync(new User { Hash = hash, Login = login, Role = "patient", ReferencedId =patient.PatientId});
+        await _context.Users.AddAsync(new User { Hash = hash, Login = login, Role = "patient", ReferencedId = patient.PatientId });
+        await _context.SaveChangesAsync();
     }
 }

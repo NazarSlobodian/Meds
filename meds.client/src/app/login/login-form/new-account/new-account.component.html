@@ -1,0 +1,19 @@
+<div class="modal-back" *ngIf="isOpen">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Create account</h2>
+      <button (click)="closeModal()">X</button>
+    </div>
+    <div class="modal-body">
+      <form (ngSubmit)="submitNewAccount()">
+        <div class="form-group">
+          <label for="passwrod">Your password</label>
+          <input type="password" id="password" [(ngModel)]="password" name="password" required>
+        </div>
+        <div>
+          <button type="submit" [disabled]="password.length<1">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

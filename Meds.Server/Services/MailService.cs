@@ -12,6 +12,7 @@ using System.IO;
 using Microsoft.OpenApi.Validations;
 using static System.Net.Mime.MediaTypeNames;
 using System.Text;
+using Humanizer;
 namespace Meds.Server.Services
 {
     public class MailService
@@ -129,7 +130,22 @@ namespace Meds.Server.Services
         }
         public async Task SendCode(string email, string code)
         {
+            var options = new RestClientOptions("https://api.mailgun.net")
+            {
+                Authenticator = new HttpBasicAuthenticator("api", Environment.GetEnvironmentVariable("API_KEY") ?? "API_KEY")
+            };
 
+            var client = new RestClient(options);
+            var request = new RestRequest("/v3/sandbox7d22d6dfd8e24bcfb293d7cfacfccbaf.mailgun.org/messages", RestSharp.Method.Post);
+            request.AlwaysMultipartFormData = true;
+
+            // Basic email info
+            request.AddParameter("from", "Mailgun Sandbox <postmaster@sandbox7d22d6dfd8e24bcfb293d7cfacfccbaf.mailgun.org>");
+            request.AddParameter("to", "Nazar <nazar.slobodian.pz.2022@lpnu.ua>");
+            request.AddParameter("subject", "Medlab confirmation code");
+            request.AddParameter("text", $"Your code is:\n{code}");
+            
+            await client.ExecuteAsync(request);
         }
         private static string ToSuperscript(string input)
         {

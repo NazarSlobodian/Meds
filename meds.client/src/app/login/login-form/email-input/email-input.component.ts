@@ -29,6 +29,7 @@ export class EmailInputComponent {
           this.closeModal();
         },
         (error) => {
+          alert(error.error.message);
           this.closeModal();
         }
       )

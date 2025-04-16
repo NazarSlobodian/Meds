@@ -18,5 +18,10 @@
 <app-email-input #emailInputModal
                  (emailEntered)="codeInputModal.openModal($event)">
 </app-email-input>
-<app-code-input #codeInputModal>
+
+<app-code-input #codeInputModal
+                (codeEntered)="newAccountModal.openModal($event)">
 </app-code-input>
+
+<app-new-account #newAccountModal>
+</app-new-account>

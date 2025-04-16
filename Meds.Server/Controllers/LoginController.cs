@@ -54,7 +54,10 @@ namespace Meds.Server.Controllers
         {
             try
             {
-                await _authService.VerifyCode(emailAndCode.Login, emailAndCode.Password);
+                if (await _authService.VerifyCode(emailAndCode.Login, emailAndCode.Password) == false)
+                {
+                    return BadRequest(new {message = "Wrong code" });
+                }
             }
             catch (Exception ex)
             {
