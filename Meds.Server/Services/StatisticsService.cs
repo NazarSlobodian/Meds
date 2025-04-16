@@ -1,7 +1,10 @@
 using Humanizer;
 using Meds.Server.Models.DbModels;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using QuestPDF.Helpers;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 public class StatisticsService
 {
@@ -133,7 +136,7 @@ public class StatisticsService
                Month = to.TestBatch.DateOfCreation.Month,
                TestPanelId = to.TestPanelId,
                Cost = to.TestType.Cost,
-               
+
            })
            .ToListAsync();
 
@@ -155,11 +158,29 @@ public class StatisticsService
                     }).OrderBy(m => m.Month).ToList()
             }).OrderBy(y => y.Year).ToList();
 
-        List<NamedList<YearlyOrders>> stats = new List<NamedList<YearlyOrders>> () {
-            new NamedList<YearlyOrders> { Name = "Tests", List = groupedSeparate }, 
+        List<NamedList<YearlyOrders>> stats = new List<NamedList<YearlyOrders>>() {
+            new NamedList<YearlyOrders> { Name = "Tests", List = groupedSeparate },
             new NamedList<YearlyOrders> { Name = "Panels", List = groupedPanels } };
         await _activityLoggerService.Log("Requesting test orders statistics", null, null, "success");
         return stats;
 
+    }
+    public async Task<ListWithTotalCount<ActivityLogAdmin>> GetActivityLogs(DateTime begin, DateTime end, int page, int pageSize)
+    {
+        List<ActivityLog> actLog = await _context.ActivityLogs
+            .Where(l => l.DateTime > begin && l.DateTime < end)
+            .OrderBy(l => l.DateTime).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+        int count = actLog.Count();
+        await _activityLoggerService.Log("Activity logs requested", null, null, "success");
+        return new ListWithTotalCount<ActivityLogAdmin>
+            (actLog.Select(l => new ActivityLogAdmin
+            {
+                Action = l.Action,
+                DateTime = l.DateTime,
+                Actor = l.Actor,
+                Description = l.Description,
+                Status = l.Status
+            }
+        ).ToList(), count);
     }
 }

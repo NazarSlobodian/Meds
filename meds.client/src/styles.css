@@ -91,3 +91,9 @@ button {
   display: flex;
   justify-content: center;
 }
+h1 {
+  margin: 0;
+}
+h2 {
+  margin: 0;
+}

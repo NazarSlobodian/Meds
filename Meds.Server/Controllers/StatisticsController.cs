@@ -47,7 +47,7 @@ namespace Meds.Server.Controllers
         }
         [HttpGet("testOrdersNumbers")]
         [Authorize(Policy = "Admin")]
-        public async Task<IActionResult> GettestOrdersStats()
+        public async Task<IActionResult> GetTestOrdersStats()
         {
             List<NamedList<YearlyOrders>> list;
             try
@@ -59,6 +59,19 @@ namespace Meds.Server.Controllers
                 return BadRequest(new { message = "Couldn't get statistics" });
             }
             return Ok(list);
+        }
+        [HttpPost("activityLogs")]
+        [Authorize(Policy = "Admin")]
+        public async Task<IActionResult> GetActivityLogs([FromBody] ActivityLogRequest req)
+        {
+            try
+            {
+                return Ok (await _statisticsService.GetActivityLogs(req.Begin, req.End, req.Page, req.PageSize));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
     }
 }

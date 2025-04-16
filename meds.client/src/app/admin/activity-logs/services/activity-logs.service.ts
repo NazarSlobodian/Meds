@@ -9,6 +9,6 @@ export class ActivityLogsService {
   private apiUrl = "https://localhost:7217/Statistics/activityLogs";
   constructor(private http: HttpClient) { }
   getActivityLogs(begin: Date, end: Date, page: number, pageSize: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}`, { begin: begin, end: end }, { withCredentials: true });
+    return this.http.post(`${this.apiUrl}`, { begin: begin, end: end, page: page, pageSize: pageSize }, { withCredentials: true });
   }
 }

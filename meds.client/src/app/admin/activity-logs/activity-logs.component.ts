@@ -8,8 +8,8 @@ import { ActivityLogsService } from './services/activity-logs.service';
   styleUrl: './activity-logs.component.css'
 })
 export class ActivityLogsComponent {
-  begin: Date = new Date(2025, 4, 1, 0, 0, 0, 0);
-  end: Date = new Date(2025, 5, 1, 0, 0, 0, 0);
+  begin: Date = new Date(2025, 3, 1, 0, 0, 0, 0);
+  end: Date = new Date(2025, 4, 1, 0, 0, 0, 0);
 
   logs: any[] = [];
 
