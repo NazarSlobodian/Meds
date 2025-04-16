@@ -16,6 +16,8 @@ public partial class Wv1Context : DbContext
     {
     }
 
+    public virtual DbSet<ActivityLog> ActivityLogs { get; set; }
+
     public virtual DbSet<CollectionPoint> CollectionPoints { get; set; }
 
     public virtual DbSet<LabWorker> LabWorkers { get; set; }
@@ -51,6 +53,33 @@ public partial class Wv1Context : DbContext
         modelBuilder
             .UseCollation("utf8mb4_0900_ai_ci")
             .HasCharSet("utf8mb4");
+
+        modelBuilder.Entity<ActivityLog>(entity =>
+        {
+            entity.HasKey(e => e.ActivityLogId).HasName("PRIMARY");
+
+            entity.ToTable("activity_logs");
+
+            entity.Property(e => e.ActivityLogId)
+                .ValueGeneratedNever()
+                .HasColumnName("activityLogID");
+            entity.Property(e => e.Action)
+                .HasMaxLength(45)
+                .HasColumnName("action");
+            entity.Property(e => e.Actor)
+                .HasMaxLength(320)
+                .HasColumnName("actor");
+            entity.Property(e => e.DateTime)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime")
+                .HasColumnName("dateTime");
+            entity.Property(e => e.Description)
+                .HasMaxLength(200)
+                .HasColumnName("description");
+            entity.Property(e => e.Status)
+                .HasMaxLength(20)
+                .HasColumnName("status");
+        });
 
         modelBuilder.Entity<CollectionPoint>(entity =>
         {

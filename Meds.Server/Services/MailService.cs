@@ -13,18 +13,20 @@ using Microsoft.OpenApi.Validations;
 using static System.Net.Mime.MediaTypeNames;
 using System.Text;
 using Humanizer;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 namespace Meds.Server.Services
 {
     public class MailService
     {
         private readonly Wv1Context _context;
-        public MailService(Wv1Context context)
+        private readonly ActivityLoggerService _activityLoggerService;
+        public MailService(Wv1Context context, ActivityLoggerService activityLoggerService)
         {
             _context = context;
-
+            _activityLoggerService = activityLoggerService;
         }
 
-        public static async Task Send(BatchResultsDTO dto)
+        public async Task Send(BatchResultsDTO dto)
         {
             var options = new RestClientOptions("https://api.mailgun.net")
             {
@@ -46,9 +48,10 @@ namespace Meds.Server.Services
             request.AddFile("attachment", pdfBytes, $"Medlab{dto.BatchID}.pdf", "application/pdf");
 
             await client.ExecuteAsync(request);
+            _activityLoggerService.Log("Pdf sending", $"nazar.slobodian.pz.2022@lpnu.ua", "server", "success");
         }
 
-        public static byte[] MakePdfResult(BatchResultsDTO dto)
+        public byte[] MakePdfResult(BatchResultsDTO dto)
         {
             var grouped = dto.TestResults
                 .GroupBy(t => t.PanelName ?? "Other")
@@ -146,6 +149,7 @@ namespace Meds.Server.Services
             request.AddParameter("text", $"Your code is:\n{code}");
             
             await client.ExecuteAsync(request);
+            _activityLoggerService.Log("Code sending", $"{email}", "guest", "fail");
         }
         private static string ToSuperscript(string input)
         {
