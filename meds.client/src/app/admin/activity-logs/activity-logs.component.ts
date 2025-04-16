@@ -8,8 +8,8 @@ import { ActivityLogsService } from './services/activity-logs.service';
   styleUrl: './activity-logs.component.css'
 })
 export class ActivityLogsComponent {
-  begin: Date = new Date(2025, 3, 1, 0, 0, 0, 0);
-  end: Date = new Date(2025, 4, 1, 0, 0, 0, 0);
+  begin: string = this.formatDateForInput(new Date(2025, 3, 1, 0, 0, 0, 0));
+  end: string = this.formatDateForInput(new Date(2025, 5, 1, 0, 0, 0, 0));
 
   logs: any[] = [];
 
@@ -50,6 +50,16 @@ export class ActivityLogsComponent {
     this.loadLogs();
     if (this.currentPage > this.totalPages)
       this.currentPage = this.totalPages;
+  }
+  formatDateForInput(date: Date): string {
+    const pad = (n: number) => n.toString().padStart(2, '0');
+    const yyyy = date.getFullYear();
+    const mm = pad(date.getMonth() + 1);
+    const dd = pad(date.getDate());
+    const hh = pad(date.getHours());
+    const min = pad(date.getMinutes());
+
+    return `${yyyy}-${mm}-${dd}T${hh}:${min}`;
   }
 
   goBack(): void {

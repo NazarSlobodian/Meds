@@ -167,10 +167,21 @@ public class StatisticsService
     }
     public async Task<ListWithTotalCount<ActivityLogAdmin>> GetActivityLogs(DateTime begin, DateTime end, int page, int pageSize)
     {
-        List<ActivityLog> actLog = await _context.ActivityLogs
-            .Where(l => l.DateTime > begin && l.DateTime < end)
-            .OrderBy(l => l.DateTime).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
-        int count = actLog.Count();
+
+        var actLog = _context.ActivityLogs.AsQueryable();
+        actLog = actLog
+            .Where(l => l.DateTime > begin && l.DateTime < end);
+
+        List<ActivityLog> list = await actLog
+            .OrderBy(l => l.DateTime)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+        if (list.Count == 0)
+        {
+            throw new Exception("No records found");
+        }
+        int count = await actLog.CountAsync();
         await _activityLoggerService.Log("Activity logs requested", null, null, "success");
         return new ListWithTotalCount<ActivityLogAdmin>
             (actLog.Select(l => new ActivityLogAdmin
