@@ -62,7 +62,7 @@ public class AuthService
             registrationCode.Code = code.ToString();
         }
         await _context.SaveChangesAsync();
-        await _activityLoggerService.Log("Code save", $"{email}", "guest", "fail");
+        await _activityLoggerService.Log("Code save", $"{email}", "guest", "success");
         //await _mailService.SendCode(email, codeStr);
 
     }

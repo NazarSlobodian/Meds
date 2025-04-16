@@ -19,9 +19,9 @@ public class ActivityLoggerService
         if (!On) return;
 
         if (actor == "" || actor == null)
-            actor = _contextAccessor.HttpContext?.User.Claims.FirstOrDefault(u => u.Type == ClaimTypes.Role)?.ToString() ?? null;
+            actor = _contextAccessor.HttpContext?.User.Claims.FirstOrDefault(u => u.Type == ClaimTypes.Role)?.Value ?? "N/A";
         if (description == "" || description == null)
-            description = _contextAccessor.HttpContext?.User.Claims.FirstOrDefault(u => u.Type == "UserID")?.ToString() ?? null;
+            description = _contextAccessor.HttpContext?.User.Claims.FirstOrDefault(u => u.Type == "UserID")?.ToString() ?? "N/A";
 
         await _context.ActivityLogs.AddAsync(new ActivityLog { Action = action, Actor = actor, Description = description, Status = status });
         await _context.SaveChangesAsync();

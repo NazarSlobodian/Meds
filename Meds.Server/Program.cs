@@ -61,7 +61,7 @@ namespace Meds.Server
             builder.Services.AddScoped<TestTypesService>();
             builder.Services.AddScoped<StatisticsService>();
             builder.Services.AddScoped<MailService>();
-            builder.Services.AddSingleton<ActivityLoggerService>();
+            builder.Services.AddScoped<ActivityLoggerService>();
             builder.Services.AddHttpContextAccessor();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

@@ -60,9 +60,7 @@ public partial class Wv1Context : DbContext
 
             entity.ToTable("activity_logs");
 
-            entity.Property(e => e.ActivityLogId)
-                .ValueGeneratedNever()
-                .HasColumnName("activityLogID");
+            entity.Property(e => e.ActivityLogId).HasColumnName("activityLogID");
             entity.Property(e => e.Action)
                 .HasMaxLength(45)
                 .HasColumnName("action");
