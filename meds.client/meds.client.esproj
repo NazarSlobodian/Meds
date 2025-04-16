@@ -12,6 +12,7 @@
     <TypeScriptConfiguration Remove="src\app\lab-admin\**" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="src\app\admin\activity-logs\services\" />
     <Folder Include="src\app\admin\statistics\services\" />
     <Folder Include="src\app\patient\services\" />
     <Folder Include="src\app\shared\services\" />

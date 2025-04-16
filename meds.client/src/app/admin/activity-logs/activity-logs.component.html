@@ -1,1 +1,19 @@
-<p>activity-logs works!</p>
+<button (click)="goBack()">&lt;-Back</button>
+<button (click)="loadLogs()">Load logs</button>
+<app-pagination [pageSize]="pageSize"
+                [currentPage]="currentPage"
+                [totalPages]="totalPages"
+                (pageChanged)="onPageChange($event)">
+</app-pagination>
+<table *ngIf="logs.length > 0;">
+  <thead>
+    <tr>
+      <th *ngFor="let column of columnNames">{{column}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let log of logs">
+      <td *ngFor="let column of columnNames">{{log[column]}}</td>
+    </tr>
+  </tbody>
+</table>
