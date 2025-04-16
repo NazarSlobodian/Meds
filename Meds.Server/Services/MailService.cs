@@ -48,7 +48,7 @@ namespace Meds.Server.Services
             request.AddFile("attachment", pdfBytes, $"Medlab{dto.BatchID}.pdf", "application/pdf");
 
             await client.ExecuteAsync(request);
-            _activityLoggerService.Log("Pdf sending", $"nazar.slobodian.pz.2022@lpnu.ua", "server", "success");
+            await _activityLoggerService.Log("Pdf sending", $"nazar.slobodian.pz.2022@lpnu.ua", "server", "success");
         }
 
         public byte[] MakePdfResult(BatchResultsDTO dto)
@@ -149,7 +149,7 @@ namespace Meds.Server.Services
             request.AddParameter("text", $"Your code is:\n{code}");
             
             await client.ExecuteAsync(request);
-            _activityLoggerService.Log("Code sending", $"{email}", "guest", "fail");
+            await _activityLoggerService.Log("Code sending", $"{email}", "guest", "fail");
         }
         private static string ToSuperscript(string input)
         {

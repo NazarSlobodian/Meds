@@ -6,9 +6,11 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 public class StatisticsService
 {
     private readonly Wv1Context _context;
-    public StatisticsService(Wv1Context context)
+    private readonly ActivityLoggerService _activityLoggerService;
+    public StatisticsService(Wv1Context context, ActivityLoggerService activityLoggerService)
     {
         _context = context;
+        _activityLoggerService = activityLoggerService;
     }
 
     public async Task<List<YearlyCollectionPointRevenueStat>> GetYearlyRevenueStats()
@@ -42,6 +44,7 @@ public class StatisticsService
             })
             .OrderBy(x => x.Year)
             .ToListAsync();
+        await _activityLoggerService.Log("Requesting revenue statistics", null, null, "success");
         return stats;
     }
     public async Task<List<AgeCount>> GetAgeDistributionStats()
@@ -79,7 +82,7 @@ public class StatisticsService
                 return start;
             })
             .ToList();
-
+        await _activityLoggerService.Log("Requesting age distribution statistics", null, null, "success");
         return ageDistribution;
     }
     public async Task<List<NamedList<YearlyOrders>>> GetTestOrdersStats()
@@ -155,6 +158,7 @@ public class StatisticsService
         List<NamedList<YearlyOrders>> stats = new List<NamedList<YearlyOrders>> () {
             new NamedList<YearlyOrders> { Name = "Tests", List = groupedSeparate }, 
             new NamedList<YearlyOrders> { Name = "Panels", List = groupedPanels } };
+        await _activityLoggerService.Log("Requesting test orders statistics", null, null, "success");
         return stats;
 
     }

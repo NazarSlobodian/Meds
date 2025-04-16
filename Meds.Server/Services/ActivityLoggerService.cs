@@ -23,6 +23,7 @@ public class ActivityLoggerService
         if (description == "" || description == null)
             description = _contextAccessor.HttpContext?.User.Claims.FirstOrDefault(u => u.Type == "UserID")?.ToString() ?? null;
 
-        _context.ActivityLogs.AddAsync(new ActivityLog { Action = action, Actor = actor, Description = description, Status = status });
+        await _context.ActivityLogs.AddAsync(new ActivityLog { Action = action, Actor = actor, Description = description, Status = status });
+        await _context.SaveChangesAsync();
     }
 }

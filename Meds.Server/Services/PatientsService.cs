@@ -47,19 +47,19 @@ public class PatientsService
                 query = query.Where(p => p.DateOfBirth == date);
             else
             {
-                _activityLoggerService.Log("Patients request", null, null, "fail");
+                await _activityLoggerService.Log("Patients request", null, null, "fail");
                 return new ListWithTotalCount<PatientDTO>();
             }
         }
         List<Patient> tbs = await query.OrderBy(p => p.FullName).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
         int count = await query.CountAsync();
-        _activityLoggerService.Log("Patients request", null, null, "success");
+        await _activityLoggerService.Log("Patients request", null, null, "success");
         return new ListWithTotalCount<PatientDTO>(tbs.Select(tb => new PatientDTO(tb)).ToList(), count);
     }
     public async Task<List<TestBatchDTO>> GetPatientBatchesAsync(int patientId)
     {
         List<TestBatch> tbs = await _context.TestBatches.Where(tb => tb.PatientId == patientId).ToListAsync();
-        _activityLoggerService.Log("Batches request", null, null, "success");
+        await _activityLoggerService.Log("Batches request", null, null, "success");
         return tbs.Select(tb => new TestBatchDTO(tb)).ToList();
     }
     public async Task<ListWithTotalCount<TestBatchLabWorkerDTO>> GetLabWorkerBatchesAsync(int labWorkerId, int page, int pageSize)
@@ -67,7 +67,7 @@ public class PatientsService
         int labId = await _context.Laboratories.Where(lab => lab.LabWorkers.Any(worker => worker.LabWorkerId == labWorkerId)).Select(lab => lab.LaboratoryId).FirstOrDefaultAsync();
         if (labId == 0)
         {
-            _activityLoggerService.Log("Batches request", null, null, "fail");
+            await _activityLoggerService.Log("Batches request", null, null, "fail");
             throw new Exception("Worker not in lab");
         }
         var tbs = _context.TestBatches.AsQueryable();
@@ -80,7 +80,7 @@ public class PatientsService
             .Take(pageSize)
             .ToListAsync();
         int count = await tbs.CountAsync();
-        _activityLoggerService.Log("Batches request", null, null, "success");
+        await _activityLoggerService.Log("Batches request", null, null, "success");
         return new ListWithTotalCount<TestBatchLabWorkerDTO>(list.Select(tb => new TestBatchLabWorkerDTO(tb)).ToList(), count);
     }
     public async Task<List<TestOrderLabWorkerDTO>> GetTestOrdersLabWorkerAsync(int testBatchId, int labWorkerId)
@@ -88,7 +88,7 @@ public class PatientsService
         int labId = await _context.Laboratories.Where(lab => lab.LabWorkers.Any(worker => worker.LabWorkerId == labWorkerId)).Select(lab => lab.LaboratoryId).FirstOrDefaultAsync();
         if (labId == 0)
         {
-            _activityLoggerService.Log("Orders request", null, null, "fail");
+            await _activityLoggerService.Log("Orders request", null, null, "fail");
             throw new Exception("Worker not in lab");
         }
         TestBatch? tb = await _context.TestBatches
@@ -104,12 +104,12 @@ public class PatientsService
 
         if (tb == null)
         {
-            _activityLoggerService.Log("Orders request", null, null, "fail");
+            await _activityLoggerService.Log("Orders request", null, null, "fail");
             throw new Exception("Test batch not found");
         }
         if (tb.TestOrders == null || tb.TestOrders.Count == 0)
         {
-            _activityLoggerService.Log("Orders request", null, null, "success");
+            await _activityLoggerService.Log("Orders request", null, null, "success");
             throw new Exception("All results are already sent");
         }
 
@@ -140,7 +140,7 @@ public class PatientsService
                 NormalValues = normalValue
             });
         }
-        _activityLoggerService.Log("Orders request", null, null, "success");
+        await _activityLoggerService.Log("Orders request", null, null, "success");
         return list;
     }
     public async Task<List<TestOrderLabWorkerDTO>> GetTestOrdersLabWorkerOrderAsync(int orderId, int labWorkerId)
@@ -161,7 +161,7 @@ public class PatientsService
         };
         await _context.Patients.AddAsync(p);
         await _context.SaveChangesAsync();
-        _activityLoggerService.Log("Patient addition", null, null, "success");
+        await _activityLoggerService.Log("Patient addition", null, null, "success");
         return p.PatientId;
     }
     public async Task<BatchResultsDTO> GetBatchResultsAsync(int batchId)
@@ -181,7 +181,7 @@ public class PatientsService
             .Include(l => l.Receptionists)
             .Where(t => t.Receptionists.Any(t => t.ReceptionistId == batch.ReceptionistId))
             .FirstAsync();
-        _activityLoggerService.Log("Batch result request", null, null, "success");
+        await _activityLoggerService.Log("Batch result request", null, null, "success");
         return new BatchResultsDTO(collectionPoint, batch);
     }
 
@@ -190,12 +190,12 @@ public class PatientsService
         var patient = await _context.Patients.FindAsync(patientId);
         if (patient == null)
         {
-            _activityLoggerService.Log("Order placement", null, null, "fail");
+            await _activityLoggerService.Log("Order placement", null, null, "fail");
             throw new ArgumentException("Patient not found.");
         }
         if (tests == null || (tests.TestTypesIds.Count == 0 && tests.PanelsIds.Count == 0))
         {
-            _activityLoggerService.Log("Order placement", null, null, "fail");
+            await _activityLoggerService.Log("Order placement", null, null, "fail");
             throw new ArgumentException("Can't add an empty order.");
         }
         var availableTestTypes = await _context.TestTypes.Select(x => x.TestTypeId).ToListAsync();
@@ -204,7 +204,7 @@ public class PatientsService
             var existingTestType = availableTestTypes.FirstOrDefault(tt => tt == testTypeId);
             if (existingTestType == null || existingTestType == 0)
             {
-                _activityLoggerService.Log("Order placement", null, null, "fail");
+                await _activityLoggerService.Log("Order placement", null, null, "fail");
                 throw new ArgumentException($"Test type with id '{testTypeId}' does not exist.");
             }
         }
@@ -214,7 +214,7 @@ public class PatientsService
             var existingPanel = availablePanels.FirstOrDefault(tt => tt == panelId);
             if (existingPanel == null || existingPanel == 0)
             {
-                _activityLoggerService.Log("Order placement", null, null, "fail");
+                await _activityLoggerService.Log("Order placement", null, null, "fail");
                 throw new ArgumentException($"Panel with id '{panelId}' does not exist.");
             }
         }
@@ -232,7 +232,7 @@ public class PatientsService
             List<Laboratory> labs = await _context.Laboratories.Where(x => x.TestTypes.Select(ttype => ttype.TestTypeId).Contains(testTypeId)).ToListAsync();
             if (labs.Count == 0)
             {
-                _activityLoggerService.Log("Lab assigment", null, null, "fail");
+                await _activityLoggerService.Log("Lab assigment", null, null, "fail");
                 throw new Exception($"No labs which can perform panel ID {testTypeId}");
             }
             decimal cost = await _context.TestTypes.Where(x => x.TestTypeId == testTypeId).Select(x => x.Cost).FirstOrDefaultAsync();
@@ -254,7 +254,7 @@ public class PatientsService
             List<Laboratory> suitableLabs = labs.Where(lab => panelContents.All(id => lab.TestTypes.Select(x => x.TestTypeId).Contains(id))).ToList();
             if (labs.Count == 0)
             {
-                _activityLoggerService.Log("Lab assigment", null, null, "fail");
+                await _activityLoggerService.Log("Lab assigment", null, null, "fail");
                 throw new Exception($"No labs which can perform panel ID {panelId}");
             }
             decimal cost = await _context.TestPanels.Where(x => x.TestPanelId == panelId).Select(x => x.Cost).FirstOrDefaultAsync();
@@ -276,11 +276,11 @@ public class PatientsService
         try
         {
             await _context.SaveChangesAsync();
-            _activityLoggerService.Log("Order placement", null, null, "success");
+            await _activityLoggerService.Log("Order placement", null, null, "success");
         }
         catch (Exception ex)
         {
-            _activityLoggerService.Log("Order placement", null, null, "fail");
+            await _activityLoggerService.Log("Order placement", null, null, "fail");
             throw new ApplicationException($"Couldn't add order. Code 432");
         }
     }
@@ -289,7 +289,7 @@ public class PatientsService
         int labId = await _context.Laboratories.Where(lab => lab.LabWorkers.Any(worker => worker.LabWorkerId == labWorkerId)).Select(lab => lab.LaboratoryId).FirstOrDefaultAsync();
         if (results == null || results.Count == 0)
         {
-            _activityLoggerService.Log("Saving results", null, null, "fail");
+            await _activityLoggerService.Log("Saving results", null, null, "fail");
             throw new Exception("No results submitted");
         }
         int id = results[0].TestOrderId;
@@ -306,12 +306,12 @@ public class PatientsService
         }
         catch (Exception ex)
         {
-            _activityLoggerService.Log("Saving results", null, null, "fail");
+            await _activityLoggerService.Log("Saving results", null, null, "fail");
             throw new Exception("Couldn't find batch");
         }
         if (orders.Count != results.Count)
         {
-            _activityLoggerService.Log("Saving results", null, null, "fail");
+            await _activityLoggerService.Log("Saving results", null, null, "fail");
             throw new Exception("Orders/results amount mismatch");
         }
         foreach (TestOrder order in orders)
@@ -319,7 +319,7 @@ public class PatientsService
             TestOrderLabWorkerDTO? result = results.Find(t => t.TestOrderId == order.TestOrderId);
             if (result == null)
             {
-                _activityLoggerService.Log("Saving results", null, null, "fail");
+                await _activityLoggerService.Log("Saving results", null, null, "fail");
                 throw new Exception("Orders/results id mismatch");
             }
             if (result.Result == null)
@@ -340,7 +340,7 @@ public class PatientsService
             }
         }
         await _context.SaveChangesAsync();
-        _activityLoggerService.Log("Saving results", null, null, "success");
+        await _activityLoggerService.Log("Saving results", null, null, "success");
 
 
 
