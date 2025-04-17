@@ -8,6 +8,7 @@ import { AdminTestService } from '../services/admin-test.service';
   styleUrl: './test-normal-values-editor.component.css'
 })
 export class TestNormalValuesEditorComponent {
+  name: string | null = localStorage.getItem('testName');
   testNormalValues: any[] = [];
   columnNames: string[] = [];
   errorMessage: string | null = null;

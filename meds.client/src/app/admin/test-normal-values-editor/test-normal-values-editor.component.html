@@ -1,21 +1,39 @@
 <button class="back-button" (click)="goBack()">&lt;-Back</button>
-<div *ngIf="errorMessage">{{errorMessage}}</div>
-<table *ngIf="testNormalValues.length > 0;">
-  <thead>
-    <tr>
-      <th *ngFor="let column of columnNames">{{column}}</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let normal of testNormalValues">
-      <td *ngFor="let column of columnNames">{{normal[column]}}</td>
-      <td>
-        <button (click)="editModal.openModal(normal)">Edit</button>
-        <button class="bad-button" (click)="deleteModal.openModal(normal.testNormalValueId)">Delete</button>
-    </tr>
-  </tbody>
-</table>
+
+<div class="nice-container">
+  <div class="tnv-editor-page">
+    <div *ngIf="errorMessage">{{errorMessage}}</div>
+    <h2> {{name}} Test Normal Values Editor</h2>
+    <table *ngIf="testNormalValues.length > 0;">
+      <thead>
+        <tr>
+          <th>TNV ID</th>
+          <th>Test Type ID</th>
+          <th>Min. Age</th>
+          <th>Max. Age</th>
+          <th>Sex</th>
+          <th>Min. Value</th>
+          <th>Max. Value</th>
+          <th class="action-column">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let normal of testNormalValues">
+          <td>{{normal.testNormalValueId}}</td>
+          <td>{{normal.testTypeId}}</td>
+          <td>{{normal.minAge}}</td>
+          <td>{{normal.maxAge}}</td>
+          <td>{{normal.gender}}</td>
+          <td>{{normal.minResValue}}</td>
+          <td>{{normal.maxResValue}}</td>
+          <td>
+            <button (click)="editModal.openModal(normal)">Edit</button>
+            <button class="bad-button" (click)="deleteModal.openModal(normal.testNormalValueId)">Delete</button>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 <button (click)="addModal.openModal(testTypeId)">Add a test normal value</button>
 
 <app-test-normal-values-edit-modal #editModal

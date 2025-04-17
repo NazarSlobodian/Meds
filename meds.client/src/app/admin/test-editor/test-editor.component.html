@@ -30,7 +30,7 @@
           <td>{{test.measurementsUnit | superscript}} </td>
           <td>
             <button class="edit-button" (click)="editModal.openModal(test)">Edit</button>
-            <button class="edit-tnv-button" (click)="onTestSelectNormalValues(test.testTypeId)">Edit normal values</button>
+            <button class="edit-tnv-button" (click)="onTestSelectNormalValues(test.testTypeId, test.name)">Edit normal values</button>
           </td>
         </tr>
       </tbody>

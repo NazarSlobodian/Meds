@@ -55,7 +55,8 @@ export class TestEditorComponent {
     if (this.currentPage > this.totalPages)
       this.currentPage = this.totalPages;
   }
-  onTestSelectNormalValues(id: number) {
+  onTestSelectNormalValues(id: number, name: string) {
+    localStorage.setItem('testName', name);
     this.router.navigate([`/admin/options/editTest/${id}/normal-values`]);
   }
 }

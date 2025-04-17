@@ -178,7 +178,7 @@ th, td {
   font-size: 16px;
 }
 
-.back-button {
+ :root button.back-button{
   width: 80px;
   margin-right: 5px;
   margin-left: 5px;
