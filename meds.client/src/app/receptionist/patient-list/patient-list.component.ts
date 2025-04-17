@@ -68,7 +68,7 @@ export class PatientListComponent {
           this.totalPages = Math.ceil(response.totalCount / this.pageSize);
           this.totalCount = response.totalCount;
           this.errorMessage = null;
-          this.columnNames = Object.keys(this.patients[0]);
+
         },
         (error) => {
           this.patients = [];

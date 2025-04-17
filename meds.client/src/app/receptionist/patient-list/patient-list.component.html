@@ -1,38 +1,50 @@
-<div>
-  <div>
-    <input [(ngModel)]="searchQueryName" placeholder="Name" />
-    <input [(ngModel)]="searchQueryPhone" placeholder="Phone" />
-    <input [(ngModel)]="searchQueryEmail" placeholder="Email" />
-    <input [(ngModel)]="searchQueryDateOfBirth" placeholder="Date Of Birth" />
-   </div>
-  <button (click)="onSearch()">Search</button>
-  <button (click)="addModal.openModal()">Add</button>
+
+<div class="list-container">
+  <div class="list-page">
+    <div>
+      <div class="query-group">
+        <input class="query-input" [(ngModel)]="searchQueryName" placeholder="Name" />
+        <input class="query-input phone" [(ngModel)]="searchQueryPhone" placeholder="Phone" />
+        <input class="query-input" [(ngModel)]="searchQueryEmail" placeholder="Email" />
+        <input class="query-input date" [(ngModel)]="searchQueryDateOfBirth" placeholder="Birthdate" />
+      </div>
+      <button (click)="onSearch()">Search</button>
+      <button (click)="addModal.openModal()">Add</button>
+    </div>
+
+    <div *ngIf="errorMessage">{{errorMessage}}</div>
+
+    <app-pagination [pageSize]="pageSize"
+                    [currentPage]="currentPage"
+                    [totalPages]="totalPages"
+                    [totalCount]="totalCount"
+                    (pageChanged)="onPageChange($event)">
+    </app-pagination>
+
+    <table *ngIf="patients.length > 0;">
+      <thead>
+        <tr>
+          <th class="name-column">Full Name</th>
+          <th class="gender-column">Gender</th>
+          <th class="birthdate-column">Birthdate</th>
+          <th class="email-column">Email</th>
+          <th class="phone-column">Phone Number</th>
+          <th class="action-column">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let patient of patients">
+          <td>{{patient.fullName}}</td>
+          <td>{{patient.gender}}</td>
+          <td>{{patient.dateOfBirth}}</td>
+          <td>{{patient.email}}</td>
+          <td>{{patient.phoneNumber}}</td>
+          <td class="add-order"><button (click)="onPatientSelect(patient.patientID, patient.fullName)">Add Order</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
-<div *ngIf="errorMessage">{{errorMessage}}</div>
-
-<app-pagination [pageSize]="pageSize"
-                [currentPage]="currentPage"
-                [totalPages]="totalPages"
-                [totalCount]="totalCount"
-                (pageChanged)="onPageChange($event)">
-</app-pagination>
-<table *ngIf="patients.length > 0;">
-  <thead>
-    <tr>
-      <th *ngFor="let column of columnNames">{{column}}</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let patient of patients">
-      <td *ngFor="let column of columnNames">{{patient[column]}}</td>
-      <td><button (click)="onPatientSelect(patient.patientID, patient.fullName)">Add Order</button></td>
-    </tr>
-  </tbody>
-</table>
-
-
 <app-patient-add-modal #addModal
-                       (additionSuccessful)="onAddSuccess()"
-></app-patient-add-modal>
+                       (additionSuccessful)="onAddSuccess()"></app-patient-add-modal>
