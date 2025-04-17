@@ -178,13 +178,14 @@ th, td {
   font-size: 16px;
 }
 
- :root button.back-button{
+:root button.back-button {
   width: 80px;
   margin-right: 5px;
   margin-left: 5px;
   border-radius: 5px;
   height: 25px;
   font-size: 16px;
+  margin-top: 20px;
 }
 :root button.close-button {
   width: 25px;

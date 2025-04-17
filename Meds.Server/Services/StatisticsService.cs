@@ -96,7 +96,7 @@ public class StatisticsService
             .ToListAsync();
 
         var statsSeparate = await _context.TestOrders
-            .Where(to => to.TestPanelId == null)
+            //.Where(to => to.TestPanelId == null)
             .Select(to => new
             {
                 Year = to.TestBatch.DateOfCreation.Year,

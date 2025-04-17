@@ -1,26 +1,30 @@
 <button class="back-button" (click)="goBack()">&lt;-Back</button>
-<div>
-  <label>
-    Year:
-    <select [(ngModel)]="selectedYear" (change)="updateMonths()">
-      <option [ngValue]="null">{{null | monthTransform}}</option>
-      <option *ngFor="let year of availableYears" [value]="year">{{year}}</option>
-    </select>
-  </label>
+<div class="nice-container">
+  <div class="statistics-page">
+    <div>
+      <label>
+        Year:
+        <select class="data-input" [(ngModel)]="selectedYear" (change)="updateMonths()">
+          <option [ngValue]="null">{{null | monthTransform}}</option>
+          <option *ngFor="let year of availableYears" [value]="year">{{year}}</option>
+        </select>
+      </label>
 
-  <label>
-    Month:
-    <select [(ngModel)]="selectedMonth" (change)="updateChart()">
-      <option [ngValue]="null">{{null | monthTransform}}</option>
-      <option *ngFor="let month of availableMonths" [value]="month">{{month | monthTransform }}</option>
-    </select>
-  </label>
-</div>
+      <label>
+        Month:
+        <select class="data-input" [(ngModel)]="selectedMonth" (change)="updateChart()">
+          <option [ngValue]="null">{{null | monthTransform}}</option>
+          <option *ngFor="let month of availableMonths" [value]="month">{{month | monthTransform }}</option>
+        </select>
+      </label>
+    </div>
 
 
-<div id="divChart">
-  <h2>Revenue by lab</h2>
-  <p>Total: {{total}}</p>
-  <canvas id="myChart">
-  </canvas>
+    <div id="divChart">
+      <h2>Revenue by lab</h2>
+      <p>Total: {{total}}</p>
+      <canvas id="myChart">
+      </canvas>
+    </div>
+  </div>
 </div>
