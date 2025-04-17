@@ -58,7 +58,7 @@ public class PatientsService
     }
     public async Task<List<TestBatchDTO>> GetPatientBatchesAsync(int patientId)
     {
-        List<TestBatch> tbs = await _context.TestBatches.Where(tb => tb.PatientId == patientId).ToListAsync();
+        List<TestBatch> tbs = await _context.TestBatches.Where(tb => tb.PatientId == patientId).OrderByDescending(tb=> tb.DateOfCreation).ToListAsync();
         await _activityLoggerService.Log("Batches request", null, null, "success");
         return tbs.Select(tb => new TestBatchDTO(tb)).ToList();
     }
