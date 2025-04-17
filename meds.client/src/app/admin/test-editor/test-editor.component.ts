@@ -31,7 +31,6 @@ export class TestEditorComponent {
       .subscribe(
         (response) => {
           this.testTypes = response;
-          this.columnNames = Object.keys(this.testTypes[0]);
         },
         (error) => {
           this.errorMessage = error.error.message;

@@ -1,24 +1,33 @@
-<button (click)="goBack()">&lt;-Back</button>
+<button class="back-button" (click)="goBack()">&lt;-Back</button>
 <div *ngIf="errorMessage">{{errorMessage}}</div>
-<table *ngIf="testTypes.length > 0;">
-  <thead>
-    <tr>
-      <th *ngFor="let column of columnNames">{{column}}</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let test of testTypes">
-      <td *ngFor="let column of columnNames">{{test[column]}}</td>
-      <td>
-        <button (click)="editModal.openModal(test)">Edit</button>
-        <button (click)="onTestSelectNormalValues(test.testTypeId)">Edit normal values</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<button (click)="additionModal.openModal()">Add a test type</button>
-
+<div class="nice-container">
+  <div class="test-editor-page">
+    <table *ngIf="testTypes.length > 0;">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Cost</th>
+          <th>Unit</th>
+          <th class="action-column">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let test of testTypes">
+          <td>{{test.testTypeId}}</td>
+          <td>{{test.name}}</td>
+          <td>{{test.cost}}</td>
+          <td>{{test.measurementsUnit | superscript}} </td>
+          <td>
+            <button class="edit-button" (click)="editModal.openModal(test)">Edit</button>
+            <button class="edit-tnv-button" (click)="onTestSelectNormalValues(test.testTypeId)">Edit normal values</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button (click)="additionModal.openModal()">Add a test type</button>
+  </div>
+</div>
 <app-test-general-editor #editModal
                          (updateSuccessful)="onUpdateSuccess()">
 </app-test-general-editor>

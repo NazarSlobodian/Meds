@@ -1,5 +1,10 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { AdminTestService } from '../services/admin-test.service';
+type TestType = {
+  name: string | null;
+  cost: number | null;
+  measurementsUnit: string | null;
+};
 
 @Component({
   selector: 'app-test-general-add',
@@ -7,11 +12,13 @@ import { AdminTestService } from '../services/admin-test.service';
   styleUrl: './test-general-add.component.css'
 })
 export class TestGeneralAddComponent {
-  testType = {
-    name: "name",
-    cost: 0,
-    measurementsUnit: "kg/g"
+
+  testType: TestType = {
+    name: null,
+    cost: null,
+    measurementsUnit: null
   };
+
   isOpen = false;
   errorMessage: string | null = null;
   @Output() additionSuccessful = new EventEmitter<void>();

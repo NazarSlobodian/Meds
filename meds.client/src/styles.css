@@ -177,3 +177,12 @@ th, td {
   align-items: center;
   font-size: 16px;
 }
+
+.back-button {
+  width: 80px;
+  margin-right: 5px;
+  margin-left: 5px;
+  border-radius: 5px;
+  height: 25px;
+  font-size: 16px;
+}

@@ -2,25 +2,25 @@
   <div class="modal">
     <div class="modal-header">
       <h2>Add Test Type</h2>
-      <button (click)="closeModal()">X</button>
+      <button class="close-button" (click)="closeModal()">X</button>
     </div>
     <div class="modal-body">
       <form (ngSubmit)="submitAdd()">
         <label>{{errorMessage}}</label>
         <div class="form-group">
           <label for="name">Test Name</label>
-          <input type="text" id="name" [(ngModel)]="testType.name" name="name" required>
+          <input class="data-input" placeholder="RBC" type="text" id="name" [(ngModel)]="testType.name" name="name" required>
         </div>
         <div class="form-group">
           <label for="cost">Cost</label>
-          <input type="number" id="cost" [(ngModel)]="testType.cost" name="cost" min="1" required>
+          <input class="data-input" placeholder="9999" type="number" id="cost" [(ngModel)]="testType.cost" name="cost" min="1" required>
         </div>
         <div class="form-group">
-          <label for="measurementsUnit">Measurements Unit</label>
-          <input type="text" id="measurementsUnit" [(ngModel)]="testType.measurementsUnit" name="measurementsUnit" required>
+          <label for="measurementsUnit">Unit</label>
+          <input class="data-input" placeholder="kg/g" type="text" id="measurementsUnit" [(ngModel)]="testType.measurementsUnit" name="measurementsUnit" required>
         </div>
         <div>
-          <button type="submit" [disabled]="testType.cost<0.0 || testType.name.length<1 ||testType.measurementsUnit.length<1">Add</button>
+          <button type="submit" [disabled]="testType.cost == null || testType.cost <0.0 || testType.name == null || testType.name.length<1 || testType.measurementsUnit == null || testType.measurementsUnit.length<1">Add</button>
         </div>
       </form>
     </div>
