@@ -1,64 +1,65 @@
-<h2>Adding batch for: {{patientName}}, ID: {{patientId}}</h2>
 <button (click)="goBack()">&lt;-Back</button>
-<div>
-
-  <div>
-    <div>
-      <label>Select test type:</label>
-      <select [(ngModel)]="selectedTestType">
-        <option *ngFor="let testType of testTypes" [ngValue]="testType">
-          {{testType.name}}
-        </option>
-      </select>
-      <button (click)="addTest()" [disabled]="!selectedTestType">+</button>
+<div class="nice-container">
+  <div class="order-page">
+    <h2>Adding batch for: {{patientName}}, ID: {{patientId}}</h2>
+    <div class="halves-group">
+      <div>
+        <div class="selector">
+          <label>Select panel:</label>
+          <select [(ngModel)]="selectedPanel">
+            <option *ngFor="let panel of panels" [ngValue]="panel">
+              {{panel.name}}
+            </option>
+          </select>
+          <button class="action-button" (click)="addPanel()" [disabled]="!selectedPanel">+</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Panel Name</th>
+              <th class="cost-column">Cost</th>
+              <th class="action-column">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let panel of panelsToAdd; let i = index">
+              <td>{{ panel.name }}</td>
+              <td>{{ panel.cost }}</td>
+              <td><button class="bad-button action-button" (click)="removePanel(i)">-</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="selector">
+          <label>Select test type:</label>
+          <select [(ngModel)]="selectedTestType">
+            <option *ngFor="let testType of testTypes" [ngValue]="testType">{{testType.name}}</option>
+          </select>
+          <button class="action-button" (click)="addTest()" [disabled]="!selectedTestType">+</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Test Name</th>
+              <th class="cost-column">Cost</th>
+              <th class="action-column">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let test of testsToAdd; let i = index">
+              <td>{{ test.name }}</td>
+              <td>{{ test.cost }}</td>
+              <td><button class="bad-button action-button" (click)="removeTest(i)">-</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <div>
-      <label>Select panel:</label>
-      <select [(ngModel)]="selectedPanel">
-        <option *ngFor="let panel of panels" [ngValue]="panel">
-          {{panel.name}}
-        </option>
-      </select>
-      <button (click)="addPanel()" [disabled]="!selectedPanel">+</button>
-    </div>
+    <p>Total cost: {{calculateTotalCost()}}</p>
+
+
+
+    <button (click)="submitOrder()" [disabled]="testsToAdd.length === 0 && panelsToAdd.length ===0">Add batch</button>
   </div>
-  <div>
-    <table>
-      <thead>
-        <tr>
-          <th>Test Name</th>
-          <th>Cost</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let test of testsToAdd; let i = index">
-          <td>{{ test.name }}</td>
-          <td>{{ test.cost }}</td>
-          <td><button class="bad-button" (click)="removeTest(i)">-</button></td>
-        </tr>
-      </tbody>
-    </table>
-    <table>
-      <thead>
-        <tr>
-          <th>Panel Name</th>
-          <th>Cost</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let panel of panelsToAdd; let i = index">
-          <td>{{ panel.name }}</td>
-          <td>{{ panel.cost }}</td>
-          <td><button class="bad-button" (click)="removePanel(i)">-</button></td>
-        </tr>
-      </tbody>
-    </table>
-    <div><p>Total cost: {{calculateTotalCost()}}</p></div>
-  </div>
-
-
-
-  <button (click)="submitOrder()" [disabled]="testsToAdd.length === 0 && panelsToAdd.length ===0">Add batch</button>
 </div>
