@@ -1,19 +1,27 @@
-<h1>Medlab</h1>
-<form (ngSubmit)="onSubmit()">
-  <div>
-    <label for="login">Login</label>
-    <input id="login" [(ngModel)]="loginModel.login" name="login" required />
+<div class="login-container">
+
+  <div class="login-header">
+    <h1>Medlab</h1>
+    <img src="assets/logo.png" alt="Company logo" class="login-logo" />
   </div>
 
-  <div>
-    <label for="password">Password</label>
-    <input id="password" [(ngModel)]="loginModel.password" name="password" type="password" required />
-  </div>
+  <form (ngSubmit)="onSubmit()" class="login-form">
+    <div class="login-group">
+      <label for="login">Login</label>
+      <input class="login-input" id="login" [(ngModel)]="loginModel.login" name="login" required />
+    </div>
+    <div class="login-group">
+      <label for="password">Password</label>
+      <input class="login-input" id="password" [(ngModel)]="loginModel.password" name="password" type="password" required />
+    </div>
+    <div class="form-buttons-container">
+      <button type="submit">Login</button>
+      <button type="button" (click)="emailInputModal.openModal()">Register</button>
+    </div>
+    <div *ngIf="loginError" class="error">Invalid credentials</div>
+  </form>
+</div>
 
-  <button type="submit">Login</button>
-  <button type="button" (click)="emailInputModal.openModal()">Register</button>
-  <div *ngIf="loginError" class="error">Invalid credentials</div>
-</form>
 
 <app-email-input #emailInputModal
                  (emailEntered)="codeInputModal.openModal($event)">
