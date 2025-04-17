@@ -2,47 +2,54 @@
   {{ errorMessage }}
 </div>
 
-<div>
-  <form (ngSubmit)="onSubmit()">
-    <label for="batchId">By batch Id</label>
-    <input name="batchId" id ="batchId" type="number" [(ngModel)]="batchId" required/>
-    <button type="submit">Find</button>
-  </form>
-</div>
-<div>
-  <form (ngSubmit)="onSubmitByOrder()">
-    <label for="orderId">By order Id</label>
-    <input name="orderId" id="orderId" type="number" [(ngModel)]="orderId" required />
-    <button type="submit">Find</button>
-  </form>
-</div>
-<button (click)="loadBatches()">Refresh</button>
+<div class="nice-container">
+  <div class="list-page">
+    <div class="form-group">
+      <div>
+        <form class="small-gap" (ngSubmit)="onSubmit()">
+          <label for="batchId">By batch Id</label>
+          <input class="login-input" name="batchId" id="batchId" type="number" [(ngModel)]="batchId" required />
+          <button type="submit">Find</button>
+        </form>
+      </div>
+      <div>
+        <form class="small-gap" (ngSubmit)="onSubmitByOrder()">
+          <label for="orderId">By order Id</label>
+          <input class="login-input" name="orderId" id="orderId" type="number" [(ngModel)]="orderId" required />
+          <button type="submit">Find</button>
+        </form>
+      </div>
+    </div>
+    <button (click)="loadBatches()">Refresh</button>
 
-<app-pagination [pageSize]="pageSize"
-                [currentPage]="page"
-                [totalPages]="totalPages"
-                [totalCount]="totalCount"
-                (pageChanged)="onPageChange($event)">
-</app-pagination>
 
-<table *ngIf="totalCount > 0">
-  <thead>
-    <tr>
-      <th>Id</th>
-      <th>Date of creation</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let batch of batches">
-      <td>
-        {{batch.testBatchId}}
-      </td>
-      <td>
-        {{batch.dateOfCreation | date: 'yyyy-MM-dd' }}
-      </td>
-      <td><button (click)="onBatchClick(batch.testBatchId)">Enter results</button></td>
-    </tr>
-  </tbody>
-</table>
-<p *ngIf="totalCount <= 0">All batches filled in</p>
+    <app-pagination [pageSize]="pageSize"
+                    [currentPage]="page"
+                    [totalPages]="totalPages"
+                    [totalCount]="totalCount"
+                    (pageChanged)="onPageChange($event)">
+    </app-pagination>
+
+    <table *ngIf="totalCount > 0">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Date of creation</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let batch of batches">
+          <td>
+            {{batch.testBatchId}}
+          </td>
+          <td>
+            {{batch.dateOfCreation | date: 'yyyy-MM-dd' }}
+          </td>
+          <td><button class="results-button" (click)="onBatchClick(batch.testBatchId)">Enter results</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="totalCount <= 0">All batches filled in</p>
+  </div>
+</div>
