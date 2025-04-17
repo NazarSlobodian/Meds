@@ -2,14 +2,15 @@
   <div class="modal">
     <div class="modal-header">
       <h2>Are you sure?</h2>
-      <button (click)="closeModal()">X</button>
+      <button class="close-button" (click)="closeModal()">X</button>
     </div>
     <div class="modal-body">
       <form (ngSubmit)="submitDelete()">
         <div>
           <button class="bad-button" type="submit">
-            Delete
+            Yes!
           </button>
+          <button type="button" (click)="closeModal()">No</button>
         </div>
       </form>
     </div>

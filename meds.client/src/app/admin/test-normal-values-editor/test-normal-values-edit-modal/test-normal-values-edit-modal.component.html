@@ -2,33 +2,33 @@
   <div class="modal">
     <div class="modal-header">
       <h2>Edit Test Normal Value</h2>
-      <button (click)="closeModal()">X</button>
+      <button class="close-button" (click)="closeModal()">X</button>
     </div>
     <div class="modal-body">
       <form (ngSubmit)="submitEdit()">
         <label>{{errorMessage}}</label>
         <div class="form-group">
           <label for="minAge">Min Age</label>
-          <input type="number" id="minAge" [(ngModel)]="testNormalValue.minAge" name="minAge" min="0" required>
+          <input class="data-input" type="number" id="minAge" [(ngModel)]="testNormalValue.minAge" name="minAge" min="0" required>
         </div>
         <div class="form-group">
           <label for="maxAge">Max Age</label>
-          <input type="number" id="maxAge" [(ngModel)]="testNormalValue.maxAge" name="maxAge" min="0" required>
+          <input class="data-input" type="number" id="maxAge" [(ngModel)]="testNormalValue.maxAge" name="maxAge" min="0" required>
         </div>
         <div class="form-group">
           <label for="gender">Gender</label>
-          <select id="gender" name="gender" [(ngModel)]="testNormalValue.gender" required>
+          <select class="data-input" id="gender" name="gender" [(ngModel)]="testNormalValue.gender" required>
             <option value="f">f</option>
             <option value="m">m</option>
           </select>
         </div>
         <div class="form-group">
           <label for="minResValue">Min Result Value</label>
-          <input type="number" id="minResValue" [(ngModel)]="testNormalValue.minResValue" name="minResValue" min="0" required>
+          <input class="data-input" type="number" id="minResValue" [(ngModel)]="testNormalValue.minResValue" name="minResValue" min="0" required>
         </div>
         <div class="form-group">
           <label for="maxResValue">Max Result Value</label>
-          <input type="number" id="maxResValue" [(ngModel)]="testNormalValue.maxResValue" name="maxResValue" min="0" required>
+          <input class="data-input" type="number" id="maxResValue" [(ngModel)]="testNormalValue.maxResValue" name="maxResValue" min="0" required>
         </div>
         <div>
           <button type="submit"
