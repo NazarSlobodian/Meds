@@ -1,4 +1,6 @@
+using Humanizer;
 using Meds.Server.Models.DbModels;
+using Meds.Server.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -15,9 +17,11 @@ namespace Meds.Server.Controllers
     {
 
         private readonly PatientsService _patientsService;
-        public PatientsController(PatientsService patientsService)
+        private readonly MailService _mailService;
+        public PatientsController(PatientsService patientsService, MailService mailService)
         {
             _patientsService = patientsService;
+            _mailService = mailService;
         }
         [HttpGet("batches")]
         [Authorize(Policy = "Patient")]
@@ -55,8 +59,38 @@ namespace Meds.Server.Controllers
                 return Unauthorized(new { message = "No id in claims" });
             }
             int patientId = int.Parse(patientIdClaim.Value);
-            BatchResultsDTO batchRes = await _patientsService.GetBatchResultsAsync(batchId);
+            BatchResultsDTO batchRes;
+            try
+            {
+                batchRes = await _patientsService.GetBatchResultsAsync(batchId, patientId);
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized("Authorization failed");
+            }
+
             return Ok(batchRes);
+        }
+        [HttpGet("batches/{batchId}/pdf")]
+        [Authorize(Policy = "patient")]
+        public async Task<IActionResult> GetBatchResultsPdf(int batchId)
+        {
+            Claim? patientIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserID");
+            if (patientIdClaim == null)
+            {
+                return Unauthorized(new { message = "No id in claims" });
+            }
+            int patientId = int.Parse(patientIdClaim.Value);
+            BatchResultsDTO batchRes;
+            try
+            {
+                batchRes = await _patientsService.GetBatchResultsAsync(batchId, patientId);
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized("Authorization failed");
+            }
+            return File(_mailService.MakePdfResult(batchRes), "application/pdf", $"Medlab{batchRes.BatchID}.pdf");
         }
         [HttpGet("LabWorker/batches/{batchId}")]
         [Authorize(Policy = "LabWorker")]

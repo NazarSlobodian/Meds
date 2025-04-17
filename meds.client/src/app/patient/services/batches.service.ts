@@ -16,4 +16,7 @@ export class BatchesService {
   getBatchResults(batchId: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${batchId}`, { withCredentials: true });
   }
+  getBatchResultsPdf(batchId: number): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/${batchId}/pdf`, { responseType: 'blob', withCredentials: true });
+  }
 }

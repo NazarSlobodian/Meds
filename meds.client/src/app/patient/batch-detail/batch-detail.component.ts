@@ -52,6 +52,16 @@ export class BatchDetailComponent implements OnInit {
     this.router.navigate(["/patient/batches"]);
   }
   download() {
-
+    this.batchService.getBatchResultsPdf(this.batchResults.batchID).subscribe({
+      next: (response: Blob) => {
+        const url = window.URL.createObjectURL(response);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Medlab${this.batchResults.batchID}.pdf`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+      },
+      error: () => { }
+    })
   }
 }

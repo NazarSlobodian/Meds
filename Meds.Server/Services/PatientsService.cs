@@ -164,7 +164,29 @@ public class PatientsService
         await _activityLoggerService.Log("Patient addition", null, null, "success");
         return p.PatientId;
     }
-    public async Task<BatchResultsDTO> GetBatchResultsAsync(int batchId)
+    public async Task<BatchResultsDTO> GetBatchResultsAsync(int batchId, int patientId)
+    {
+        TestBatch batch = await _context.TestBatches
+            .Include(tb => tb.Patient)
+            .Include(tb => tb.TestOrders)
+                .ThenInclude(to => to.TestResult)
+            .Include(tb => tb.TestOrders)
+                .ThenInclude(to => to.TestType)
+                    .ThenInclude(tt => tt.TestNormalValues)
+            .Include(tb => tb.TestOrders)
+                .ThenInclude(to => to.TestPanel)
+            .Where(tb => tb.TestBatchId == batchId)
+            .FirstAsync();
+        CollectionPoint collectionPoint = await _context.CollectionPoints
+            .Include(l => l.Receptionists)
+            .Where(t => t.Receptionists.Any(t => t.ReceptionistId == batch.ReceptionistId))
+            .FirstAsync();
+        await _activityLoggerService.Log("Batch result request", null, null, "success");
+        if (patientId != batch.PatientId)
+            throw new Exception("Nope");
+        return new BatchResultsDTO(collectionPoint, batch);
+    }
+    public async Task<BatchResultsDTO> GetBatchResultsBYPASSAsync(int batchId)
     {
         TestBatch batch = await _context.TestBatches
             .Include(tb => tb.Patient)
@@ -356,7 +378,7 @@ public class PatientsService
             .FirstOrDefaultAsync(b => b.TestBatchId == batchId);
         if (batch.BatchStatus == "done") // assuming your trigger sets it to "Completed"
         {
-            BatchResultsDTO dto = await GetBatchResultsAsync(batchId);
+            BatchResultsDTO dto = await GetBatchResultsBYPASSAsync(batchId);
             // Call the PDF generation logic from PdfService
             await _mailService.SendResultsAndSave(dto);
         }
