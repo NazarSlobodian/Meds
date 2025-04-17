@@ -174,16 +174,17 @@ namespace Meds.Server.Controllers
                 return Unauthorized(new { message = "No id in claims" });
             }
             int labWorkerId = int.Parse(labWorkerIdCLaim.Value);
+            int batchId;
             List<TestOrderLabWorkerDTO> batchRes = null;
             try
             {
-                batchRes = await _patientsService.GetTestOrdersLabWorkerOrderAsync(orderId, labWorkerId);
+                (batchRes, batchId) = await _patientsService.GetTestOrdersLabWorkerOrderAsync(orderId, labWorkerId);
             }
             catch (Exception ex)
             {
                 return BadRequest(new { message = "Couldn't find the batch" });
             }
-            return Ok(batchRes);
+            return Ok(new { data = batchRes, id = batchId});
         }
         [HttpPost("batches/results")]
         [Authorize(Policy = "LabWorker")]

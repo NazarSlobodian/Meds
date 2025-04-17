@@ -34,7 +34,7 @@ export class BatchResultsInputComponent {
     else if (this.searchType == "order") {
       this.batchResultsService.getResultsByOrder(this.batchId).subscribe(
         (data) => {
-          this.orders = data;
+          this.orders = data.data;
           this.batchId = data.id;
         },
         (error) => {

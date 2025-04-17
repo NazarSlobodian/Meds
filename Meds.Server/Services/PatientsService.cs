@@ -143,10 +143,10 @@ public class PatientsService
         await _activityLoggerService.Log("Orders request", null, null, "success");
         return list;
     }
-    public async Task<List<TestOrderLabWorkerDTO>> GetTestOrdersLabWorkerOrderAsync(int orderId, int labWorkerId)
+    public async Task<(List<TestOrderLabWorkerDTO>, int)> GetTestOrdersLabWorkerOrderAsync(int orderId, int labWorkerId)
     {
         int batchId = await _context.TestOrders.Where(x => x.TestOrderId == orderId).Select(x => x.TestBatchId).FirstAsync();
-        return await GetTestOrdersLabWorkerAsync(batchId, labWorkerId);
+        return (await GetTestOrdersLabWorkerAsync(batchId, labWorkerId), batchId);
     }
     public async Task<int> AddPatient(PatientNew patient)
     {
