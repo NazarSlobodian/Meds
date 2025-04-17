@@ -4,6 +4,7 @@
   <div class="tnv-editor-page">
     <div *ngIf="errorMessage">{{errorMessage}}</div>
     <h2> {{name}} Test Normal Values Editor</h2>
+    <button class="long-button" (click)="addModal.openModal(testTypeId)">Add a normal value</button>
     <table *ngIf="testNormalValues.length > 0;">
       <thead>
         <tr>
@@ -29,12 +30,12 @@
           <td>
             <button (click)="editModal.openModal(normal)">Edit</button>
             <button class="bad-button" (click)="deleteModal.openModal(normal.testNormalValueId)">Delete</button>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
 </div>
-<button (click)="addModal.openModal(testTypeId)">Add a test normal value</button>
 
 <app-test-normal-values-edit-modal #editModal
                                    (updateSuccessful)="onUpdateSuccess()">

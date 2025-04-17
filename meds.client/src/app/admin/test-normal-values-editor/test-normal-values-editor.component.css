@@ -33,3 +33,7 @@ button {
 h2 {
   margin-bottom: 10px;
 }
+button.long-button {
+    width: 20ch;
+    margin-bottom: 10px;
+}
