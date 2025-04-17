@@ -12,6 +12,11 @@ export class TestEditorComponent {
   testTypes: any[] = [];
   columnNames: string[] = [];
   errorMessage: string | null = null;
+
+  pageSize = 10;
+  currentPage = 1;
+  totalPages = 1;
+  totalCount = 0;
   constructor(private adminTestService: AdminTestService, private router: Router) { }
 
   ngOnInit() {
@@ -27,15 +32,28 @@ export class TestEditorComponent {
     this.loadTestTypes();
   }
   loadTestTypes() {
-    this.adminTestService.getAvailableTestTypes()
+    this.adminTestService.getAvailableTestTypes(this.currentPage, this.pageSize)
       .subscribe(
         (response) => {
-          this.testTypes = response;
+          this.testTypes = response.list;
+          this.totalPages = Math.ceil(response.totalCount / this.pageSize);
+          this.totalCount = response.totalCount;
+          this.errorMessage = null;
         },
         (error) => {
           this.errorMessage = error.error.message;
+          this.totalPages = 1;
+          this.totalCount = 0;
+          this.currentPage = 1;
+          this.errorMessage = error.error.message;
         }
       )
+  }
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.loadTestTypes();
+    if (this.currentPage > this.totalPages)
+      this.currentPage = this.totalPages;
   }
   onTestSelectNormalValues(id: number) {
     this.router.navigate([`/admin/options/editTest/${id}/normal-values`]);

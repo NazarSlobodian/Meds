@@ -32,9 +32,10 @@ public class TestTypesService
         await _activityLoggerService.Log("Requesting test panels", null, null, "success");
         return panels;
     }
-    public async Task<List<AdminTestTypeInfo>> GetTestTypesForAdminView()
+    public async Task<ListWithTotalCount<AdminTestTypeInfo>> GetTestTypesForAdminView(int page, int pageSize)
     {
-        List<AdminTestTypeInfo> tbs = await _context.TestTypes
+        var query = _context.TestTypes.OrderBy(t=>t.TestTypeId).AsQueryable();
+        List<AdminTestTypeInfo> tbs = await query
             .Select(tt => new AdminTestTypeInfo
             {
                 TestTypeId = tt.TestTypeId,
@@ -42,9 +43,12 @@ public class TestTypesService
                 Cost = tt.Cost,
                 MeasurementsUnit = tt.MeasurementsUnit
             })
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
+        ListWithTotalCount<AdminTestTypeInfo> tbbs = new ListWithTotalCount<AdminTestTypeInfo> { List = tbs, TotalCount = await query.CountAsync() };
         await _activityLoggerService.Log("Requesting test types", null, null, "success");
-        return tbs;
+        return tbbs;
     }
     public async Task AddTestType(AdminTestTypeNew info)
     {

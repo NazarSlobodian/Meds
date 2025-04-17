@@ -2,6 +2,16 @@
 <div *ngIf="errorMessage">{{errorMessage}}</div>
 <div class="nice-container">
   <div class="test-editor-page">
+    <h2>Test Type Editor</h2>
+    <button (click)="additionModal.openModal()">Add a test type</button>
+
+    <app-pagination [pageSize]="pageSize"
+                    [currentPage]="currentPage"
+                    [totalPages]="totalPages"
+                    [totalCount]="totalCount"
+                    (pageChanged)="onPageChange($event)">
+    </app-pagination>
+
     <table *ngIf="testTypes.length > 0;">
       <thead>
         <tr>
@@ -25,7 +35,6 @@
         </tr>
       </tbody>
     </table>
-    <button (click)="additionModal.openModal()">Add a test type</button>
   </div>
 </div>
 <app-test-general-editor #editModal

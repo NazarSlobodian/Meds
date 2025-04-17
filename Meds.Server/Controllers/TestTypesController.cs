@@ -30,9 +30,9 @@ namespace Meds.Server.Controllers
         }
         [HttpGet("admin")]
         [Authorize(Policy = "Admin")]
-        public async Task<IActionResult> GetTestTypesGeneralInfo()
+        public async Task<IActionResult> GetTestTypesGeneralInfo([FromQuery] int page, [FromQuery] int pageSize)
         {
-            List<AdminTestTypeInfo> testTypes = await _testTypesService.GetTestTypesForAdminView();
+            ListWithTotalCount<AdminTestTypeInfo> testTypes = await _testTypesService.GetTestTypesForAdminView(page, pageSize);
             return Ok(testTypes);
         }
         [HttpPost("admin")]

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -8,8 +8,11 @@ import { Observable } from 'rxjs';
 export class AdminTestService {
   private apiUrl = "https://localhost:7217/TestTypes/admin";
   constructor(private http: HttpClient) { }
-  getAvailableTestTypes(): Observable<any> {
-    return this.http.get(this.apiUrl, { withCredentials: true });
+  getAvailableTestTypes(page: number, pageSize: number): Observable<any> {
+    let params = new HttpParams()
+      .set('page', page)
+      .set('pageSize', pageSize);
+    return this.http.get(this.apiUrl, { params, withCredentials: true });
   }
   getNormalValues(id: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/normals/${id}`, { withCredentials: true });
