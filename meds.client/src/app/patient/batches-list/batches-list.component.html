@@ -2,21 +2,25 @@
   {{ errorMessage }}
 </div>
 
-<ul *ngIf="batches.length > 0; else noBatches">
-  <li *ngFor="let batch of batches">
-    <span *ngIf="batch.batchStatus === 'done'; else noResults">
-      <a [routerLink]="['/patient/batches', batch.testBatchId]">
-        {{ batch.dateOfCreation | date: 'medium' }}
-        {{ batch.batchStatus | statusTransform }}
-      </a>
-    </span>
-    <ng-template #noResults>
-      {{ batch.dateOfCreation | date: 'medium' }} -
-      {{ batch.batchStatus | statusTransform }} (No results)
-    </ng-template>
-  </li>
-</ul>
-
+<div class="list-container">
+  <div class="list-page">
+    <p *ngIf="batches.length > 0">Welcome! Here are you test results:</p>
+    <ul *ngIf="batches.length > 0; else noBatches">
+      <li *ngFor="let batch of batches" class="list-item">
+        <span *ngIf="batch.batchStatus === 'done'; else noResults">
+          <a [routerLink]="['/patient/batches', batch.testBatchId]">
+            {{ batch.dateOfCreation | date: 'medium' }}
+            {{ batch.batchStatus | statusTransform }}
+          </a>
+        </span>
+        <ng-template #noResults>
+          {{ batch.dateOfCreation | date: 'medium' }} -
+          {{ batch.batchStatus | statusTransform }} (No results)
+        </ng-template>
+      </li>
+    </ul>
+  </div>
+</div>
 <ng-template #noBatches>
   <p>No test batches found.</p>
 </ng-template>

@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files #afffa0 */
 :root {
   --background-color: #f2f8ff;
-  --page-background-color:#ffffff;
+  --page-background-color: #ffffff;
   --text-color: #212121;
   --button-back-color: #83C2E3;
   --danger-back-color: #ff5d5d;
@@ -10,6 +10,7 @@
   --header-text-color: #ffffff;
   --header-hover-color: #352269;
   --modal-background-color: #fafcff;
+  --visited-color: #330066;
 }
 * {
   -webkit-box-sizing: border-box;
@@ -28,6 +29,7 @@
   --header-text-color: #ffffff;
   --header-hover-color: #170e2f;
   --modal-background-color: #282828;
+  --visited-color: #6e00db;
 }
 
 body {
@@ -124,4 +126,7 @@ h2 {
 
 p {
   margin: 0;
+}
+a:visited {
+    color: var(--visited-color);
 }
