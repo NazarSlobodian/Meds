@@ -1,0 +1,20 @@
+.results-page {
+  width: 100%;
+  max-width: 800px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  background-color: var(--page-background-color);
+  margin-top: 20px;
+  padding: 20px;
+}
+p {
+    margin-bottom: 10px;
+}
+button {
+  width: 85px;
+  margin-right: 5px;
+  margin-left: 5px;
+  border-radius: 5px;
+  height: 25px;
+  font-size: 16px;
+}
