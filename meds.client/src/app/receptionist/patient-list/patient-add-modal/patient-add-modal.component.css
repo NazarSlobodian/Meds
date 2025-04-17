@@ -1,0 +1,28 @@
+.data-input {
+  border-radius: 2px;
+  width: 60%;
+  font-size: 16px;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: row;
+}
+
+button {
+  width: 80px;
+  margin-right: 5px;
+  margin-left: 5px;
+  border-radius: 5px;
+  height: 25px;
+  font-size: 16px;
+}
+
+.close-button {
+  width: unset;
+  margin-right: 5px;
+  margin-left: 5px;
+  border-radius: 5px;
+  height: 25px;
+  font-size: 16px;
+}

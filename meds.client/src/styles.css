@@ -136,3 +136,31 @@ p {
 a:visited {
     color: var(--visited-color);
 }
+table tr:nth-child(odd) {
+  background-color: var(--background-color);
+}
+
+table tr:nth-child(even) {
+  background-color: var(--table-alt-color);
+}
+
+table tr:hover {
+  background-color: var(--button-back-color);
+}
+
+table {
+  border: 2px solid var(--table-border-color);
+  border-radius: 4px;
+  background-color: var(--table-border-color-fill);
+}
+th, td {
+  text-align: left;
+  border: 1px solid var(--table-border-color);
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+}
+
+  td button {
+    margin-left: 0;
+  }
