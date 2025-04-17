@@ -1,37 +1,41 @@
 <button (click)="goBack()">&lt;-Back</button>
-<div *ngIf="batchResults">
-  <h2>Batch Results</h2>
-  <p><strong>Lab Address:</strong> {{ batchResults.labAddress }}</p>
-  <p><strong>Email:</strong> {{ batchResults.email }}</p>
-  <p><strong>Phone:</strong> {{ batchResults.phone }}</p>
-  <p><strong>Batch ID:</strong> {{ batchResults.batchID }}</p>
-  <p><strong>Time of Creation:</strong> {{ batchResults.timeOfCreation | date:'medium' }}</p>
-  <p><strong>Patient Name:</strong> {{ batchResults.patientName }}</p>
-  <p><strong>Patient Sex:</strong> {{ batchResults.patientSex }}</p>
-  <p><strong>Date of Birth:</strong> {{ batchResults.dateOfBirth | date:'longDate' }}</p>
+<button (click)="download()">Download</button>
+<div *ngIf="batchResults" class="results-container">
+  <div class="results-page">
+    <h3>Results</h3>
+    <div class="info-group">
+      <div class="left">
+        <p class="group-name"><strong>Lab Address:</strong> {{ batchResults.labAddress }}</p>
+        <p class="group-name"><strong>Email:</strong> {{ batchResults.email }}</p>
+        <p class="group-name"><strong>Phone:</strong> {{ batchResults.phone }}</p>
+        <p class="group-name"><strong>Batch ID:</strong> {{ batchResults.batchID }}</p>
+        <p class="group-name"><strong>Time of Creation:</strong> {{ batchResults.timeOfCreation | date:'medium' }}</p>
+      </div>
+      <div class="right">
+        <p class="group-name"><strong>Patient Name:</strong> {{ batchResults.patientName }}</p>
+        <p class="group-name"><strong>Patient Sex:</strong> {{ batchResults.patientSex }}</p>
+        <p class="group-name"><strong>Date of Birth:</strong> {{ batchResults.dateOfBirth | date:'longDate' }}</p>
+      </div>
+    </div>
+    <hr/>
 
-  <h3>Test Results</h3>
+    <div class="just-info-group bold">
+      <p class="left">Test Name</p>
+      <p>Result</p>
+      <p>Normal Value</p>
+      <p class="right">Units</p>
+    </div>
+    <div *ngFor="let group of groupedResults">
+      <p class="bold left group-name">{{group.panelName}}</p>
 
-  <div *ngFor="let group of groupedResults">
-    <p>{{group.panelName}}</p>
-    <table>
-      <thead>
-        <tr>
-          <th>Test Name</th>
-          <th>Result</th>
-          <th>Units</th>
-          <th>Normal Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let test of group.tests">
-          <td>{{ test.name }}</td>
-          <td>{{ test.result }}</td>
-          <td>{{ test.normalValue}}</td>
-          <td>{{ test.units | superscript}}</td>
-        </tr>
-      </tbody>
-    </table>
+      <div *ngFor="let test of group.tests" class="just-info-group">
+        <p class="left">{{ test.name }}</p>
+        <p>{{ test.result }}</p>
+        <p>{{ test.normalValue}}</p>
+        <p class="right">{{ test.units | superscript}}</p>
+      </div>
+    </div>
+    <hr />
   </div>
 </div>
 

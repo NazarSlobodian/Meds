@@ -51,5 +51,7 @@ export class BatchDetailComponent implements OnInit {
   goBack() {
     this.router.navigate(["/patient/batches"]);
   }
-  
+  download() {
+
+  }
 }
