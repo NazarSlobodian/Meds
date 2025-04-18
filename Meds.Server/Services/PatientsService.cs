@@ -254,8 +254,9 @@ public class PatientsService
             List<Laboratory> labs = await _context.Laboratories.Where(x => x.TestTypes.Select(ttype => ttype.TestTypeId).Contains(testTypeId)).ToListAsync();
             if (labs.Count == 0)
             {
+                TestType tt = await _context.TestTypes.Where(t => t.TestTypeId == testTypeId).FirstAsync();
                 await _activityLoggerService.Log("Lab assigment", null, null, "fail");
-                throw new Exception($"No labs which can perform panel ID {testTypeId}");
+                throw new Exception($"No labs which can perform test ID {tt.Name}");
             }
             decimal cost = await _context.TestTypes.Where(x => x.TestTypeId == testTypeId).Select(x => x.Cost).FirstOrDefaultAsync();
 
@@ -274,7 +275,7 @@ public class PatientsService
             List<Laboratory> labs = await _context.Laboratories
                 .Include(lab => lab.TestTypes).ToListAsync();
             List<Laboratory> suitableLabs = labs.Where(lab => panelContents.All(id => lab.TestTypes.Select(x => x.TestTypeId).Contains(id))).ToList();
-            if (labs.Count == 0)
+            if (suitableLabs.Count == 0)
             {
                 await _activityLoggerService.Log("Lab assigment", null, null, "fail");
                 throw new Exception($"No labs which can perform panel ID {panelId}");

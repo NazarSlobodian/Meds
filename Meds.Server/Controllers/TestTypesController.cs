@@ -115,7 +115,7 @@ namespace Meds.Server.Controllers
         }
         [HttpPut("lab-admin/availableTests")]
         [Authorize(Policy ="LabAdmin")]
-        public async Task<IActionResult> UpdateAvailableTests(List<TestAvailability> testTypeStates)
+        public async Task<IActionResult> UpdateAvailableTests([FromBody] List<TestAvailability> testTypeStates)
         {
             Claim? labAdminIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserID");
             if (labAdminIdClaim == null)
@@ -143,15 +143,16 @@ namespace Meds.Server.Controllers
                 return Unauthorized(new { message = "No id in claims" });
             }
             int labAdminId = int.Parse(labAdminIdClaim.Value);
+            List<TestAvailability> tests;
             try
             {
-                await _testTypesService.GetAvailableTestTypes(labAdminId);
+                tests= await _testTypesService.GetAvailableTestTypes(labAdminId);
             }
             catch (Exception ex)
             {
                 return BadRequest("Couldn't get a list of available test types");
             }
-            return Ok();
+            return Ok(tests);
         }
     }
 }

@@ -142,6 +142,7 @@ public class TestTypesService
                 Name = tt.Name,
                 IsAvailable = tt.Laboratories.Any(lab => lab.LaboratoryId == labId)
             })
+            .OrderBy(tt=>tt.Name)
             .ToListAsync();
         await _activityLoggerService.Log("Lab test availability request", null, null, "success");
         return tests;
@@ -163,7 +164,7 @@ public class TestTypesService
             .ToListAsync();
 
 
-        Laboratory? lab = await _context.Laboratories.Where(lab => lab.LaboratoryId == labId).FirstOrDefaultAsync();
+        Laboratory? lab = await _context.Laboratories.Where(lab => lab.LaboratoryId == labId).Include(lab=>lab.TestTypes).FirstOrDefaultAsync();
         if (lab == null)
         {
             await _activityLoggerService.Log("Lab test availability change", null, null, "fail");

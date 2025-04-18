@@ -1,0 +1,32 @@
+<div *ngIf="errorMessage" class="error">
+  {{ errorMessage }}
+</div>
+
+<div class="nice-container">
+  <div class="list-page">
+    <h2>Availibility updates</h2>
+    <app-pagination [pageSize]="pageSize"
+                    [currentPage]="currentPage"
+                    [totalPages]="totalPages"
+                    [totalCount]="totalCount"
+                    (pageChanged)="onPageChange($event)">
+    </app-pagination>
+    <button (click)="save()">Save</button>
+    <table *ngIf="testTypes.length > 0;">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Availibility</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let testType of testTypes">
+          <td>{{testType.testTypeId}}</td>
+          <td>{{testType.name}}</td>
+          <td><input type="checkbox" [(ngModel)]="testType.isAvailable"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

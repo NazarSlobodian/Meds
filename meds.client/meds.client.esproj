@@ -8,12 +8,9 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\meds.client\browser\</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="src\app\lab-admin\**" />
-    <TypeScriptConfiguration Remove="src\app\lab-admin\**" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="src\app\admin\activity-logs\services\" />
     <Folder Include="src\app\admin\statistics\services\" />
+    <Folder Include="src\app\lab-admin\" />
     <Folder Include="src\app\patient\services\" />
     <Folder Include="src\app\shared\services\" />
     <Folder Include="src\app\shared\pipes\" />

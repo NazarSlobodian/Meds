@@ -31,6 +31,9 @@ export class LoginFormComponent {
             else if (response.role === "admin") {
               this.router.navigate(["/admin"]);
             }
+            else if (response.role === "lab_admin") {
+              this.router.navigate(["/lab-admin"]);
+            }
             else {
               console.error("Role not implemented");
             }

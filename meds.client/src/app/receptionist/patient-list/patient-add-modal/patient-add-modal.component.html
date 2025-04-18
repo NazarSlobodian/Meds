@@ -31,7 +31,7 @@
           <input class="data-input" type="tel" id="contactNumber" [(ngModel)]="newPatient.contactNumber" name="contactNumber" placeholder="380680123456">
         </div>
         <div>
-          <button type="submit">Add</button>
+          <button type="submit" [disabled]="newPatient.dateOfBirth == null ||newPatient.dateOfBirth.length < 1 || newPatient.fullName == null || newPatient.fullName.length < 1">Add</button>
         </div>
       </form>
     </div>
