@@ -57,7 +57,8 @@ button {
   padding: 5px;
 }
 .name-column {
-  width: 20%;
+  width: 30ch;
+  min-width: 30ch;
 }
 
 .gender-column {
@@ -71,12 +72,12 @@ button {
 }
 
 .email-column {
-  width: 34%;
+  width: 100%;
 }
 
 .phone-column {
-  width: 13ch;
-  min-width: 13ch;
+  width: 14ch;
+  min-width: 14ch;
 }
 
 .action-column {

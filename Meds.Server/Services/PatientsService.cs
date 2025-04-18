@@ -394,7 +394,7 @@ public class PatientsService
 
 
 
-        // After saving, check if the batch status has been updated by the MySQL trigger
+
         var batchId = await _context.TestOrders
             .Where(r => r.TestOrderId == results[0].TestOrderId)
             .Select(r => r.TestBatchId)
@@ -404,10 +404,9 @@ public class PatientsService
             .Include(b => b.TestOrders)
             .ThenInclude(o => o.TestResult)
             .FirstOrDefaultAsync(b => b.TestBatchId == batchId);
-        if (batch.BatchStatus == "done") // assuming your trigger sets it to "Completed"
+        if (batch.BatchStatus == "done")
         {
             BatchResultsDTO dto = await GetBatchResultsBYPASSAsync(batchId);
-            // Call the PDF generation logic from PdfService
             await _mailService.SendResultsAndSave(dto);
         }
     }
