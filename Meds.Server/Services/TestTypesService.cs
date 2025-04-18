@@ -70,6 +70,10 @@ public class TestTypesService
     
     public async Task AddTestType(AdminTestTypeNew info)
     {
+        if (info.MeasurementsUnit.Trim() == "" || info.Name.Trim() == "" || info.Cost < 0.0m)
+        {
+            throw new Exception("Invalid data");
+        }
         try
         {
             await _context.TestTypes.AddAsync(new TestType { Cost = info.Cost, MeasurementsUnit = info.MeasurementsUnit, Name = info.Name });
@@ -84,6 +88,10 @@ public class TestTypesService
     }
     public async Task AddTestPanel(AdminTestPanelNew info)
     {
+        if (info.Name.Trim() == "" || info.Cost < 0.0m)
+        {
+            throw new Exception("Invalid data");
+        }
         try
         {
             await _context.TestPanels.AddAsync(new TestPanel { Cost = info.Cost, Name = info.Name });
@@ -98,6 +106,10 @@ public class TestTypesService
     }
     public async Task UpdateTestType(AdminTestTypeInfo test)
     {
+        if (test.MeasurementsUnit.Trim() == "" || test.Name.Trim() == "" || test.Cost < 0.0m)
+        {
+            throw new Exception("Invalid data");
+        }
         TestType? tt = await _context.TestTypes.FirstOrDefaultAsync(t => t.TestTypeId == test.TestTypeId);
         if (tt == null)
         {
@@ -112,6 +124,10 @@ public class TestTypesService
     }
     public async Task UpdateTestPanel(AdminTestPanelInfo test)
     {
+        if (test.Name.Trim() == "" || test.Cost < 0.0m)
+        {
+            throw new Exception("Invalid data");
+        }
         TestPanel? tt = await _context.TestPanels.FirstOrDefaultAsync(t => t.TestPanelId == test.TestPanelId);
         if (tt == null)
         {
