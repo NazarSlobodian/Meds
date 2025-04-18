@@ -60,6 +60,8 @@ public partial class Wv1Context : DbContext
 
             entity.ToTable("activity_logs");
 
+            entity.HasIndex(e => e.DateTime, "fasterSliceSelect");
+
             entity.Property(e => e.ActivityLogId).HasColumnName("activityLogID");
             entity.Property(e => e.Action)
                 .HasMaxLength(45)
@@ -185,9 +187,13 @@ public partial class Wv1Context : DbContext
 
             entity.ToTable("patients");
 
+            entity.HasIndex(e => e.DateOfBirth, "birthdate");
+
             entity.HasIndex(e => e.ContactNumber, "contactNumber_UNIQUE").IsUnique();
 
             entity.HasIndex(e => e.Email, "email_UNIQUE").IsUnique();
+
+            entity.HasIndex(e => e.FullName, "fullName");
 
             entity.HasIndex(e => new { e.FullName, e.Gender, e.DateOfBirth, e.Email, e.ContactNumber }, "unique_patient").IsUnique();
 
@@ -298,6 +304,8 @@ public partial class Wv1Context : DbContext
 
             entity.HasIndex(e => e.TestTypeId, "normalValuesTestTypeID_idx");
 
+            entity.HasIndex(e => new { e.TestTypeId, e.Gender, e.MinAge, e.MaxAge }, "tnvLookup");
+
             entity.Property(e => e.TestNormalValueId).HasColumnName("testNormalValueID");
             entity.Property(e => e.Gender)
                 .HasMaxLength(1)
@@ -373,6 +381,7 @@ public partial class Wv1Context : DbContext
             entity.Property(e => e.Cost)
                 .HasPrecision(7, 2)
                 .HasColumnName("cost");
+            entity.Property(e => e.IsActive).HasColumnName("isActive");
             entity.Property(e => e.Name)
                 .HasMaxLength(100)
                 .HasColumnName("name");
@@ -435,6 +444,7 @@ public partial class Wv1Context : DbContext
             entity.Property(e => e.Cost)
                 .HasPrecision(7, 2)
                 .HasColumnName("cost");
+            entity.Property(e => e.IsActive).HasColumnName("isActive");
             entity.Property(e => e.MeasurementsUnit)
                 .HasMaxLength(15)
                 .HasColumnName("measurementsUnit");
@@ -448,6 +458,8 @@ public partial class Wv1Context : DbContext
             entity.HasKey(e => e.UserId).HasName("PRIMARY");
 
             entity.ToTable("users");
+
+            entity.HasIndex(e => e.Login, "login");
 
             entity.Property(e => e.UserId).HasColumnName("userID");
             entity.Property(e => e.Hash)

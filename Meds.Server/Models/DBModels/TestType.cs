@@ -13,6 +13,8 @@ public partial class TestType
 
     public string MeasurementsUnit { get; set; } = null!;
 
+    public sbyte IsActive { get; set; }
+
     public virtual ICollection<TestNormalValue> TestNormalValues { get; set; } = new List<TestNormalValue>();
 
     public virtual ICollection<TestOrder> TestOrders { get; set; } = new List<TestOrder>();

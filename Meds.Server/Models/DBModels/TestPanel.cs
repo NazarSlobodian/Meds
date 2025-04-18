@@ -11,6 +11,8 @@ public partial class TestPanel
 
     public decimal Cost { get; set; }
 
+    public sbyte IsActive { get; set; }
+
     public virtual ICollection<TestOrder> TestOrders { get; set; } = new List<TestOrder>();
 
     public virtual ICollection<TestType> TestTypes { get; set; } = new List<TestType>();
