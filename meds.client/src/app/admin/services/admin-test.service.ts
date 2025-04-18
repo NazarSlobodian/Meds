@@ -44,4 +44,10 @@ export class AdminTestService {
   addTestNormalValue(testNormalValue: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/normals`, testNormalValue, { withCredentials: true });
   }
+  getPanelContents(id: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/panels/${id}`, { withCredentials: true });
+  }
+  updatePanelContents(panelContents: any[], id: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/panels/${id}`, panelContents , { withCredentials: true });
+  }
 }

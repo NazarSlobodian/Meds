@@ -34,7 +34,7 @@ public class TestTypesService
     }
     public async Task<ListWithTotalCount<AdminTestTypeInfo>> GetTestTypesForAdminView(int page, int pageSize)
     {
-        var query = _context.TestTypes.OrderBy(t=>t.TestTypeId).AsQueryable();
+        var query = _context.TestTypes.OrderBy(t => t.TestTypeId).AsQueryable();
         List<AdminTestTypeInfo> tbs = await query
             .Select(tt => new AdminTestTypeInfo
             {
@@ -67,7 +67,7 @@ public class TestTypesService
         await _activityLoggerService.Log("Requesting test panels", null, null, "success");
         return tbbs;
     }
-    
+
     public async Task AddTestType(AdminTestTypeNew info)
     {
         if (info.MeasurementsUnit.Trim() == "" || info.Name.Trim() == "" || info.Cost < 0.0m)
@@ -167,7 +167,7 @@ public class TestTypesService
                 MinAge = tnv.MinAge,
                 MaxAge = tnv.MaxAge,
                 MinResValue = tnv.MinResValue,
-                MaxResValue= tnv.MaxResValue,
+                MaxResValue = tnv.MaxResValue,
             }
             );
         await _context.SaveChangesAsync();
@@ -196,12 +196,32 @@ public class TestTypesService
         await _context.SaveChangesAsync();
         await _activityLoggerService.Log("Deleting test type normal value", null, null, "success");
     }
+    public async Task<List<TestAvailability>> GetPanelContents(int panelId)
+    {
+        TestPanel? tp = await _context.TestPanels.Include(tp => tp.TestTypes).Where(tp=>tp.TestPanelId == panelId).FirstOrDefaultAsync();
+        if (tp == null)
+        {
+            await _activityLoggerService.Log("Panel contents request", null, null, "fail");
+            throw new Exception("Panel doesn't exits");
+        }
+        List<TestAvailability> tests = await _context.TestTypes
+            .Select(tt => new TestAvailability
+            {
+                TestTypeId = tt.TestTypeId,
+                Name = tt.Name,
+                IsAvailable = tp.TestTypes.Contains(tt)
+            })
+            .OrderBy(tt => tt.Name)
+            .ToListAsync();
+        await _activityLoggerService.Log("Panel contents request", null, null, "success");
+        return tests;
+    }
     public async Task<List<TestAvailability>> GetAvailableTestTypes(int labAdminId)
     {
         int labId = await _context.Laboratories.Where(lab => lab.LabWorkers.Any(worker => worker.LabWorkerId == labAdminId)).Select(lab => lab.LaboratoryId).FirstOrDefaultAsync();
         if (labId == 0)
         {
-            await _activityLoggerService.Log("Lab test availability request", null, null, "success");
+            await _activityLoggerService.Log("Lab test availability request", null, null, "fail");
             throw new Exception("Admin not in lab");
         }
         List<TestAvailability> tests = await _context.TestTypes
@@ -211,7 +231,7 @@ public class TestTypesService
                 Name = tt.Name,
                 IsAvailable = tt.Laboratories.Any(lab => lab.LaboratoryId == labId)
             })
-            .OrderBy(tt=>tt.Name)
+            .OrderBy(tt => tt.Name)
             .ToListAsync();
         await _activityLoggerService.Log("Lab test availability request", null, null, "success");
         return tests;
@@ -233,7 +253,7 @@ public class TestTypesService
             .ToListAsync();
 
 
-        Laboratory? lab = await _context.Laboratories.Where(lab => lab.LaboratoryId == labId).Include(lab=>lab.TestTypes).FirstOrDefaultAsync();
+        Laboratory? lab = await _context.Laboratories.Where(lab => lab.LaboratoryId == labId).Include(lab => lab.TestTypes).FirstOrDefaultAsync();
         if (lab == null)
         {
             await _activityLoggerService.Log("Lab test availability change", null, null, "fail");
@@ -242,5 +262,26 @@ public class TestTypesService
         lab.TestTypes = available;
         await _context.SaveChangesAsync();
         await _activityLoggerService.Log("Lab test availability change", null, null, "success");
+    }
+    public async Task UpdatePanelContents(List<TestAvailability> tests, int panelId)
+    {
+        List<int> ids = tests.Where(t => t.IsAvailable).Select(x => x.TestTypeId).ToList();
+
+
+        List<TestType> available = await _context.TestTypes
+            .Where(tt => ids
+                .Contains(tt.TestTypeId))
+            .ToListAsync();
+
+
+        TestPanel? panel = await _context.TestPanels.Where(panel => panel.TestPanelId == panelId).Include(lab => lab.TestTypes).FirstOrDefaultAsync();
+        if (panel == null)
+        {
+            await _activityLoggerService.Log("Panel contents change", null, null, "fail");
+            throw new Exception("Lab not found");
+        }
+        panel.TestTypes = available;
+        await _context.SaveChangesAsync();
+        await _activityLoggerService.Log("Panel contents change", null, null, "success");
     }
 }

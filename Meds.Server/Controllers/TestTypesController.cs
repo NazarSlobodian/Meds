@@ -98,6 +98,21 @@ namespace Meds.Server.Controllers
             }
             return Ok(new { message = "updated" });
         }
+        [HttpGet("admin/panels/{panelId}")]
+        [Authorize(Policy = "Admin")]
+        public async Task<IActionResult> GetPanelContents(int panelId)
+        {
+            List<TestAvailability> tests;
+            try
+            {
+                tests = await _testTypesService.GetPanelContents(panelId);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Couldn't get a list of available test types");
+            }
+            return Ok(tests);
+        }
         [HttpGet("admin/normals/{testTypeID}")]
         [Authorize(Policy = "Admin")]
         public async Task<IActionResult> GetTestNormalValeusGeneralInfo(int testTypeID)
@@ -131,7 +146,7 @@ namespace Meds.Server.Controllers
             {
                 return BadRequest(new { message = ex.InnerException?.Message ?? ex.Message });
             }
-            return Ok(new { message = "updated"});
+            return Ok(new { message = "updated" });
         }
         [HttpDelete("admin/normals/{testNormalValueID}")]
         [Authorize(Policy = "Admin")]
@@ -148,7 +163,7 @@ namespace Meds.Server.Controllers
             return Ok(new { message = "deleted" });
         }
         [HttpPut("lab-admin/availableTests")]
-        [Authorize(Policy ="LabAdmin")]
+        [Authorize(Policy = "LabAdmin")]
         public async Task<IActionResult> UpdateAvailableTests([FromBody] List<TestAvailability> testTypeStates)
         {
             Claim? labAdminIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserID");
@@ -161,7 +176,22 @@ namespace Meds.Server.Controllers
             {
                 await _testTypesService.UpdateAvailableTestTypes(testTypeStates, labAdminId);
             }
-            catch(Exception ex)
+            catch (Exception ex)
+            {
+                return BadRequest("Couldn't update list of available test types");
+            }
+            return Ok();
+        }
+
+        [HttpPut("admin/panels/{panelId}")]
+        [Authorize(Policy = "Admin")]
+        public async Task<IActionResult> UpdatePanelContents([FromBody] List<TestAvailability> panelContents, int panelId)
+        {
+            try
+            {
+                await _testTypesService.UpdatePanelContents(panelContents, panelId);
+            }
+            catch (Exception ex)
             {
                 return BadRequest("Couldn't update list of available test types");
             }
@@ -180,7 +210,7 @@ namespace Meds.Server.Controllers
             List<TestAvailability> tests;
             try
             {
-                tests= await _testTypesService.GetAvailableTestTypes(labAdminId);
+                tests = await _testTypesService.GetAvailableTestTypes(labAdminId);
             }
             catch (Exception ex)
             {

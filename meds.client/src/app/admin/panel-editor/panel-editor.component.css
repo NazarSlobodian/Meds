@@ -8,7 +8,7 @@
   padding: 20px;
 }
 .edit-contents-button {
-  width: 150px;
+  width: 12ch;
 }
 button {
   width: 130px;
@@ -20,8 +20,12 @@ button {
 }
 
 .edit-button {
-  width: 60px;
+  width: 6ch;
 }
 h2 {
   margin-bottom: 10px;
+}
+.action-column {
+  width: 21ch;
+  min-width: 21ch;
 }
