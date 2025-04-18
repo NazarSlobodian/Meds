@@ -9,7 +9,7 @@
 }
 
 button {
-  width: 140px;
+  width: 120px;
   margin-right: 5px;
   margin-left: 5px;
   border-radius: 5px;
@@ -24,7 +24,7 @@ h2 {
 
 .data-input {
   border-radius: 2px;
-  width: 30%;
+  width: 23%;
   font-size: 16px;
   margin-bottom: 10px;
 }

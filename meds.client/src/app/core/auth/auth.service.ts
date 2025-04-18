@@ -18,11 +18,13 @@ export class AuthService {
       tap(response => {
         if (response && response.role) {
           this.role = response.role;
+          localStorage.setItem('role', response.role); 
         }
       })
     );
   }
   getRole() {
+    return localStorage.getItem("role");
     return this.role;
   }
   initRegistration(value: string): Observable<any> {
