@@ -70,9 +70,31 @@ public class TestTypesService
     
     public async Task AddTestType(AdminTestTypeNew info)
     {
-        await _context.TestTypes.AddAsync(new TestType { Cost = info.Cost, MeasurementsUnit = info.MeasurementsUnit, Name = info.Name });
-        await _context.SaveChangesAsync();
+        try
+        {
+            await _context.TestTypes.AddAsync(new TestType { Cost = info.Cost, MeasurementsUnit = info.MeasurementsUnit, Name = info.Name });
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            await _activityLoggerService.Log("Adding test type", null, null, "fail");
+            throw ex;
+        }
         await _activityLoggerService.Log("Adding test type", null, null, "success");
+    }
+    public async Task AddTestPanel(AdminTestPanelNew info)
+    {
+        try
+        {
+            await _context.TestPanels.AddAsync(new TestPanel { Cost = info.Cost, Name = info.Name });
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            await _activityLoggerService.Log("Adding test panel", null, null, "fail");
+            throw ex;
+        }
+        await _activityLoggerService.Log("Adding test panel", null, null, "success");
     }
     public async Task UpdateTestType(AdminTestTypeInfo test)
     {

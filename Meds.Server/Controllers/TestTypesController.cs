@@ -44,11 +44,25 @@ namespace Meds.Server.Controllers
         }
         [HttpPost("admin")]
         [Authorize(Policy = "Admin")]
-        public async Task<IActionResult> AddTestTypeGeneralInfo([FromBody] AdminTestTypeNew info)
+        public async Task<IActionResult> AddTestType([FromBody] AdminTestTypeNew info)
         {
             try
             {
                 await _testTypesService.AddTestType(info);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            return Ok(new { message = "added" });
+        }
+        [HttpPost("admin/panels")]
+        [Authorize(Policy = "Admin")]
+        public async Task<IActionResult> AddTestPanel([FromBody] AdminTestPanelNew info)
+        {
+            try
+            {
+                await _testTypesService.AddTestPanel(info);
             }
             catch (Exception ex)
             {
