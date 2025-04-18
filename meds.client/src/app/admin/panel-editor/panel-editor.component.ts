@@ -39,6 +39,12 @@ export class PanelEditorComponent {
           this.totalPages = Math.ceil(response.totalCount / this.pageSize);
           this.totalCount = response.totalCount;
           this.errorMessage = null;
+          if (this.currentPage > this.totalPages) {
+            this.currentPage = 1;
+            if (this.totalCount != 0) {
+              this.loadTestPanels();
+            }
+          }
         },
         (error) => {
           this.errorMessage = error.error.message;

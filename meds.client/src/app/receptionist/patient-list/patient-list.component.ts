@@ -74,7 +74,12 @@ export class PatientListComponent {
           this.totalPages = Math.ceil(response.totalCount / this.pageSize);
           this.totalCount = response.totalCount;
           this.errorMessage = null;
-
+          if (this.currentPage > this.totalPages) {
+            this.currentPage = 1;
+            if (this.totalCount != 0) {
+              this.search();
+            }
+          }
         },
         (error) => {
           this.patients = [];

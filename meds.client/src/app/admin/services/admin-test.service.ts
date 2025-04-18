@@ -42,7 +42,7 @@ export class AdminTestService {
     return this.http.post(`${this.apiUrl}/panels`, testPanel, { withCredentials: true });
   }
   toggleTestPanel(panelId: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/panels/${panelId}/toggle`, { withCredentials: true });
+    return this.http.put(`${this.apiUrl}/panels/${panelId}/toggle`, {},{ withCredentials: true });
   }
   deleteTestPanel(panelId: any): Observable<any> {
     return this.http.delete(`${this.apiUrl}/panels/${panelId}`, { withCredentials: true });

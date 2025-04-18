@@ -20,7 +20,6 @@ export class ActivityLogsComponent {
 
   errorMessage: string | null = null;
 
-  columnNames: string[] = [];
   constructor(private router: Router, private activityLogsService: ActivityLogsService) { }
 
   ngOnInit() {
@@ -34,7 +33,12 @@ export class ActivityLogsComponent {
         this.totalPages = Math.ceil(response.totalCount / this.pageSize);
         this.totalCount = response.totalCount;
         this.errorMessage = null;
-        this.columnNames = Object.keys(this.logs[0]);
+        if (this.currentPage > this.totalPages) {
+          this.currentPage = 1;
+          if (this.totalCount != 0) {
+            this.loadLogs();
+          }
+        }
       },
       error: (error) => {
         this.logs = [];

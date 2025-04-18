@@ -33,6 +33,12 @@ export class BatchesListLabWorkerComponent {
         if (this.totalCount == 0)
           this.totalPages = 1;
         else this.totalPages = Math.ceil(data.totalCount / this.pageSize);
+        if (this.page > this.totalPages) {
+          this.page = 1;
+          if (this.totalCount != 0) {
+            this.loadBatches();
+          }
+        }
       },
       (error) => {
         this.errorMessage = "Failed to load batches";

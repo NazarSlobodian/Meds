@@ -29,6 +29,12 @@ export class AvailabilityChangerComponent {
         this.totalPages = Math.ceil(this.totalCount / this.pageSize);
         this.testTypes = this.allTestTypes.slice((this.currentPage - 1) * this.pageSize, this.currentPage * this.pageSize);
         this.errorMessage = null;
+        if (this.currentPage > this.totalPages) {
+          this.currentPage = 1;
+          if (this.totalCount != 0) {
+            this.load();
+          }
+        }
       },
       error: (error) => {
         this.errorMessage = error.error.message;
