@@ -1,32 +1,47 @@
 <button class="back-button" (click)="goBack()">&lt;-Back</button>
-<div class="howToCenterDiv">
-  <div class="form-group">
-    <label for="begin">From:</label>
-    <input name="begin" id="begin" type="datetime-local" [(ngModel)]="begin">
-  </div>
-  <div class="form-group">
-    <label for="end">To:</label>
-    <input name="end" id="end" type="datetime-local" [(ngModel)]="end">
+<div class="nice-container">
+  <div class="logs-page">
+    <div>
+      <h2>Activity Logs</h2>
+      <label for="begin">From:</label>
+      <input class="data-input" name="begin" id="begin" type="datetime-local" [(ngModel)]="begin">
+
+      <label for="end">To:</label>
+      <input class="data-input" name="end" id="end" type="datetime-local" [(ngModel)]="end">
+    </div>
+
+
+    <button (click)="loadLogs()">Load logs</button>
+
+
+    <app-pagination [pageSize]="pageSize"
+                    [currentPage]="currentPage"
+                    [totalPages]="totalPages"
+                    [totalCount]="totalCount"
+                    (pageChanged)="onPageChange($event)">
+    </app-pagination>
+
+
+
+    <table *ngIf="logs.length > 0;">
+      <thead>
+        <tr>
+          <th>Action</th>
+          <th>Description</th>
+          <th class="actor-column">Actor</th>
+          <th class="status-column">Status</th>
+          <th class="date-time-column">Date and Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let log of logs">
+          <td>{{log.action}}</td>
+          <td>{{log.description}}</td>
+          <td>{{log.actor}}</td>
+          <td>{{log.status}}</td>
+          <td>{{log.dateTime | tExterminator}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
-<div class="howToCenterDiv">
-  <button (click)="loadLogs()">Load logs</button>
-</div>
-<app-pagination [pageSize]="pageSize"
-                [currentPage]="currentPage"
-                [totalPages]="totalPages"
-                [totalCount]="totalCount"
-                (pageChanged)="onPageChange($event)">
-</app-pagination>
-<table *ngIf="logs.length > 0;">
-  <thead>
-    <tr>
-      <th *ngFor="let column of columnNames">{{column}}</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let log of logs">
-      <td *ngFor="let column of columnNames">{{log[column]}}</td>
-    </tr>
-  </tbody>
-</table>
