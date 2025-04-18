@@ -55,6 +55,7 @@ namespace Meds.Server
                 options.AddPolicy("Receptionist", policy => policy.RequireRole("receptionist"));
                 options.AddPolicy("LabWorker", policy => policy.RequireRole("lab_worker"));
                 options.AddPolicy("Admin", policy => policy.RequireRole("admin"));
+                options.AddPolicy("LabAdmin", policy => policy.RequireRole("lab_admin"));
             });
             builder.Services.AddScoped<AuthService>();
             builder.Services.AddScoped<PatientsService>();

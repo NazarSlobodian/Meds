@@ -127,4 +127,50 @@ public class TestTypesService
         await _context.SaveChangesAsync();
         await _activityLoggerService.Log("Deleting test type normal value", null, null, "success");
     }
+    public async Task<List<TestAvailability>> GetAvailableTestTypes(int labAdminId)
+    {
+        int labId = await _context.Laboratories.Where(lab => lab.LabWorkers.Any(worker => worker.LabWorkerId == labAdminId)).Select(lab => lab.LaboratoryId).FirstOrDefaultAsync();
+        if (labId == 0)
+        {
+            await _activityLoggerService.Log("Lab test availability request", null, null, "success");
+            throw new Exception("Admin not in lab");
+        }
+        List<TestAvailability> tests = await _context.TestTypes
+            .Select(tt => new TestAvailability
+            {
+                TestTypeId = tt.TestTypeId,
+                Name = tt.Name,
+                IsAvailable = tt.Laboratories.Any(lab => lab.LaboratoryId == labId)
+            })
+            .ToListAsync();
+        await _activityLoggerService.Log("Lab test availability request", null, null, "success");
+        return tests;
+    }
+    public async Task UpdateAvailableTestTypes(List<TestAvailability> tests, int labAdminId)
+    {
+        int labId = await _context.Laboratories.Where(lab => lab.LabWorkers.Any(worker => worker.LabWorkerId == labAdminId)).Select(lab => lab.LaboratoryId).FirstOrDefaultAsync();
+        if (labId == 0)
+        {
+            await _activityLoggerService.Log("Lab test availability change", null, null, "fail");
+            throw new Exception("Admin not in lab");
+        }
+        List<int> ids = tests.Where(t => t.IsAvailable).Select(x => x.TestTypeId).ToList();
+
+
+        List<TestType> available = await _context.TestTypes
+            .Where(tt => ids
+                .Contains(tt.TestTypeId))
+            .ToListAsync();
+
+
+        Laboratory? lab = await _context.Laboratories.Where(lab => lab.LaboratoryId == labId).FirstOrDefaultAsync();
+        if (lab == null)
+        {
+            await _activityLoggerService.Log("Lab test availability change", null, null, "fail");
+            throw new Exception("Lab not found");
+        }
+        lab.TestTypes = available;
+        await _context.SaveChangesAsync();
+        await _activityLoggerService.Log("Lab test availability change", null, null, "success");
+    }
 }
