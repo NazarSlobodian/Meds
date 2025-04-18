@@ -2,6 +2,7 @@ using Meds.Server.Models;
 using Meds.Server.Models.DbModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using static System.Net.Mime.MediaTypeNames;
 
 public class TestTypesService
 {
@@ -16,6 +17,7 @@ public class TestTypesService
     public async Task<List<TechnicianTestTypeInfo>> GetTestTypesForTechView()
     {
         List<TechnicianTestTypeInfo> tbs = await _context.TestTypes
+            .Where(tt => tt.IsActive == 1)
             .Select(tt => new TechnicianTestTypeInfo
             {
                 TestTypeId = tt.TestTypeId,
@@ -28,7 +30,11 @@ public class TestTypesService
     }
     public async Task<List<TechnicianPanelInfo>> GetPanelsForTechView()
     {
-        List<TechnicianPanelInfo> panels = await _context.TestPanels.Include(x => x.TestTypes).Select(xx => new TechnicianPanelInfo(xx)).ToListAsync();
+        List<TechnicianPanelInfo> panels = await _context.TestPanels
+            .Include(x => x.TestTypes)
+            .Where(tp => tp.IsActive == 1)
+            .Where(tp=> tp.TestTypes.All(tt => tt.IsActive == 1))
+            .Select(xx => new TechnicianPanelInfo(xx)).ToListAsync();
         await _activityLoggerService.Log("Requesting test panels", null, null, "success");
         return panels;
     }
@@ -41,7 +47,8 @@ public class TestTypesService
                 TestTypeId = tt.TestTypeId,
                 Name = tt.Name,
                 Cost = tt.Cost,
-                MeasurementsUnit = tt.MeasurementsUnit
+                MeasurementsUnit = tt.MeasurementsUnit,
+                IsActive = tt.IsActive == 1 ? true : false
             })
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
@@ -59,6 +66,7 @@ public class TestTypesService
                 TestPanelId = tp.TestPanelId,
                 Name = tp.Name,
                 Cost = tp.Cost,
+                IsActive = tp.IsActive == 1 ? true : false
             })
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
@@ -122,6 +130,21 @@ public class TestTypesService
         await _context.SaveChangesAsync();
         await _activityLoggerService.Log("Updating test type", null, null, "success");
     }
+    public async Task ToggleTestIsActive(int testTypeId)
+    {
+        TestType? tt = await _context.TestTypes.FirstOrDefaultAsync(t => t.TestTypeId == testTypeId);
+        if (tt == null)
+        {
+            await _activityLoggerService.Log("Toggling test type active", null, null, "fail");
+            throw new Exception("Test type not found");
+        }
+        if (tt.IsActive == 1)
+            tt.IsActive = 0;
+        else
+            tt.IsActive = 1;
+        await _context.SaveChangesAsync();
+        await _activityLoggerService.Log("Toggling test type active", null, null, "success");
+    }
     public async Task UpdateTestPanel(AdminTestPanelInfo test)
     {
         if (test.Name.Trim() == "" || test.Cost < 0.0m)
@@ -138,6 +161,21 @@ public class TestTypesService
         tt.Name = test.Name;
         await _context.SaveChangesAsync();
         await _activityLoggerService.Log("Updating test panel", null, null, "success");
+    }
+    public async Task TogglePanelIsActive(int panelId)
+    {
+        TestPanel? tp = await _context.TestPanels.FirstOrDefaultAsync(t => t.TestPanelId == panelId);
+        if (tp == null)
+        {
+            await _activityLoggerService.Log("Toggling test panel active", null, null, "fail");
+            throw new Exception("Test panel not found");
+        }
+        if (tp.IsActive == 1)
+            tp.IsActive = 0;
+        else
+            tp.IsActive = 1;
+        await _context.SaveChangesAsync();
+        await _activityLoggerService.Log("Toggling test panel active", null, null, "success");
     }
     public async Task<List<TestNormalValueDTO>> GetTestNormalValues(int testTypeID)
     {

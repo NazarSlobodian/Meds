@@ -237,24 +237,34 @@ public class PatientsService
             await _activityLoggerService.Log("Order placement", null, null, "fail");
             throw new ArgumentException("Can't add an empty order.");
         }
-        var availableTestTypes = await _context.TestTypes.Select(x => x.TestTypeId).ToListAsync();
+        List<TestType> availableTestTypes = await _context.TestTypes.ToListAsync();
         foreach (int testTypeId in tests.TestTypesIds)
         {
-            var existingTestType = availableTestTypes.FirstOrDefault(tt => tt == testTypeId);
-            if (existingTestType == null || existingTestType == 0)
+            TestType? existingTestType = availableTestTypes.FirstOrDefault(tt => tt.TestTypeId == testTypeId);
+            if (existingTestType == null)
             {
                 await _activityLoggerService.Log("Order placement", null, null, "fail");
                 throw new ArgumentException($"Test type with id '{testTypeId}' does not exist.");
             }
+            if (existingTestType.IsActive == 0)
+            {
+                await _activityLoggerService.Log("Order placement", null, null, "fail");
+                throw new ArgumentException($"Test type with id '{testTypeId}', name '{existingTestType.Name}' is disabled.");
+            }
         }
-        var availablePanels = await _context.TestPanels.Select(x => x.TestPanelId).ToListAsync();
+        List<TestPanel> availablePanels = await _context.TestPanels.ToListAsync();
         foreach (int panelId in tests.PanelsIds)
         {
-            var existingPanel = availablePanels.FirstOrDefault(tt => tt == panelId);
-            if (existingPanel == null || existingPanel == 0)
+            TestPanel? existingPanel = availablePanels.FirstOrDefault(tt => tt.TestPanelId == panelId);
+            if (existingPanel == null)
             {
                 await _activityLoggerService.Log("Order placement", null, null, "fail");
                 throw new ArgumentException($"Panel with id '{panelId}' does not exist.");
+            }
+            if (existingPanel.IsActive == 0)
+            {
+                await _activityLoggerService.Log("Order placement", null, null, "fail");
+                throw new ArgumentException($"Panel with id '{panelId}', name {existingPanel.Name} is disabled.");
             }
         }
         var batch = new TestBatch
