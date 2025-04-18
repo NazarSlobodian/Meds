@@ -35,6 +35,13 @@ namespace Meds.Server.Controllers
             ListWithTotalCount<AdminTestTypeInfo> testTypes = await _testTypesService.GetTestTypesForAdminView(page, pageSize);
             return Ok(testTypes);
         }
+        [HttpGet("admin/panels")]
+        [Authorize(Policy = "Admin")]
+        public async Task<IActionResult> GetTestPanelsGeneralInfo([FromQuery] int page, [FromQuery] int pageSize)
+        {
+            ListWithTotalCount<AdminTestPanelInfo> testTypes = await _testTypesService.GetTestPanelsForAdminView(page, pageSize);
+            return Ok(testTypes);
+        }
         [HttpPost("admin")]
         [Authorize(Policy = "Admin")]
         public async Task<IActionResult> AddTestTypeGeneralInfo([FromBody] AdminTestTypeNew info)

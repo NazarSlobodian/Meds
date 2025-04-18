@@ -17,6 +17,9 @@ import { ClientDistributionComponent } from './statistics/client-distribution/cl
 import { SharedModule } from '../shared/shared.module';
 import { ActivityLogsComponent } from './activity-logs/activity-logs.component';
 import { PanelEditorComponent } from './panel-editor/panel-editor.component';
+import { PanelGeneralAddComponent } from './panel-editor/panel-general-add/panel-general-add.component';
+import { PanelGeneralEditorComponent } from './panel-editor/panel-general-editor/panel-general-editor.component';
+import { PanelContentsEditorComponent } from './panel-editor/panel-contents-editor/panel-contents-editor.component';
 
 
 
@@ -36,6 +39,9 @@ import { PanelEditorComponent } from './panel-editor/panel-editor.component';
     ClientDistributionComponent,
     ActivityLogsComponent,
     PanelEditorComponent,
+    PanelGeneralAddComponent,
+    PanelGeneralEditorComponent,
+    PanelContentsEditorComponent,
   ],
   imports: [
     CommonModule,

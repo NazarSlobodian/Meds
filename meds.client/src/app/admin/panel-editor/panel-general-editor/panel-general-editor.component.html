@@ -1,0 +1,24 @@
+<<div class="modal-back" *ngIf="isOpen">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Edit Panel</h2>
+      <button class="close-button" (click)="closeModal()">X</button>
+    </div>
+    <div class="modal-body">
+      <form (ngSubmit)="submitEdit()">
+        <label>{{errorMessage}}</label>
+        <div class="form-group">
+          <label for="name">Panel Name</label>
+          <input class="data-input" type="text" id="name" [(ngModel)]="testPanel.name" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="cost">Cost</label>
+          <input class="data-input" type="number" id="cost" [(ngModel)]="testPanel.cost" name="cost" min="1" required>
+        </div>
+        <div>
+          <button type="submit" [disabled]="testPanel.cost==null || testPanel.cost<0.0 || testPanel.name == null || testPanel.name.length<1">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
