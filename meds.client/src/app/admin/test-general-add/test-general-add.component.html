@@ -20,7 +20,7 @@
           <input class="data-input" placeholder="kg/g" type="text" id="measurementsUnit" [(ngModel)]="testType.measurementsUnit" name="measurementsUnit" required>
         </div>
         <div>
-          <button type="submit" [disabled]="testType.cost == null || testType.cost <0.0 || testType.name == null || testType.name.length<1 || testType.measurementsUnit == null || testType.measurementsUnit.length<1">Add</button>
+          <button type="submit" [disabled]="testType.cost == null || testType.cost <0.0 || testType.cost > 99999.99 || testType.name == null || testType.name.length<1 || testType.measurementsUnit == null || testType.measurementsUnit.length<1">Add</button>
         </div>
       </form>
     </div>

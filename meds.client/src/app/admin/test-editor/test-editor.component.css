@@ -22,10 +22,18 @@ button {
 .edit-tnv-button {
     width: 150px;
 }
+.enable-button {
+  width: 7ch;
+  min-width: 7ch;
+}
 .action-column {
   width: 28ch;
   min-width: 28ch;
 }
 h2 {
     margin-bottom: 10px;
+}
+.delete-button {
+  width: 3ch;
+  min-width: 3ch;
 }

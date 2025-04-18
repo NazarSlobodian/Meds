@@ -170,7 +170,6 @@ public class PatientsService
         if (pat == null) {
             throw new Exception("Patient is already deleted");
         }
-
         try
         {
             _context.Patients.Remove(pat);

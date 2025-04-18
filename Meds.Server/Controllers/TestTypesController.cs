@@ -56,6 +56,34 @@ namespace Meds.Server.Controllers
             }
             return Ok(new { message = "added" });
         }
+        [HttpPut("admin/{testTypeId}/toggle")]
+        [Authorize(Policy = "Admin")]
+        public async Task<IActionResult> ToggleTestType(int testTypeId)
+        {
+            try
+            {
+                await _testTypesService.ToggleTestTypeIsActive(testTypeId);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            return Ok();
+        }
+        [HttpDelete("admin/{testTypeId}")]
+        [Authorize(Policy = "Admin")]
+        public async Task<IActionResult> DeleteTestType(int testTypeId)
+        {
+            try
+            {
+                await _testTypesService.DeleteTestType(testTypeId);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            return Ok();
+        }
         [HttpPost("admin/panels")]
         [Authorize(Policy = "Admin")]
         public async Task<IActionResult> AddTestPanel([FromBody] AdminTestPanelNew info)
@@ -68,7 +96,35 @@ namespace Meds.Server.Controllers
             {
                 return BadRequest(new { message = ex.Message });
             }
-            return Ok(new { message = "added" });
+            return Ok();
+        }
+        [HttpPut("admin/panels/{panelId}/toggle")]
+        [Authorize(Policy = "Admin")]
+        public async Task<IActionResult> ToggleTestPanel(int panelId)
+        {
+            try
+            {
+                await _testTypesService.TogglePanelIsActive(panelId);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            return Ok();
+        }
+        [HttpDelete("admin/panels/{panelId}")]
+        [Authorize(Policy = "Admin")]
+        public async Task<IActionResult> DeleteTestPanel(int panelId)
+        {
+            try
+            {
+                await _testTypesService.DeleteTestPanel(panelId);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            return Ok();
         }
         [HttpPut("admin")]
         [Authorize(Policy = "Admin")]

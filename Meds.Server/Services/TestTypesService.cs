@@ -33,7 +33,7 @@ public class TestTypesService
         List<TechnicianPanelInfo> panels = await _context.TestPanels
             .Include(x => x.TestTypes)
             .Where(tp => tp.IsActive == 1)
-            .Where(tp=> tp.TestTypes.All(tt => tt.IsActive == 1))
+            .Where(tp => tp.TestTypes.All(tt => tt.IsActive == 1))
             .Select(xx => new TechnicianPanelInfo(xx)).ToListAsync();
         await _activityLoggerService.Log("Requesting test panels", null, null, "success");
         return panels;
@@ -130,7 +130,7 @@ public class TestTypesService
         await _context.SaveChangesAsync();
         await _activityLoggerService.Log("Updating test type", null, null, "success");
     }
-    public async Task ToggleTestIsActive(int testTypeId)
+    public async Task ToggleTestTypeIsActive(int testTypeId)
     {
         TestType? tt = await _context.TestTypes.FirstOrDefaultAsync(t => t.TestTypeId == testTypeId);
         if (tt == null)
@@ -144,6 +144,25 @@ public class TestTypesService
             tt.IsActive = 1;
         await _context.SaveChangesAsync();
         await _activityLoggerService.Log("Toggling test type active", null, null, "success");
+    }
+    public async Task DeleteTestType(int testTypeId)
+    {
+        TestType? tt = await _context.TestTypes.FirstOrDefaultAsync(t => t.TestTypeId == testTypeId);
+        if (tt == null)
+        {
+            await _activityLoggerService.Log("Deleting test type", null, null, "fail");
+            throw new Exception("Test type not found");
+        }
+        try
+        {
+            _context.TestTypes.Remove(tt);
+            await _context.SaveChangesAsync();
+            await _activityLoggerService.Log("Deleting test type", null, null, "success");
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Test type cannot be deleted as it is already used in orders. Try disabling instead");
+        }
     }
     public async Task UpdateTestPanel(AdminTestPanelInfo test)
     {
@@ -176,6 +195,25 @@ public class TestTypesService
             tp.IsActive = 1;
         await _context.SaveChangesAsync();
         await _activityLoggerService.Log("Toggling test panel active", null, null, "success");
+    }
+    public async Task DeleteTestPanel(int testPanelId)
+    {
+        TestPanel? tp = await _context.TestPanels.FirstOrDefaultAsync(t => t.TestPanelId == testPanelId);
+        if (tp == null)
+        {
+            await _activityLoggerService.Log("Deleting test panel", null, null, "fail");
+            throw new Exception("Test panel not found");
+        }
+        try
+        {
+            _context.TestPanels.Remove(tp);
+            await _context.SaveChangesAsync();
+            await _activityLoggerService.Log("Deleting test panel", null, null, "success");
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Test panel cannot be deleted as it is already used in orders. Try disabling instead");
+        }
     }
     public async Task<List<TestNormalValueDTO>> GetTestNormalValues(int testTypeID)
     {
@@ -236,7 +274,7 @@ public class TestTypesService
     }
     public async Task<List<TestAvailability>> GetPanelContents(int panelId)
     {
-        TestPanel? tp = await _context.TestPanels.Include(tp => tp.TestTypes).Where(tp=>tp.TestPanelId == panelId).FirstOrDefaultAsync();
+        TestPanel? tp = await _context.TestPanels.Include(tp => tp.TestTypes).Where(tp => tp.TestPanelId == panelId).FirstOrDefaultAsync();
         if (tp == null)
         {
             await _activityLoggerService.Log("Panel contents request", null, null, "fail");

@@ -39,6 +39,7 @@ export class TestGeneralAddComponent {
           this.closeModal();
         },
         (error) => {
+          alert("Couldn't add the test");
           this.errorMessage = error.error.message;
         }
       )

@@ -38,6 +38,12 @@ export class TestEditorComponent {
           this.totalPages = Math.ceil(response.totalCount / this.pageSize);
           this.totalCount = response.totalCount;
           this.errorMessage = null;
+          if (this.currentPage > this.totalPages) {
+            this.currentPage = 1;
+            if (this.totalCount != 0) {
+              this.loadTestTypes();
+            }
+          }
         },
         (error) => {
           this.errorMessage = error.error.message;
@@ -57,5 +63,17 @@ export class TestEditorComponent {
   onTestSelectNormalValues(id: number, name: string) {
     localStorage.setItem('testName', name);
     this.router.navigate([`/admin/options/editTest/${id}/normal-values`]);
+  }
+  deleteTestType(testTypeId: number) {
+    this.adminTestService.deleteTestType(testTypeId).subscribe({
+      next: () => { this.loadTestTypes(); },
+      error: (error) => { alert(error.error.message) }
+    })
+  }
+  toggleTestType(testTypeId: number) {
+    this.adminTestService.toggleTestType(testTypeId).subscribe({
+      next: () => { this.loadTestTypes(); },
+      error: (error) => { alert(error.error.message) }
+    })
   }
 }

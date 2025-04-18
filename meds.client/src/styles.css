@@ -5,6 +5,7 @@
   --text-color: #212121;
   --button-back-color: #83C2E3;
   --danger-back-color: #ff5d5d;
+  --good-back-color: #77ff73;
   --disabled-color: #696b85;
   --header-back-color: #211446;
   --header-text-color: #ffffff;
@@ -28,6 +29,7 @@
   --text-color: #eeeeee;
   --button-back-color: #382375;
   --danger-back-color: #9a2f2f;
+  --good-back-color: #1f5e1d;
   --disabled-color: #212121;
   --header-back-color: #211446;
   --header-text-color: #ffffff;
@@ -72,7 +74,9 @@ button {
 .bad-button {
   background-color: var(--danger-back-color);
 }
-
+.good-button {
+  background-color: var(--good-back-color);
+}
 .modal-back {
   position: fixed;
   top: 0;

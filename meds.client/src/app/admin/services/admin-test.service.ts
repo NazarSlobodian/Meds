@@ -32,8 +32,20 @@ export class AdminTestService {
   addTestType(testType: any): Observable<any> {
     return this.http.post(`${this.apiUrl}`, testType, { withCredentials: true });
   }
+  toggleTestType(testTypeId: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${testTypeId}/toggle`, {} ,{ withCredentials: true });
+  }
+  deleteTestType(testTypeId: any): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${testTypeId}`, { withCredentials: true });
+  }
   addTestPanel(testPanel: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/panels`, testPanel, { withCredentials: true });
+  }
+  toggleTestPanel(panelId: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/panels/${panelId}/toggle`, { withCredentials: true });
+  }
+  deleteTestPanel(panelId: any): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/panels/${panelId}`, { withCredentials: true });
   }
   deleteTestNormalValue(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/normals/${id}`, { withCredentials: true });
