@@ -52,6 +52,10 @@ export class PatientListComponent {
     });
   }
   onPatientDelete(id: number) {
+    const confirmed = confirm("Are you sure?");
+    if (!confirmed) {
+      return;
+    }
     this.patientsService.deletePatient(id).subscribe({
       next: () => { this.search() },
       error: (error) => { alert(error.error.message); }

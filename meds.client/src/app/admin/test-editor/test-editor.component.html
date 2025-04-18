@@ -31,9 +31,9 @@
           <td>
             <button class="edit-button" (click)="editModal.openModal(test)">Edit</button>
             <button class="edit-tnv-button" (click)="onTestSelectNormalValues(test.testTypeId, test.name)">Edit normal values</button>
-            <button class="bad-button delete-button" (click)="deleteTestType(test.testTypeId)">-</button>
-            <button class="bad-button disable-button" (click)="toggleTestType(test.testTypeId)" *ngIf="test.isActive == 1">Disable</button>
-            <button class="good-button enable-button" (click)="toggleTestType(test.testTypeId)" *ngIf="test.isActive == 0">Enable</button>
+            <button class="bad-button delete-button edit-button" (click)="deleteTestType(test.testTypeId)">-</button>
+            <button class="bad-button disable-button edit-button" (click)="toggleTestType(test.testTypeId)" *ngIf="test.isActive == 1">Disable</button>
+            <button class="good-button enable-button edit-tnv-button" (click)="toggleTestType(test.testTypeId)" *ngIf="test.isActive == 0">Enable</button>
           </td>
         </tr>
       </tbody>

@@ -65,6 +65,9 @@ export class TestEditorComponent {
     this.router.navigate([`/admin/options/editTest/${id}/normal-values`]);
   }
   deleteTestType(testTypeId: number) {
+    const confirmed = confirm("Are you sure?");
+    if (!confirmed)
+      return;
     this.adminTestService.deleteTestType(testTypeId).subscribe({
       next: () => { this.loadTestTypes(); },
       error: (error) => { alert(error.error.message) }
