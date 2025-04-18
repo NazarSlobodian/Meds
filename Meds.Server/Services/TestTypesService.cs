@@ -88,6 +88,19 @@ public class TestTypesService
         await _context.SaveChangesAsync();
         await _activityLoggerService.Log("Updating test type", null, null, "success");
     }
+    public async Task UpdateTestPanel(AdminTestPanelInfo test)
+    {
+        TestPanel? tt = await _context.TestPanels.FirstOrDefaultAsync(t => t.TestPanelId == test.TestPanelId);
+        if (tt == null)
+        {
+            await _activityLoggerService.Log("Updating test panel", null, null, "fail");
+            throw new Exception("Test type not found");
+        }
+        tt.Cost = test.Cost;
+        tt.Name = test.Name;
+        await _context.SaveChangesAsync();
+        await _activityLoggerService.Log("Updating test panel", null, null, "success");
+    }
     public async Task<List<TestNormalValueDTO>> GetTestNormalValues(int testTypeID)
     {
         List<TestNormalValueDTO> tnv = await _context.TestNormalValues

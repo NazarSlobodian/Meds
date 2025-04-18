@@ -70,7 +70,20 @@ namespace Meds.Server.Controllers
             }
             return Ok(new { message = "updated" });
         }
-
+        [HttpPut("admin/panels")]
+        [Authorize(Policy = "Admin")]
+        public async Task<IActionResult> UpdateTestPanelGeneralInfo([FromBody] AdminTestPanelInfo info)
+        {
+            try
+            {
+                await _testTypesService.UpdateTestPanel(info);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            return Ok(new { message = "updated" });
+        }
         [HttpGet("admin/normals/{testTypeID}")]
         [Authorize(Policy = "Admin")]
         public async Task<IActionResult> GetTestNormalValeusGeneralInfo(int testTypeID)

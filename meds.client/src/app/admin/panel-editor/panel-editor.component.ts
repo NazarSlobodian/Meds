@@ -57,6 +57,6 @@ export class PanelEditorComponent {
   }
   onPanelSelectContents(id: number, name: string) {
     localStorage.setItem('panelName', name);
-    this.router.navigate([`/admin/options/editPanel/${id}/content`]);
+    this.router.navigate([`/admin/options/editPanel/${id}/contents`]);
   }
 }

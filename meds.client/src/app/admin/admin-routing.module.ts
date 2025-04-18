@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'options/editTest', component: TestEditorComponent, canActivate: [authGuard] },
   { path: 'options/editPanel', component: PanelEditorComponent, canActivate: [authGuard] },
   { path: 'options/editTest/:id/normal-values', component: TestNormalValuesEditorComponent, canActivate: [authGuard] },
-  { path: 'options/editPanel/:id/content', component: PanelContentsEditorComponent, canActivate: [authGuard] },
+  { path: 'options/editPanel/:id/contents', component: PanelContentsEditorComponent, canActivate: [authGuard] },
   { path: 'options/activityLogs', component: ActivityLogsComponent, canActivate: [authGuard] },
   { path: 'options/statistics', component: StatisticsComponent, canActivate: [authGuard] },
   { path: 'options/statistics/revenue', component: RevenueComponent, canActivate: [authGuard] },
