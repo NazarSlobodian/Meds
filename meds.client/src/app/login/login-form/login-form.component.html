@@ -18,7 +18,7 @@
       <button type="submit">Login</button>
       <button type="button" (click)="emailInputModal.openModal()">Register</button>
     </div>
-    <div *ngIf="loginError" class="error">Invalid credentials</div>
+    <div class="error">{{errorMessage}}</div>
   </form>
 </div>
 

@@ -20,10 +20,18 @@ namespace Meds.Server.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel loginModel)
         {
-            RoleData role = await _authService.AutheticateUserAsync(loginModel.Login, loginModel.Password);
+            RoleData role;
+            try
+            {
+                role = await _authService.AutheticateUserAsync(loginModel.Login, loginModel.Password);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
             if (role == null)
             {
-                return Unauthorized(new { message = "Invalid" });
+                return Unauthorized(new { message = "Invalid credentials" });
             }
             var claims = new List<Claim>
             {

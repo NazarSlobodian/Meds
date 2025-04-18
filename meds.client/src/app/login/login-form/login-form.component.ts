@@ -11,8 +11,7 @@ export class LoginFormComponent {
     login: "",
     password: ""
   };
-  loginError = false;
-
+  errorMessage: string | null = null;
   constructor(private authService: AuthService, private router: Router) { }
   onSubmit() {
     this.authService.login(this.loginModel.login, this.loginModel.password)
@@ -40,8 +39,7 @@ export class LoginFormComponent {
           }
         },
         (error) => {
-          this.loginError = true;
-          console.error(error);
+          this.errorMessage = error.error.message;
         }
       );
   }

@@ -25,8 +25,22 @@ public class AuthService
         User? result = await _context.Users.FirstOrDefaultAsync(u => u.Login == login);
         if (result == null)
         {
-            await _activityLoggerService.Log("Log in", "Login doesn't exist", "Guest", "fail");
-            return null;
+            int loginsPerMinute = await _context.ActivityLogs.Where(al => al.Action == "Log in" && al.Status == "fail" && al.DateTime > DateTime.Now.AddMinutes(-1)).CountAsync();
+            if (loginsPerMinute > 10)
+            {
+                int messagesSent = await _context.ActivityLogs.Where(al => al.Action == "BRUTEFORCE" && al.DateTime > DateTime.Now.AddMinutes(-5)).CountAsync();
+                if (messagesSent < 1)
+                {
+                    await _activityLoggerService.Log("BRUTEFORCE", "BRUTEFORCE DETECTED", null, "fail");
+                    await _mailService.NotifyAdmin($"Bruteforcing detected, {DateTime.Now}", "BRUTEFORCE ALERT");
+                }
+                throw new Exception("Try again later");
+            }
+            else
+            {
+                await _activityLoggerService.Log("Log in", "Login doesn't exist", "guest", "fail");
+                return null;
+            }
         }
         string hash = PasswordHasher.HashPassword(password);
         bool match = PasswordHasher.VerifyPassword(password, result.Hash);
@@ -37,6 +51,17 @@ public class AuthService
         }
         else
         {
+            int loginsPerMinute = await _context.ActivityLogs.Where(al => al.Action == "Log in" && al.Status == "fail" && al.DateTime > DateTime.Now.AddMinutes(-1)).CountAsync();
+            if (loginsPerMinute > 10)
+            {
+                int messagesSent = await _context.ActivityLogs.Where(al => al.Action == "BRUTEFORCE" && al.DateTime > DateTime.Now.AddMinutes(-5)).CountAsync();
+                if (messagesSent < 1)
+                {
+                    await _activityLoggerService.Log("BRUTEFORCE", "BRUTEFORCE DETECTED", "guest", "fail");
+                    await _mailService.NotifyAdmin($"Bruteforcing detected, {DateTime.Now}", "BRUTEFORCE ALERT");
+                }
+                throw new Exception("Try again later");
+            }
             await _activityLoggerService.Log("Log in", $"{login}", $"{result.Role}", "fail");
             return null;
         }
