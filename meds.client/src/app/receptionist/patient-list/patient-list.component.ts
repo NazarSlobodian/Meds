@@ -26,7 +26,7 @@ export class PatientListComponent {
   currentPage = 1;
   totalPages = 1;
   totalCount = 0;
-  constructor(private patientsSevice: PatientsService, private router: Router) { }
+  constructor(private patientsService: PatientsService, private router: Router) { }
 
   onSearch() {
     if ((!this.searchQueryName || this.searchQueryName.trim().length === 0) &&
@@ -51,6 +51,12 @@ export class PatientListComponent {
       queryParams: {name:name}
     });
   }
+  onPatientDelete(id: number) {
+    this.patientsService.deletePatient(id).subscribe({
+      next: () => { this.search() },
+      error: (error) => { alert(error.error.message); }
+    });
+  }
   onAddSuccess(): void {
 
   }
@@ -61,7 +67,7 @@ export class PatientListComponent {
       this.currentPage = this.totalPages;
   }
   private search() {
-    this.patientsSevice.getPatients(this.frozenName, this.frozenPhone, this.frozenEmail, this.frozenDateOfBirth, this.currentPage, this.pageSize)
+    this.patientsService.getPatients(this.frozenName, this.frozenPhone, this.frozenEmail, this.frozenDateOfBirth, this.currentPage, this.pageSize)
       .subscribe(
         (response) => {
           this.patients = response.list;

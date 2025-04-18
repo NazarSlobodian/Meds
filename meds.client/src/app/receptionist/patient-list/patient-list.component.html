@@ -25,7 +25,7 @@
       <thead>
         <tr>
           <th class="name-column">Full Name</th>
-          <th class="gender-column">Gender</th>
+          <th class="gender-column">Sex</th>
           <th class="birthdate-column">Birthdate</th>
           <th class="email-column">Email</th>
           <th class="phone-column">Phone Number</th>
@@ -39,7 +39,10 @@
           <td>{{patient.dateOfBirth}}</td>
           <td>{{patient.email}}</td>
           <td>{{patient.phoneNumber}}</td>
-          <td class="add-order"><button (click)="onPatientSelect(patient.patientID, patient.fullName)">Add Order</button></td>
+          <td class="add-order">
+            <button class="add-order-button" (click)="onPatientSelect(patient.patientID, patient.fullName)">Add Order</button>
+            <button class="bad-button delete-button" (click)="onPatientDelete(patient.patientID)">-</button>
+          </td>
         </tr>
       </tbody>
     </table>

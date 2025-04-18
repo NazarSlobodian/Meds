@@ -164,6 +164,23 @@ public class PatientsService
         await _activityLoggerService.Log("Patient addition", null, null, "success");
         return p.PatientId;
     }
+    public async Task DeletePatient(int patientId)
+    {
+        Patient? pat = await _context.Patients.FindAsync(patientId);
+        if (pat == null) {
+            throw new Exception("Patient is already deleted");
+        }
+
+        try
+        {
+            _context.Patients.Remove(pat);
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Patient cannot be deleted as he already has orders");
+        }
+    }
     public async Task<BatchResultsDTO> GetBatchResultsAsync(int batchId, int patientId)
     {
         TestBatch batch = await _context.TestBatches

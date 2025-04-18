@@ -148,7 +148,20 @@ namespace Meds.Server.Controllers
                 return BadRequest(new { message = "Addition failed. Check entry data and wether it already exists" });
             }
         }
-
+        [HttpDelete("{patientId}")]
+        [Authorize(Policy = "Receptionist")]
+        public async Task<IActionResult> Delete(int patientId)
+        {
+            try
+            {
+                await _patientsService.DeletePatient(patientId);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            return Ok();
+        }
         [HttpPost("submit-batch/{patientId}")]
         [Authorize(Policy = "Receptionist")]
         public async Task<IActionResult> SubmitBatchAsync(int patientId, [FromBody] NewOrder batch)

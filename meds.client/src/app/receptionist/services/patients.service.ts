@@ -23,4 +23,7 @@ export class PatientsService {
   addPatient(patient: any): Observable<any> {
     return this.http.post(this.apiUrl, patient, { withCredentials: true });
   }
+  deletePatient(patientId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${patientId}`, { withCredentials: true });
+  }
 }
