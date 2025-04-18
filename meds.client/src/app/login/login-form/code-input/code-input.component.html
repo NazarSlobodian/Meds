@@ -2,14 +2,14 @@
   <div class="modal">
     <div class="modal-header">
       <h2>Enter code</h2>
-      <button (click)="closeModal()">X</button>
+      <button class="close-button" (click)="closeModal()">X</button>
     </div>
     <div class="modal-body">
       <form (ngSubmit)="submitCode()">
         <p>At code has been sent to {{email}}</p>
         <div class="form-group">
           <label for="code">Code</label>
-          <input type="text" id="code" [(ngModel)]="code" name="code" required>
+          <input class="data-input" type="text" id="code" [(ngModel)]="code" name="code" required>
         </div>
         <p>{{errorMessage}}</p>
         <div>

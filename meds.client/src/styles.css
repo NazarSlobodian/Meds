@@ -109,6 +109,7 @@ button {
   width: 100%;
   gap: 10px;
   padding: 5px;
+  align-items: center;
 }
 
 .howToCenterDiv {

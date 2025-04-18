@@ -49,6 +49,12 @@ public class AuthService
             await _activityLoggerService.Log("Code request", "Login doesn't exist", "guest", "fail");
             throw new Exception("Email isn't associated with any client. Contact tech support or reception desk and provide your email");
         }
+        User? user = await _context.Users.Where(u => u.Login == email).FirstOrDefaultAsync();
+        if (user != null)
+        {
+            await _activityLoggerService.Log("Code request", "User already exists", "guest", "fail");
+            throw new Exception("You are already registered");
+        }
         Random random = new Random();
         RegistrationCode? registrationCode = await _context.RegistrationCodes.FindAsync(email);
         int code = random.Next(111111, 1000000);

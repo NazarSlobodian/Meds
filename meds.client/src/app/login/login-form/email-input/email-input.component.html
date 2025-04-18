@@ -2,13 +2,13 @@
   <div class="modal">
     <div class="modal-header">
       <h2>Enter email</h2>
-      <button (click)="closeModal()">X</button>
+      <button class="close-button" (click)="closeModal()">X</button>
     </div>
     <div class="modal-body">
       <form (ngSubmit)="submitEmail()">
         <div class="form-group">
           <label for="email">Your email</label>
-          <input type="text" id="email" [(ngModel)]="email" name="email" required>
+          <input class="data-input" type="text" id="email" [(ngModel)]="email" name="email" required>
         </div>
         <div>
           <button type="submit" [disabled]="email.length<3">Send code</button>

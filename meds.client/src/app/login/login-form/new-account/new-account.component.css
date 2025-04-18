@@ -1,0 +1,14 @@
+.data-input {
+  border-radius: 2px;
+  width: 60%;
+  font-size: 16px;
+}
+
+button {
+  width: 100px;
+  margin-right: 5px;
+  margin-left: 5px;
+  border-radius: 5px;
+  height: 25px;
+  font-size: 16px;
+}
