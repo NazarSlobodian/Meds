@@ -12,7 +12,7 @@ export class AvailabilityChangerComponent {
 
 
   errorMessage: string | null = null;
-  pageSize = 5;
+  pageSize = 9;
   currentPage = 1;
   totalPages = 1;
   totalCount = 0;

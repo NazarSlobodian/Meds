@@ -277,8 +277,9 @@ public class PatientsService
             List<Laboratory> suitableLabs = labs.Where(lab => panelContents.All(id => lab.TestTypes.Select(x => x.TestTypeId).Contains(id))).ToList();
             if (suitableLabs.Count == 0)
             {
+                TestPanel tt = await _context.TestPanels.Where(t => t.TestPanelId == panelId).FirstAsync();
                 await _activityLoggerService.Log("Lab assigment", null, null, "fail");
-                throw new Exception($"No labs which can perform panel ID {panelId}");
+                throw new Exception($"No labs which can perform panel {tt.Name}");
             }
             decimal cost = await _context.TestPanels.Where(x => x.TestPanelId == panelId).Select(x => x.Cost).FirstOrDefaultAsync();
             foreach (int testTypeId in panelContents)
