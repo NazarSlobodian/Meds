@@ -16,6 +16,7 @@ import { RevenueComponent } from './statistics/revenue/revenue.component';
 import { ClientDistributionComponent } from './statistics/client-distribution/client-distribution.component';
 import { SharedModule } from '../shared/shared.module';
 import { ActivityLogsComponent } from './activity-logs/activity-logs.component';
+import { PanelEditorComponent } from './panel-editor/panel-editor.component';
 
 
 
@@ -34,6 +35,7 @@ import { ActivityLogsComponent } from './activity-logs/activity-logs.component';
     RevenueComponent,
     ClientDistributionComponent,
     ActivityLogsComponent,
+    PanelEditorComponent,
   ],
   imports: [
     CommonModule,

@@ -12,6 +12,9 @@ export class DashboardComponent {
   goToTestEdit() {
     this.router.navigate(["/admin/options/editTest"]);
   }
+  goToPanelEdit() {
+    this.router.navigate(["/admin/options/editPanel"]);
+  }
   goToStats() {
     this.router.navigate(["/admin/options/statistics"]);
   }

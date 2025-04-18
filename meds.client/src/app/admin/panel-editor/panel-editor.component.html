@@ -1,0 +1,42 @@
+<button class="back-button" (click)="goBack()">&lt;-Back</button>
+<div *ngIf="errorMessage">{{errorMessage}}</div>
+<div class="nice-container">
+  <div class="panel-editor-page">
+    <h2>Panel Editor</h2>
+    <button (click)="additionModal.openModal()">Add a test panel</button>
+
+    <app-pagination [pageSize]="pageSize"
+                    [currentPage]="currentPage"
+                    [totalPages]="totalPages"
+                    [totalCount]="totalCount"
+                    (pageChanged)="onPageChange($event)">
+    </app-pagination>
+
+    <table *ngIf="testPanels.length > 0;">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Cost</th>
+          <th class="action-column">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let panel of testPanels">
+          <td>{{panel.testPanelId}}</td>
+          <td>{{panel.name}}</td>
+          <td>{{panel.cost}}</td>
+          <td>
+            <button class="edit-button" (click)="editModal.openModal(panel)">Edit</button>
+            <button class="edit-contents-button" (click)="onPanelSelectContents(panel.testPanelId, panel.name)">Edit normal values</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<app-test-general-editor #editModal
+                         (updateSuccessful)="onUpdateSuccess()">
+</app-test-general-editor>
+<app-test-general-add #additionModal
+                      (additionSuccessful)="onAdditionSuccess()"></app-test-general-add>

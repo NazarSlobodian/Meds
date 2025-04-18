@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { AdminTestService } from '../services/admin-test.service';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-test-editor',
-  templateUrl: './test-editor.component.html',
-  styleUrl: './test-editor.component.css'
+  selector: 'app-panel-editor',
+  templateUrl: './panel-editor.component.html',
+  styleUrl: './panel-editor.component.css'
 })
-export class TestEditorComponent {
+export class PanelEditorComponent {
 
-  testTypes: any[] = [];
+  testPanels: any[] = [];
+
   errorMessage: string | null = null;
 
   pageSize = 10;
@@ -19,22 +20,22 @@ export class TestEditorComponent {
   constructor(private adminTestService: AdminTestService, private router: Router) { }
 
   ngOnInit() {
-    this.loadTestTypes();
+    this.loadTestPanels();
   }
   goBack() {
     this.router.navigate(["/admin/options"]);
   }
   onUpdateSuccess() {
-    this.loadTestTypes();
+    this.loadTestPanels();
   }
   onAdditionSuccess() {
-    this.loadTestTypes();
+    this.loadTestPanels();
   }
-  loadTestTypes() {
-    this.adminTestService.getAvailableTestTypes(this.currentPage, this.pageSize)
+  loadTestPanels() {
+    this.adminTestService.getAvailableTestPanels(this.currentPage, this.pageSize)
       .subscribe(
         (response) => {
-          this.testTypes = response.list;
+          this.testPanels = response.list;
           this.totalPages = Math.ceil(response.totalCount / this.pageSize);
           this.totalCount = response.totalCount;
           this.errorMessage = null;
@@ -50,12 +51,12 @@ export class TestEditorComponent {
   }
   onPageChange(page: number): void {
     this.currentPage = page;
-    this.loadTestTypes();
+    this.loadTestPanels();
     if (this.currentPage > this.totalPages)
       this.currentPage = this.totalPages;
   }
-  onTestSelectNormalValues(id: number, name: string) {
-    localStorage.setItem('testName', name);
-    this.router.navigate([`/admin/options/editTest/${id}/normal-values`]);
+  onPanelSelectContents(id: number, name: string) {
+    localStorage.setItem('panelName', name);
+    this.router.navigate([`/admin/options/editPanel/${id}/panel`]);
   }
 }
