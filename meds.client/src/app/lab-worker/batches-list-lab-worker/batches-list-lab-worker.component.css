@@ -28,3 +28,7 @@ button {
   width: 40%;
   font-size: 16px;
 }
+.action-column {
+  width: 15ch;
+  min-width: 15ch;
+}

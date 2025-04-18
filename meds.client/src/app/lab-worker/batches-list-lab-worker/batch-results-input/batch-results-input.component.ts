@@ -51,6 +51,10 @@ export class BatchResultsInputComponent {
   }
   onSubmitClick(): void {
     for (const res of this.orders) {
+      const confirmed = confirm("Are you sure you want to submit the results? They are final and cannot be changed if all fields are filled");
+      if (!confirmed) {
+        return;
+      }
       if (res.result === "") {
         res.result = null;
       }
