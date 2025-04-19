@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class AdminTestService {
   private apiUrl = "https://localhost:7217/TestTypes/admin";
+
   constructor(private http: HttpClient) { }
   getAvailableTestTypes(page: number, pageSize: number): Observable<any> {
     let params = new HttpParams()
@@ -62,4 +63,5 @@ export class AdminTestService {
   updatePanelContents(panelContents: any[], id: number): Observable<any> {
     return this.http.put(`${this.apiUrl}/panels/${id}`, panelContents , { withCredentials: true });
   }
+
 }
