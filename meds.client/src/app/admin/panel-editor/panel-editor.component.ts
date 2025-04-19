@@ -65,4 +65,19 @@ export class PanelEditorComponent {
     localStorage.setItem('panelName', name);
     this.router.navigate([`/admin/options/editPanel/${id}/contents`]);
   }
+  deleteTestPanel(testPanelId: number) {
+    const confirmed = confirm("Are you sure?");
+    if (!confirmed)
+      return;
+    this.adminTestService.deleteTestPanel(testPanelId).subscribe({
+      next: () => { this.loadTestPanels(); },
+      error: (error) => { alert(error.error.message) }
+    })
+  }
+  toggleTestPanel(testTypeId: number) {
+    this.adminTestService.toggleTestPanel(testTypeId).subscribe({
+      next: () => { this.loadTestPanels(); },
+      error: (error) => { alert(error.error.message) }
+    })
+  }
 }

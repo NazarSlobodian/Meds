@@ -11,5 +11,9 @@ public partial class TestResult
 
     public DateTime DateOfTest { get; set; }
 
+    public int LabWorkerId { get; set; }
+
+    public virtual LabWorker LabWorker { get; set; } = null!;
+
     public virtual TestOrder TestOrder { get; set; } = null!;
 }

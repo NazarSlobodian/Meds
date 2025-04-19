@@ -413,6 +413,8 @@ public partial class Wv1Context : DbContext
 
             entity.ToTable("test_results");
 
+            entity.HasIndex(e => e.LabWorkerId, "resLabWorkerID_idx");
+
             entity.HasIndex(e => e.TestOrderId, "testOrderID_idx");
 
             entity.Property(e => e.TestOrderId)
@@ -422,9 +424,15 @@ public partial class Wv1Context : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime")
                 .HasColumnName("dateOfTest");
+            entity.Property(e => e.LabWorkerId).HasColumnName("labWorkerID");
             entity.Property(e => e.Result)
                 .HasPrecision(5, 2)
                 .HasColumnName("result");
+
+            entity.HasOne(d => d.LabWorker).WithMany(p => p.TestResults)
+                .HasForeignKey(d => d.LabWorkerId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("resLabWorkerID");
 
             entity.HasOne(d => d.TestOrder).WithOne(p => p.TestResult)
                 .HasForeignKey<TestResult>(d => d.TestOrderId)

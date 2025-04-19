@@ -16,4 +16,6 @@ public partial class LabWorker
     public int LaboratoryId { get; set; }
 
     public virtual Laboratory Laboratory { get; set; } = null!;
+
+    public virtual ICollection<TestResult> TestResults { get; set; } = new List<TestResult>();
 }

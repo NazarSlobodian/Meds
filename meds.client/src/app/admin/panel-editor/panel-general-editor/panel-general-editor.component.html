@@ -16,7 +16,7 @@
           <input class="data-input" type="number" id="cost" [(ngModel)]="testPanel.cost" name="cost" min="1" required>
         </div>
         <div>
-          <button type="submit" [disabled]="testPanel.cost==null || testPanel.cost<0.0 || testPanel.name == null || testPanel.name.length<1">Save</button>
+          <button type="submit" [disabled]="testPanel.cost==null || testPanel.cost<0.0 ||testPanel.cost>99999.99|| testPanel.name == null || testPanel.name.length<1">Save</button>
         </div>
       </form>
     </div>

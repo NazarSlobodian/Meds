@@ -382,7 +382,7 @@ public class PatientsService
             }
             else if (order.TestResult == null)
             {
-                _context.TestResults.Add(new TestResult() { TestOrderId = order.TestOrderId, Result = result.Result.Value });
+                _context.TestResults.Add(new TestResult() { TestOrderId = order.TestOrderId, Result = result.Result.Value, LabWorkerId = labWorkerId });
             }
             else
             {
