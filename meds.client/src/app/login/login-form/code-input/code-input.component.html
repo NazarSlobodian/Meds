@@ -6,12 +6,12 @@
     </div>
     <div class="modal-body">
       <form (ngSubmit)="submitCode()">
-        <p>At code has been sent to {{email}}</p>
+        <p class="msg">At code has been sent to {{email}}</p>
         <div class="form-group">
           <label for="code">Code</label>
           <input class="data-input" type="text" id="code" [(ngModel)]="code" name="code" required>
         </div>
-        <p>{{errorMessage}}</p>
+        <p class="errorMsg" *ngIf="errorMessage">{{errorMessage}}</p>
         <div>
           <button type="submit" [disabled]="code.length<1">Save</button>
         </div>

@@ -17,7 +17,8 @@ public class TestTypesService
     public async Task<List<TechnicianTestTypeInfo>> GetTestTypesForTechView()
     {
         List<TechnicianTestTypeInfo> tbs = await _context.TestTypes
-            .Where(tt => tt.IsActive == 1)
+            .Include(tt=> tt.Laboratories)
+            .Where(tt => tt.IsActive == 1 && tt.Laboratories.Count > 0)
             .Select(tt => new TechnicianTestTypeInfo
             {
                 TestTypeId = tt.TestTypeId,
@@ -32,8 +33,9 @@ public class TestTypesService
     {
         List<TechnicianPanelInfo> panels = await _context.TestPanels
             .Include(x => x.TestTypes)
+                .ThenInclude(tp=>tp.Laboratories)
             .Where(tp => tp.IsActive == 1)
-            .Where(tp => tp.TestTypes.All(tt => tt.IsActive == 1))
+            .Where(tp => tp.TestTypes.All(tt => tt.IsActive == 1 && tt.Laboratories.Count>0))
             .Select(xx => new TechnicianPanelInfo(xx)).ToListAsync();
         await _activityLoggerService.Log("Requesting test panels", null, null, "success");
         return panels;

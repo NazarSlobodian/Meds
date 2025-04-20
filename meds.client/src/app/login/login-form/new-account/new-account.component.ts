@@ -18,6 +18,7 @@ export class NewAccountComponent {
   openModal(email: string) {
     this.email = email;
     this.isOpen = true;
+    this.errorMessage = "";
   }
   closeModal() {
     this.isOpen = false;
