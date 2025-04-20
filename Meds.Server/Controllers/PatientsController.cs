@@ -145,7 +145,7 @@ namespace Meds.Server.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = "Addition failed. Check entry data and wether it already exists" });
+                return BadRequest(new { message = "Addition failed. Check entry data and whether it already exists" });
             }
         }
         [HttpDelete("{patientId}")]
