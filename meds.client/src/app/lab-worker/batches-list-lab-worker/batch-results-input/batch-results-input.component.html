@@ -21,7 +21,7 @@
             <td>{{order.testOrderId}}</td>
             <td>{{order.name}}</td>
             <td>{{order.normalValues}}</td>
-            <td>{{order.unit}}</td>
+            <td>{{order.unit | superscript}}</td>
             <td>
               <input name="result_{{order.testOrderId}}" type="text" [(ngModel)]="order.result" />
             </td>

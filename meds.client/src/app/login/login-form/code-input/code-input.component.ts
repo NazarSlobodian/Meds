@@ -7,7 +7,7 @@ import { AuthService } from '../../../core/auth/auth.service';
   styleUrl: './code-input.component.css'
 })
 export class CodeInputComponent {
-  email: string = "";
+  email: string | null = null;
   code: string = "";
   isOpen = false;
   errorMessage: string = "";
@@ -24,9 +24,17 @@ export class CodeInputComponent {
     this.isOpen = false;
   }
   submitCode() {
+    if (!this.email) {
+      alert("No email");
+      return;
+    }
     this.authService.submitCode(this.email, this.code)
       .subscribe(
         (response) => {
+          if (!this.email) {
+            alert("No email");
+            return;
+          }
           this.codeEntered.emit(this.email);
           this.closeModal();
         },

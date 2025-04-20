@@ -297,15 +297,20 @@ public class PatientsService
         }
         foreach (int panelId in tests.PanelsIds)
         {
+            TestPanel tt1 = await _context.TestPanels.Where(t => t.TestPanelId == panelId).Include(tp=>tp.TestTypes).FirstAsync();
+            if (tt1.TestTypes.Any(tt1 => tt1.IsActive == 0))
+            {
+                await _activityLoggerService.Log("Lab assigment", null, null, "fail");
+                throw new Exception($"One or more of panel {tt1.Name} contents is disabled");
+            }
             List<int> panelContents = await _context.TestPanels.Where(panel => panel.TestPanelId == panelId).SelectMany(x => x.TestTypes.Select(ttype => ttype.TestTypeId)).ToListAsync();
             List<Laboratory> labs = await _context.Laboratories
                 .Include(lab => lab.TestTypes).ToListAsync();
             List<Laboratory> suitableLabs = labs.Where(lab => panelContents.All(id => lab.TestTypes.Select(x => x.TestTypeId).Contains(id))).ToList();
             if (suitableLabs.Count == 0)
             {
-                TestPanel tt = await _context.TestPanels.Where(t => t.TestPanelId == panelId).FirstAsync();
                 await _activityLoggerService.Log("Lab assigment", null, null, "fail");
-                throw new Exception($"No labs which can perform panel {tt.Name}");
+                throw new Exception($"No labs which can perform panel {tt1.Name}");
             }
             decimal cost = await _context.TestPanels.Where(x => x.TestPanelId == panelId).Select(x => x.Cost).FirstOrDefaultAsync();
             foreach (int testTypeId in panelContents)

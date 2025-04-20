@@ -17,6 +17,7 @@ export class NewAccountComponent {
 
   openModal(email: string) {
     this.email = email;
+    this.password = "";
     this.isOpen = true;
     this.errorMessage = "";
   }

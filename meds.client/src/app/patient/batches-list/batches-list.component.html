@@ -4,7 +4,7 @@
 
 <div class="nice-container">
   <div class="list-page">
-    <p *ngIf="batches.length > 0">Welcome! Here are you test results:</p>
+    <p *ngIf="batches.length > 0">Welcome! Here are you tests:</p>
     <ul *ngIf="batches.length > 0; else noBatches">
       <li *ngFor="let batch of batches" class="list-item">
         <span *ngIf="batch.batchStatus === 'done'; else noResults">
